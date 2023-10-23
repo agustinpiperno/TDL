@@ -1,2 +1,2 @@
 # REST API
-npm start #para correr el proyecto
+Para correr el proyecto: npm start
