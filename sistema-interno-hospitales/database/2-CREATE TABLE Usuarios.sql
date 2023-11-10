@@ -9,7 +9,7 @@ BEGIN
 			documento INT NOT NULL,
 			direccion VARCHAR(3),
 			telefono VARCHAR(50),
-            contraseña VARCHAR(255)
+            contrasena VARCHAR(255)
         );
     END IF;
 END $$;
