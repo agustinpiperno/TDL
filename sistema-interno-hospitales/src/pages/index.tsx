@@ -1,5 +1,7 @@
 export default function index() {
-  return (
-    <div>Hola Mundo</div>
-  )
+	return (
+		<div className="h-screen flex flex-col justify-center items-center">
+			HOME
+		</div>
+	);
 }

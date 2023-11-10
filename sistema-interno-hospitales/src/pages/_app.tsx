@@ -1,6 +1,15 @@
-import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
+// pages/_app.tsx
+import Navbar from "@/components/Navbar"; // Adjust the path based on your project structure
+import "@/styles/globals.css"; // Import your global styles here
+import { AppProps } from "next/app";
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
-}
+const App: React.FC<AppProps> = ({ Component, pageProps }: AppProps) => {
+	return (
+		<div className="h-screen flex flex-col justify-center items-center bg-blue-950">
+			<Navbar />
+			<Component {...pageProps} />
+		</div>
+	);
+};
+
+export default App;
