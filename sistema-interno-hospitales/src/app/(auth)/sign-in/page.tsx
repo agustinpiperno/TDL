@@ -1,8 +1,8 @@
 import SignInForm from "@/components/form/SignInForm";
 
-export default function HomePage() {
+export default function SignIn() {
 	return (
-		<div className="bg-red-400 w-full">
+		<div className="w-full">
 			<SignInForm />
 		</div>
 	);
