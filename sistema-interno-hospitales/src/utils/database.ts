@@ -4,8 +4,8 @@ let conn: any
 
 if (!conn){
     conn = new Pool({
-        user: 'admin',
-        password: 'admin123',
+        user: 'postgres',
+        password: '4675',
         host: 'localhost', //con docker tambien es localhost por defecto
         port: 5432,
         database: 'hospitales'
