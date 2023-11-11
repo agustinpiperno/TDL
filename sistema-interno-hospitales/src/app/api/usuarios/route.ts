@@ -16,12 +16,42 @@ export const POST = async (req: NextRequest) => {
     //     {message: "creando usuarios"}, 
     //     {status: 200})
     
+    // const requestData = await req.json();
+    // const credenciales = requestData.credenciales;
+
+    // return NextResponse.json({
+    //     credenciales: credenciales 
+    // })
+
     const requestData = await req.json();
     const credenciales = requestData.credenciales;
 
-    return NextResponse.json({
-        credenciales: credenciales 
-    })
+    try{
+        const usuario = await prisma.usuarios.findFirst({
+            where: {
+                username: credenciales.usuario,
+                contrasena: credenciales.contraseña,
+            },
+        });
+
+        if (usuario) {
+            // El usuario existe en la base de datos
+            return NextResponse.json({
+                mensaje: 'Usuario autenticado correctamente',
+                usuario: usuario,
+            });
+        } else {
+            // El usuario no existe en la base de datos
+            return NextResponse.json({
+                mensaje: 'Credenciales incorrectas',
+            });
+        }
+        
+    }catch(error){
+        return NextResponse.json({
+            error: 'Error al procesar la solicitud',
+        });
+    }
 }
 
 export async function GET_USER(username: string, password: string) {
