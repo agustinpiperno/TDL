@@ -19,6 +19,10 @@ export const POST = async (req: NextRequest) => {
     // const requestData = await req.json();
     // const credenciales = requestData.credenciales;
 
+    // return NextResponse.json(
+    //     {message: credenciales.usuario}, 
+    //     {status: 200})
+
     // return NextResponse.json({
     //     credenciales: credenciales 
     // })
