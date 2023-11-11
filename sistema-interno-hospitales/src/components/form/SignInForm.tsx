@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { verificarUsuario } from "@/app/(auth)/login/login";
+
 import * as z from "zod";
 import {
 	Form,
@@ -12,6 +14,11 @@ import {
 	FormLabel,
 	FormMessage,
 } from "../ui/form";
+
+const comprobarUsuario = async (values: z.infer<typeof FormSchema>) => {
+	await verificarUsuario(values.email, values.password)
+};
+
 const FormSchema = z.object({
 	email: z.string().min(1, "Se requiere un email").email("Email invalido"),
 	password: z
@@ -69,7 +76,7 @@ const SignInForm = () => {
 					/>
 				</div>
 
-				<Button className="w-full mt-6 " type="submit">
+				<Button className="w-full mt-6 " type="submit" onClick={form.handleSubmit(comprobarUsuario)}>
 					Inicia sesión
 				</Button>
 			</form>

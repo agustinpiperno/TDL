@@ -16,3 +16,15 @@ model Post {
   content   String?
   published Boolean @default(false)
 }
+
+model Usuarios {
+  idUsuario      Int       @id @default(autoincrement())
+  apellido       String    @db.VarChar(50)
+  nombre         String    @db.VarChar(50)
+  tipoDocumento  String    @db.VarChar(3)
+  documento      Int
+  direccion      String?   @db.VarChar(100)
+  telefono       String?   @db.VarChar(50)
+  username       String?   @db.VarChar(255)
+  contrasena     String?   @db.VarChar(255)
+}
