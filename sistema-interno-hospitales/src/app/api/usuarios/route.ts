@@ -12,9 +12,16 @@ export const GET = async (req: NextRequest) => {
 }
 
 export const POST = async (req: NextRequest) => {
-    return NextResponse.json(
-        {message: "creando usuarios"}, 
-        {status: 200})
+    // return NextResponse.json(
+    //     {message: "creando usuarios"}, 
+    //     {status: 200})
+    
+    const requestData = await req.json();
+    const credenciales = requestData.credenciales;
+
+    return NextResponse.json({
+        credenciales: credenciales 
+    })
 }
 
 export async function GET_USER(username: string, password: string) {
