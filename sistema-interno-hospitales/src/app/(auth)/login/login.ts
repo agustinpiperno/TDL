@@ -23,6 +23,7 @@ export const verificarUsuario = async (username: string, password: string) => {
     if (response.ok) {
         const data = await response.json();
         console.log('Mensaje POST ok con + ' + data.mensaje);
+        return data.mensaje
     } else {
         throw new Error('Error en la solicitud');
     }

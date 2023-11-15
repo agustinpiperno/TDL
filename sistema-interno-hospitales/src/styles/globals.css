@@ -74,3 +74,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+.error-message {
+  background-color: #ffcccc;
+  color: #ff0000;
+  padding: 10px;
+  border: 1px solid #ff0000;
+  border-radius: 5px;
+  margin-top: 10px;
+}
