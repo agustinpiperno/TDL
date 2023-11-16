@@ -12,9 +12,18 @@ import {
 	FormLabel,
 	FormMessage,
 } from "../ui/form";
+import { ComboBox } from "../ui/combo";
+import { useState } from "react";
+import { insertarUsuario } from "@/app/(auth)/registro/registro";
 const FormSchema = z
 	.object({
-		username: z.string().min(1, "Se requiere un nombre de usuario").max(20),
+		apellido: z.string().min(1, "Se requiere un apellido de usuario").max(50),
+		nombre: z.string().min(1, "Se requiere un nombre de usuario").max(50),
+		tipoDocumento: z.string().max(50),
+		documento: z.string().min(1, "Se requiere un documento")
+		.refine(value => /^[0-9]*$/.test(value), {
+		  message: 'El documento debe ser un número',
+		}),
 		email: z.string().min(1, "Se requiere un email").email("Email invalido"),
 		password: z
 			.string()
@@ -31,10 +40,26 @@ const FormSchema = z
 	});
 
 const SignUpForm = () => {
+
+	const [errorMessage, setErrorMessage] = useState('');
+
+	const registrarUsuario = async (values: z.infer<typeof FormSchema>) => {
+		var respuesta = await insertarUsuario(values);
+		if(respuesta === 'El email ingresado ya se encuentra en uso'){
+			setErrorMessage(respuesta);
+		}else{
+			setErrorMessage('');
+		}
+		// var respuesta = await insertarUsuario(values);
+	};
+
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
-			username: "",
+			apellido: "",
+			nombre: "",
+			tipoDocumento: "",
+			documento: "",
 			email: "",
 			password: "",
 			confirmPassword: "",
@@ -48,18 +73,68 @@ const SignUpForm = () => {
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="w-80">
-				<div className=" space-y-3">
+				<div className="space-y-1">
 					<FormField
 						control={form.control}
-						name="username"
+						name="apellido"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Usuario</FormLabel>
+								<FormLabel>Apellido</FormLabel>
 								<FormControl>
 									<Input
-										placeholder="Nombre de usuario"
-										type="username"
+										placeholder="Apellido del usuario"
+										type="apellido"
 										{...field}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="nombre"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Nombre</FormLabel>
+								<FormControl>
+									<Input
+										placeholder="Nombre del usuario"
+										type="nombre"
+										{...field}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="tipoDocumento"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Tipo de Documento</FormLabel>
+								<FormControl>
+									<ComboBox {...field} defaultValue="DNI">
+										<option value="DNI">DNI</option>
+										<option value="PASS">Pasaporte</option>
+									</ComboBox>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="documento"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Documento</FormLabel>
+								<FormControl>
+									<Input
+										placeholder="Ingrese su documento"
+										type="documento"
+										{...field} 
 									/>
 								</FormControl>
 								<FormMessage />
@@ -119,9 +194,14 @@ const SignUpForm = () => {
 					/>
 				</div>
 
-				<Button className="w-full mt-6 " type="submit">
+				<Button className="w-full mt-6 " name="btnRegistrarse" type="submit" onClick={form.handleSubmit(registrarUsuario)}>
 					Registrarse
 				</Button>
+				{errorMessage && (
+				<div className="error-message">
+					{errorMessage}
+				</div>
+				)}
 			</form>
 			<div className="mx-auto my-4 flex w-full items-center justify-evenly before:mr-4 before:block before:h-px before:flex-grow before:bg-stone-400 after:ml-4 after:block after:h-px after:flex-grow after:bg-stone-400 ">
 				o
