@@ -28,3 +28,15 @@ model Usuarios {
   username       String?   @db.VarChar(255)
   contrasena     String?   @db.VarChar(255)
 }
+
+model Pacientes {
+  idPaciente      Int       @id @default(autoincrement())
+  apellido       String    @db.VarChar(50)
+  nombre         String    @db.VarChar(50)
+  tipoDocumento  String    @db.VarChar(3)
+  documento      Int
+  direccion      String?   @db.VarChar(100)
+  telefono       String?   @db.VarChar(50)
+  ocupacion       String?   @db.VarChar(50)
+  idPrepaga     String?   @db.VarChar(5)
+}
