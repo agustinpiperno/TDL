@@ -111,3 +111,32 @@ td, th {
 tr:nth-child(even){
   background-color: #dddddd;
 }
+
+.styledButton {
+  padding: 8px 12px;
+  font-size: 16px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Otros estilos que desees agregar */
+}
+
+.form-container {
+  text-align: center;
+}
+
+input[type="text"] {
+  height: 20px;
+  padding-left: 15px;
+  margin: 5px;
+}
+
+input[type="button"],
+input[type="submit"] {
+  height: 40px;
+  margin-left: 5px;
+  background-color: #3498db;
+}

@@ -12,6 +12,7 @@ type Props = {
 //         <tr>
 //             <th>Apellido</th>
 //             <th>Nombre</th>
+//                 <th>Action</th>
 //         </tr> 
 //         {list.map((paciente) => {
 //             // console.log(paciente);
@@ -20,6 +21,13 @@ type Props = {
 //                 <tr key={paciente.idPaciente}>
 //                     <td>{`${paciente.apellido}`}</td>
 //                     <td>{`${paciente.nombre}`}</td>
+//                         <td>
+//                         <div>
+//                             <input type="button" value="View"/>
+//                             <input type="button" value="Edit"/>
+//                             <input type="button" value="Delete"/>
+//                         </div>
+//                         </td>
 //                 </tr>
 //             )
 //         })}
@@ -40,6 +48,7 @@ const PacienteList = (props: Props) => {
                     <tr>
                         <th>Apellido</th>
                         <th>Nombre</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,6 +56,13 @@ const PacienteList = (props: Props) => {
                         <tr key={paciente.idPaciente}>
                             <td>{`${paciente.apellido}`}</td>
                             <td>{`${paciente.nombre}`}</td>
+                            <td>
+                                <div>
+                                    <input type="button" value="View" className="styledButton"/>
+                                    <input type="button" value="Edit" className="styledButton"/>
+                                    <input type="button" value="Delete" className="styledButton"/>
+                                </div>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

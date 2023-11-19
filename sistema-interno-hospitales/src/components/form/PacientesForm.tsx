@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
-import { IPaciente, dummyPacienteList } from "../ui/Paciente.type";
+import { IPaciente, PageEnum, dummyPacienteList } from "../ui/Paciente.type";
 import PacienteList from "../ui/PacienteList";
+import AddPaciente from "../ui/AddPaciente";
 
 const PacientesForm = () => {
     // return <div>HOLA</div>
@@ -9,6 +10,20 @@ const PacientesForm = () => {
         dummyPacienteList as IPaciente[]
     );
     
+    const [shownPage, setShownPage] = useState(PageEnum.list);
+    
+    const onAddPacienteClickHnd = () => {
+        setShownPage(PageEnum.add)
+    };
+
+    const showListPage = () =>{
+        setShownPage(PageEnum.list)
+    };
+
+    const addPaciente = (data: IPaciente) =>{
+        setPacienteList([...pacienteList, data])
+    };
+
     return (
         <>
         <article className="article-header">
@@ -18,10 +33,15 @@ const PacientesForm = () => {
         </article>
 
         <section className="section-content">
-            <div>
-                conteniddo
-                <PacienteList list={pacienteList}/>
-            </div>
+
+            {shownPage === PageEnum.list && (
+                <>
+                    <input type="button" value="Agregar Paciente" className="styledButton" onClick={onAddPacienteClickHnd}/>
+                    <PacienteList list={pacienteList}/>
+                </>
+            )}
+
+            {shownPage === PageEnum.add && <AddPaciente onBackBtnClickHnd={showListPage} onsubmitClickHnd={addPaciente}/>}
         </section>   
         </>
     );

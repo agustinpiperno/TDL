@@ -23,3 +23,8 @@ export const dummyPacienteList : IPaciente[] = [
         idPrepaga: "ID PREPAGA PRUEBA",
     },
 ]
+
+export enum PageEnum {
+    list,
+    add,
+}
