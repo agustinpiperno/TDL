@@ -8,6 +8,7 @@ const ListPaciente = () => {
                     {/* head */}
                     <thead>
                         <tr>
+                            <th>id</th>
                             <th>Apellido</th>
                             <th>Nombre</th>
                             <th>Doxumento</th>
@@ -16,6 +17,7 @@ const ListPaciente = () => {
                     <tbody>
                         {/* row 1 */}
                         <tr>
+                            <td>1</td>
                             <td>Cy Ganderton</td>
                             <td>Quality Control Specialist</td>
                             <td>Blue</td>
