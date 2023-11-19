@@ -1,6 +1,10 @@
+import { IPaciente } from "@/types/pacientes";
 import React from "react";
+interface ListPacienteProps {
+    pacientes: IPaciente[]
+}
 
-const ListPaciente = () => {
+const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
     return (
         <div>
             <div className="overflow-x-auto">
@@ -11,17 +15,18 @@ const ListPaciente = () => {
                             <th>id</th>
                             <th>Apellido</th>
                             <th>Nombre</th>
-                            <th>Doxumento</th>
+                            <th>Documento</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {/* row 1 */}
-                        <tr>
-                            <td>1</td>
-                            <td>Cy Ganderton</td>
-                            <td>Quality Control Specialist</td>
-                            <td>Blue</td>
-                        </tr>
+                        {pacientes.map((paciente) => (
+                            <tr key={paciente.id}>
+                                <td>{paciente.apellido}</td>
+                                <td>{paciente.nombre}</td>
+                                <td>{paciente.documento}</td>
+                            </tr>
+                        ))}
+
                     </tbody>
                 </table>
             </div>
