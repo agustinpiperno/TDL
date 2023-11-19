@@ -1,5 +1,5 @@
 export interface IPaciente {
-    id: string,
+    idPaciente: number,
     apellido: string,
     nombre: string,
     tipoDocumento: string,

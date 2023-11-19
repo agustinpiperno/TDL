@@ -14,7 +14,7 @@ export default async function CRUDPacientes() {
 	// );
 
     var pacientes = await getAllPacientes();
-    console.log(pacientes)
+    // console.log(pacientes)
 
     return (
         <main className="max-w-4kx mx-auto mt-4">
