@@ -1,5 +1,12 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Pasos para el funcionamiento del programa
+
+npm install
+docker compose up -d
+npx prisma migrate dev --name init
+npm run dev
+
 ## Getting Started
 
 First, run the development server:

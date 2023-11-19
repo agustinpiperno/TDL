@@ -11,7 +11,7 @@ const NavbarToSignIn = () => {
 				</Link>
 				<div className="flex space-x-7">
 					<Link
-						className={`${buttonVariants()} bg-white text-blue-950 hover:bg-slate-300 border-black border`}
+						className={`${buttonVariants()} bg-slate-700 hover:bg-slate-600 border-slate-900 border`}
 						href="/sign-in"
 					>
 						Ingresar
