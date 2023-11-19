@@ -15,11 +15,16 @@ import {
 import { ComboBox } from "../ui/combo";
 import { useState } from "react";
 import { insertarUsuario } from "@/app/(auth)/registro/registro";
+import AddPaciente from "../AddPacientes";
 
 
 const CRUDPacientesForm = () => {
 	return (
-        <h1>HOLA</h1>
+        <div className="text-center my-5 flex flex-col gap-4">
+            <h1 className="text-2xl font-bold">Pacientes</h1>
+            <AddPaciente/>
+        </div>
+        
 	);
 };
 
