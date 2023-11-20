@@ -22,6 +22,7 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
                             <th>Teléfono</th>
                             <th>Ocupación</th>
                             <th>Prepaga</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>

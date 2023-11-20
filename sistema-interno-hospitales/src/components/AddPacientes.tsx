@@ -200,7 +200,7 @@ const AddPaciente = () => {
                             <label htmlFor="tipoDocumento">Tipo de Documento: </label>
                             <select value={selectedTipoDocumento} onChange={handleTipoDocumentoChange}>
                                 <option value="DNI">DNI</option>
-                                <option value="PASS">Pasaporte</option>
+                                <option value="PAS">Pasaporte</option>
                             </select>
                         </div>
                         <div>
