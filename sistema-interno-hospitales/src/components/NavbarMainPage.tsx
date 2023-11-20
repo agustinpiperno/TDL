@@ -9,16 +9,15 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useEffect } from 'react';
 
 const NavbarMainPage = () => {
     return (
-    <div className="bg-zinc-100 py-2 border-s-zinc-200 w-full z-10 top-0">
-        <div className="container flex items-center justify-start space-x-60 h-10">
+		<div className="bg-zinc-100 py-2 border-s-zinc-200 fixed w-full z-10 top-0">
+			<div className="container flex items-center justify-between h-10">
                 <Link href="/home">
-                    <Stethoscope />
+                    <Stethoscope/>
                 </Link>
-                <DropdownMenu >
+                <DropdownMenu>
                     <DropdownMenuTrigger className="focus:outline-none">Turnos</DropdownMenuTrigger>
                     <DropdownMenuContent>
                         <Link href="/administrarTurnos">
@@ -43,10 +42,16 @@ const NavbarMainPage = () => {
                     </DropdownMenuContent>
                 </DropdownMenu>
                 <DropdownMenu>
-                    <Link href="/administrarCuenta">
-                        <DropdownMenuTrigger>Mi Cuenta</DropdownMenuTrigger>
-                    </Link>
+                    <DropdownMenuTrigger className="focus:outline-none">Doctores</DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <Link href="/administrarSalas">
+                            <DropdownMenuItem>Administrar Doctores</DropdownMenuItem>
+                        </Link>
+                    </DropdownMenuContent>
                 </DropdownMenu>
+                <Link href="/administrarCuenta">
+                    Mi Cuenta
+                </Link>
             </div>
         </div>
     );
