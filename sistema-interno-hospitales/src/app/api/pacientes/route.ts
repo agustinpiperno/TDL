@@ -69,36 +69,24 @@ export const PUT = async (req: NextRequest) => {
         },
         });
 
-    // try{
-    //     const updatedPaciente = await prisma.pacientes.update({
-    //         where: {
-    //           idPaciente: paciente.idPaciente,
-    //         },
-    //         data: {
-    //           apellido: paciente.apellido,
-    //           nombre: paciente.nombre,
-    //           tipoDocumento: paciente.tipoDocumento,
-    //           documento: paciente.documento,
-    //           direccion: paciente.direccion,
-    //           telefono: paciente.telefono,
-    //           ocupacion: paciente.ocupacion,
-    //           idPrepaga: paciente.idPrepaga,
-    //         },
-    //       });
-        
-    //       console.log(updatedPaciente);
-    //       return NextResponse.json({
-    //         mensaje: 'Usuario autenticado correctamente',
-    //         usuario: updatedPaciente,
-    //     });
-    // }catch(error){
-    //     return NextResponse.json({
-    //         error: 'Error al procesar la solicitud',
-    //     });
-    // }
-
 
     return NextResponse.json({
       mensaje: 'Usuario autenticado correctamente',
   });
+}
+
+
+export const DELETE = async (req: NextRequest) => {
+    const idPaciente = req.nextUrl.searchParams.get("IdPaciente")
+
+    const pacienteEliminado = await prisma.pacientes.delete({
+        where: {
+          idPaciente: parseInt(idPaciente as string), // Asegúrate de convertir el ID a un número si es necesario
+        },
+      });
+    
+
+    return NextResponse.json({
+        mensaje: idPaciente,
+    });
 }

@@ -6,7 +6,7 @@ import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { Button } from "./ui/button";
 import Modal from "./Modal";
 import { useRouter } from "next/navigation";
-import { editarPaciente } from "@/app/(auth)/pacientes/pacientes";
+import { editarPaciente, eliminarPaciente } from "@/app/(auth)/pacientes/pacientes";
 
 interface PacienteProps {
     paciente: IPaciente
@@ -28,38 +28,44 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
 
     const handleSubmitEdit: FormEventHandler<HTMLFormElement> = async (event) => {
         // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault(); // Evitar la recarga de la página por defecto en el envío del formulario
-            // console.log(`Nombre: ${nombre}, Apellido: ${apellido}, Tipo de documento: ${selectedTipoDocumento}, Número de documento: ${documentNumber}, Teléfono: ${telefono}, Ocupación: ${ocupacion}, Prepaga: ${idPrepaga}`);
-    
-            const pacienteEditar = {
-                paciente:{
-                    idPaciente: paciente.idPaciente, 
-                    apellido: apellidoToEdit,
-                    nombre: nombreToEdit,
-                    tipoDocumento: tipoDocumentoToEdit,
-                    documento: Number(documentoToEdit),
-                    direccion: direccionToEdit,
-                    telefono: telefonoToEdit,
-                    ocupacion: ocupacionToEdit,
-                    idPrepaga: idPrepagaToEdit
-                }
-            };
-    
-            await editarPaciente(pacienteEditar.paciente);
-            
-            console.log(pacienteEditar);
+        event.preventDefault(); // Evitar la recarga de la página por defecto en el envío del formulario
+        // console.log(`Nombre: ${nombre}, Apellido: ${apellido}, Tipo de documento: ${selectedTipoDocumento}, Número de documento: ${documentNumber}, Teléfono: ${telefono}, Ocupación: ${ocupacion}, Prepaga: ${idPrepaga}`);
 
-            // setApellidoToEdit("");
-            // setNombreToEdit("");
-            // setTipoDocumentoToEdit("DNI")
-            // setDocumentoToEdit("");
-            // setDireccionToEdit("");
-            // setTelefonoToEdit("");
-            // setOcupacionToEdit("");
-            // setIdPrepagaToEdit("");
-            setOpenModalEdit(false);
-            router.refresh();
+        const pacienteEditar = {
+            paciente: {
+                idPaciente: paciente.idPaciente,
+                apellido: apellidoToEdit,
+                nombre: nombreToEdit,
+                tipoDocumento: tipoDocumentoToEdit,
+                documento: Number(documentoToEdit),
+                direccion: direccionToEdit,
+                telefono: telefonoToEdit,
+                ocupacion: ocupacionToEdit,
+                idPrepaga: idPrepagaToEdit
+            }
         };
+
+        await editarPaciente(pacienteEditar.paciente);
+
+        console.log(pacienteEditar);
+
+        // setApellidoToEdit("");
+        // setNombreToEdit("");
+        // setTipoDocumentoToEdit("DNI")
+        // setDocumentoToEdit("");
+        // setDireccionToEdit("");
+        // setTelefonoToEdit("");
+        // setOcupacionToEdit("");
+        // setIdPrepagaToEdit("");
+        setOpenModalEdit(false);
+        router.refresh();
+    };
+
+    const handleDeletePaciente = async (idPaciente: number) => {
+        await eliminarPaciente(idPaciente);
+        setOpenModalDelete(false);
+        router.refresh();
+    };
 
     return (
         <tr key={paciente.idPaciente}>
@@ -172,7 +178,16 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
                 </Modal>
 
 
-                <FiTrash2 cursor="pointer" className='text-red-500' size={25} />
+                <FiTrash2 onClick={() => setOpenModalDelete(true)} cursor="pointer" className='text-red-500' size={25} />
+                <Modal modalOpen={openModalDelete} setModalOpen={setOpenModalDelete}>
+                    <h3 className="text-lg">¿Estas seguro que desea eliminar a este paciente?</h3>
+                    <div className="modal-action">
+                        <button
+                            onClick={() => handleDeletePaciente(paciente.idPaciente)}
+                            className="btn"
+                        >Sí</button>
+                    </div>
+                </Modal>
             </td>
         </tr>
     )

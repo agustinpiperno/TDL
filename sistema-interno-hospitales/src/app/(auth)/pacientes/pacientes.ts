@@ -111,3 +111,39 @@ export const editarPaciente = async (infoPaciente: IPaciente) : Promise<IPacient
     // const data = await response.json();
     // return data.pacientes    
 };
+
+export const eliminarPaciente = async (idPaciente: number) : Promise<void> => {
+
+    // const pacienteEditar = {
+    //     paciente:{
+    //         idPaciente: infoPaciente.idPaciente,
+    //         apellido: infoPaciente.apellido,
+    //         nombre: infoPaciente.nombre,
+    //         tipoDocumento: infoPaciente.tipoDocumento,
+    //         documento: Number(infoPaciente.documento),
+    //         direccion: infoPaciente.direccion,
+    //         telefono: infoPaciente.telefono,
+    //         ocupacion: infoPaciente.ocupacion,
+    //         idPrepaga: infoPaciente.idPrepaga
+    //     }
+    // };
+
+    // console.log(JSON.stringify(pacienteEditar))
+
+    const response = await fetch(`http://localhost:3000/api/pacientes?IdPaciente=${idPaciente}`, {
+        method: 'DELETE',
+    });
+
+    // console.log(JSON.stringify(pacienteEditar))
+
+    // const response = await fetch(`http://localhost:3000/api/pacientes/${infoPaciente.idPaciente}`, {
+    //     method: 'PUT',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(pacienteEditar)
+    // });
+
+    // const data = await response.json();
+    // return data.pacientes    
+};
