@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import Carousel from "react-bootstrap/Carousel";
+import { useState } from "react";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
 
@@ -29,12 +28,12 @@ const Slider = () => {
 		const newIndex = isLastSlide ? 0 : currentIndex + 1;
 		setCurrentIndex(newIndex);
 	};
-	const goToSlide = (slideIndex) => {
+	const goToSlide = (slideIndex: number) => {
 		setCurrentIndex(slideIndex);
 	};
 
 	return (
-		<div className="max-w-[1400px] h-[780px] w-full py-8 top-14 px-4 absolute group">
+		<div className="max-w-[1400px] h-[780px] w-full py-10 top-10 px-1 absolute group">
 			<div
 				style={{ backgroundImage: `url(${slides[currentIndex].url}) ` }}
 				className="w-full h-full rounded-2xl bg-center bg-cover duration-500"

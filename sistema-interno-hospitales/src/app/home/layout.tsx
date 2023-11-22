@@ -1,6 +1,6 @@
 import NavbarToSignIn from "@/components/NavbarToSignIn";
-import "@/styles/globals.css"; // Import your global styles here
 import Slider from "@/components/Slider";
+import "@/styles/globals.css"; // Import your global styles here
 export default function RootLayout({
 	children,
 }: {
