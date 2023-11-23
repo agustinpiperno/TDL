@@ -28,7 +28,7 @@ const NavbarMainPage = () => {
                 <DropdownMenu>
                     <DropdownMenuTrigger className="focus:outline-none">Pacientes</DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <Link href="/administrarPacientes">
+                        <Link href="/pacientes">
                             <DropdownMenuItem>Administrar Pacientes</DropdownMenuItem>
                         </Link>
                     </DropdownMenuContent>
