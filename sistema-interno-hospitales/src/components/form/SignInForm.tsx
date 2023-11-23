@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { verificarUsuario } from "@/app/(auth)/login/login";
 import { useState } from 'react';
+import {useRouter} from 'next/navigation'
 
 import * as z from "zod";
 import {
@@ -27,7 +28,8 @@ const FormSchema = z.object({
 });
 
 const SignInForm = () => {
-	
+
+	const {push} = useRouter()
 	const [errorMessage, setErrorMessage] = useState('');
 
 	const comprobarUsuario = async (values: z.infer<typeof FormSchema>) => {
@@ -36,6 +38,7 @@ const SignInForm = () => {
 			setErrorMessage(respuesta);
 		}else{
 			setErrorMessage('');
+			push('/mainPage')
 		}
 		
 	};
