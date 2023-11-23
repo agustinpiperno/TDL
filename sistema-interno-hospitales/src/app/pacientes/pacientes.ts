@@ -1,4 +1,4 @@
-import {IPaciente} from "./../../../types/pacientes";
+import {IPaciente} from "../../types/pacientes";
 
 const apiUrl = `http://localhost:3000/api/pacientes`;
 

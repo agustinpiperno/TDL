@@ -7,7 +7,7 @@ import { Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { IPaciente } from "@/types/pacientes";
-import { insertarPaciente } from "@/app/(auth)/pacientes/pacientes";
+import { insertarPaciente } from "@/app/pacientes/pacientes";
 import { useRouter } from "next/navigation";
 
 const AddPaciente = () => {

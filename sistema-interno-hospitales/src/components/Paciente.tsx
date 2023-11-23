@@ -6,7 +6,7 @@ import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { Button } from "./ui/button";
 import Modal from "./Modal";
 import { useRouter } from "next/navigation";
-import { editarPaciente, eliminarPaciente } from "@/app/(auth)/pacientes/pacientes";
+import { editarPaciente, eliminarPaciente } from "@/app/pacientes/pacientes";
 
 interface PacienteProps {
     paciente: IPaciente
