@@ -24,12 +24,60 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
     const [telefonoToEdit, setTelefonoToEdit] = useState<string | null>(paciente.telefono);
     const [ocupacionToEdit, setOcupacionToEdit] = useState<string | null>(paciente.ocupacion);
     const [idPrepagaToEdit, setIdPrepagaToEdit] = useState<string | null>(paciente.idPrepaga);
+    const [errorMessage, setErrorMessage] = useState('');
 
+    const ocultarCartelError = () => {
+        if (apellidoToEdit !== '' && nombreToEdit !== '' && documentoToEdit !== '') {
+            setErrorMessage('');
+        }
+    }
 
-    const handleSubmitEdit: FormEventHandler<HTMLFormElement> = async (event) => {
-        // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); // Evitar la recarga de la página por defecto en el envío del formulario
-        // console.log(`Nombre: ${nombre}, Apellido: ${apellido}, Tipo de documento: ${selectedTipoDocumento}, Número de documento: ${documentNumber}, Teléfono: ${telefono}, Ocupación: ${ocupacion}, Prepaga: ${idPrepaga}`);
+    const handleNombreChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setNombreToEdit(event.target.value);
+        ocultarCartelError();
+    };
+
+    const handleApellidoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setApellidoToEdit(event.target.value);
+        ocultarCartelError();
+    };
+
+    const handleTipoDocumentoChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setTipoDocumentoToEdit(event.target.value);
+    };
+
+    const handleDocumentNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const inputDocumentNumber = event.target.value;
+        // Validar si el valor ingresado es solo números (usando expresión regular)
+        if (/^\d*$/.test(inputDocumentNumber) || inputDocumentNumber === '') {
+            setDocumentoToEdit(inputDocumentNumber);
+        }
+        ocultarCartelError();
+    };
+
+    const handleDireccionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDireccionToEdit(event.target.value);
+    };
+
+    const handleTelefonoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTelefonoToEdit(event.target.value);
+    };
+
+    const handleOcupacionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setOcupacionToEdit(event.target.value);
+    };
+
+    const handleIdPrepagaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setIdPrepagaToEdit(event.target.value);
+    };
+
+    const editPaciente = async () =>{
+        if(apellidoToEdit === '' || nombreToEdit === '' || documentoToEdit === '') {
+            setErrorMessage('Por favor, complete el apellido, nombre y documento del paciente');
+            return;
+        } else {
+            setErrorMessage('');
+        }
 
         const pacienteEditar = {
             paciente: {
@@ -47,18 +95,34 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
 
         await editarPaciente(pacienteEditar.paciente);
 
-        console.log(pacienteEditar);
-
-        // setApellidoToEdit("");
-        // setNombreToEdit("");
-        // setTipoDocumentoToEdit("DNI")
-        // setDocumentoToEdit("");
-        // setDireccionToEdit("");
-        // setTelefonoToEdit("");
-        // setOcupacionToEdit("");
-        // setIdPrepagaToEdit("");
         setOpenModalEdit(false);
+
         router.refresh();
+    }
+
+    //POR EL MOMENTO LO DEJO COMENTADO
+    const handleSubmitEdit: FormEventHandler<HTMLFormElement> = async (event) => {
+        // event.preventDefault(); // Evitar la recarga de la página por defecto en el envío del formulario
+
+        // const pacienteEditar = {
+        //     paciente: {
+        //         idPaciente: paciente.idPaciente,
+        //         apellido: apellidoToEdit,
+        //         nombre: nombreToEdit,
+        //         tipoDocumento: tipoDocumentoToEdit,
+        //         documento: Number(documentoToEdit),
+        //         direccion: direccionToEdit,
+        //         telefono: telefonoToEdit,
+        //         ocupacion: ocupacionToEdit,
+        //         idPrepaga: idPrepagaToEdit
+        //     }
+        // };
+
+        // await editarPaciente(pacienteEditar.paciente);
+
+        // setOpenModalEdit(false);
+
+        // router.refresh();
     };
 
     const handleDeletePaciente = async (idPaciente: number) => {
@@ -69,15 +133,15 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
 
     return (
         <tr key={paciente.idPaciente}>
-            <td>{paciente.idPaciente}</td>
-            <td className="w-full">{paciente.apellido}</td>
-            <td className="w-full">{paciente.nombre}</td>
-            <td className="w-full">{paciente.tipoDocumento}</td>
-            <td className="w-full">{paciente.documento}</td>
-            <td className="w-full">{paciente.direccion}</td>
-            <td className="w-full">{paciente.telefono}</td>
-            <td className="w-full">{paciente.ocupacion}</td>
-            <td className="w-full">{paciente.idPrepaga}</td>
+            {/* <td>{paciente.idPaciente}</td> */}
+            <td className="w-max-content px-4 text-center">{paciente.apellido}</td>
+            <td className="w-max-content px-4 text-center">{paciente.nombre}</td>
+            <td className="w-max-content px-4 text-center">{paciente.tipoDocumento}</td>
+            <td className="w-max-content px-4 text-center">{paciente.documento}</td>
+            <td className="w-max-content px-4 text-center">{paciente.direccion}</td>
+            <td className="w-max-content px-4 text-center">{paciente.telefono}</td>
+            <td className="w-max-content px-4 text-center">{paciente.ocupacion}</td>
+            <td className="w-max-content px-4 text-center">{paciente.idPrepaga}</td>
             <td className="flex gap-5">
                 <FiEdit onClick={() => setOpenModalEdit(true)} cursor="pointer" className='text-blue-500' size={25} />
                 <Modal modalOpen={openModalEdit} setModalOpen={setOpenModalEdit}>
@@ -90,7 +154,7 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
                                     type="text"
                                     placeholder="Apellido"
                                     value={apellidoToEdit}
-                                    onChange={(e) => setApellidoToEdit(e.target.value)}
+                                    onChange={handleApellidoChange}
                                     maxLength={50}
                                 />
                             </div>
@@ -100,7 +164,7 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
                                     type="text"
                                     placeholder="Nombre"
                                     value={nombreToEdit}
-                                    onChange={(e) => setNombreToEdit(e.target.value)}
+                                    onChange={handleNombreChange}
                                     maxLength={50}
                                 />
                             </div>
@@ -108,7 +172,7 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
                                 <label htmlFor="tipoDocumento">Tipo de Documento: </label>
                                 <select
                                     value={tipoDocumentoToEdit}
-                                    onChange={(e) => setTipoDocumentoToEdit(e.target.value)}>
+                                    onChange={handleTipoDocumentoChange}>
                                     <option value="DNI">DNI</option>
                                     <option value="PAS">Pasaporte</option>
                                 </select>
@@ -119,7 +183,7 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
                                     type="text"
                                     placeholder="Número de documento"
                                     value={documentoToEdit}
-                                    onChange={(e) => setDocumentoToEdit(e.target.value)}
+                                    onChange={handleDocumentNumberChange}
                                     pattern="[0-9]*"
                                     maxLength={20}
                                 />
@@ -130,7 +194,7 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
                                     type="text"
                                     placeholder="Dirección"
                                     value={direccionToEdit || ''}
-                                    onChange={(e) => setDireccionToEdit(e.target.value)}
+                                    onChange={handleDireccionChange}
                                     maxLength={50}
                                 />
                             </div>
@@ -140,7 +204,7 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
                                     type="text"
                                     placeholder="Teléfono"
                                     value={telefonoToEdit || ''}
-                                    onChange={(e) => setTelefonoToEdit(e.target.value)}
+                                    onChange={handleTelefonoChange}
                                     maxLength={50}
                                 />
                             </div>
@@ -150,7 +214,7 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
                                     type="text"
                                     placeholder="Ocupación"
                                     value={ocupacionToEdit || ''}
-                                    onChange={(e) => setOcupacionToEdit(e.target.value)}
+                                    onChange={handleOcupacionChange}
                                     maxLength={50}
                                 />
                             </div>
@@ -160,32 +224,42 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
                                     type="text"
                                     placeholder="Prepaga"
                                     value={idPrepagaToEdit || ''}
-                                    onChange={(e) => setIdPrepagaToEdit(e.target.value)}
+                                    onChange={handleIdPrepagaChange}
                                     maxLength={5}
                                 />
                             </div>
-                            <div>
-                                {/* <button type="submit">Imprimir en consola</button> */}
-                                <Button className="w-full mt-6 " name="btnAddPacientes" type="submit">
+                            {/* <div>
+                                <Button className="w-full mt-6 " name="btnEditPacientes" type="submit">
                                     Editar Paciente
-                                    {/* <AiOutlinePlus className="ml-2" size={18} /> */}
                                 </Button>
-                            </div>
+                            </div> */}
                         </div>
                     </form>
-
-
+                    <div>
+                        <Button className="w-full mt-6 " name="btnEditPacientes" type="submit" onClick={() => editPaciente()}>
+                            Editar Paciente
+                        </Button>
+                    </div>
                 </Modal>
-
 
                 <FiTrash2 onClick={() => setOpenModalDelete(true)} cursor="pointer" className='text-red-500' size={25} />
                 <Modal modalOpen={openModalDelete} setModalOpen={setOpenModalDelete}>
                     <h3 className="text-lg">¿Estas seguro que desea eliminar a este paciente?</h3>
-                    <div className="modal-action">
-                        <button
-                            onClick={() => handleDeletePaciente(paciente.idPaciente)}
-                            className="btn"
-                        >Sí</button>
+                    <div className="modal-action flex justify-end">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td className="flex gap-5">
+                                        <Button className="w-full mt-6 bg-red-500" name="btnConfirmDeletePaciente" type="submit" onClick={() => handleDeletePaciente(paciente.idPaciente)}>
+                                            Si
+                                        </Button>
+                                        <Button className="w-full mt-6" name="btnCancelDeletePaciente" type="submit" onClick={() => setOpenModalDelete(false)}>
+                                            No
+                                        </Button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </Modal>
             </td>

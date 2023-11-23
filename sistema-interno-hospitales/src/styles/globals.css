@@ -120,7 +120,7 @@
   height: 15px; /* Altura fija del botón */
   border-radius: 50%; /* Para hacer el botón circular */
   padding: 0; /* Elimina cualquier relleno interno */
-  background-color: #007bff; /* Color de fondo del botón, puedes cambiarlo */
+  background-color: red; /* Color de fondo del botón, puedes cambiarlo */
   color: #fff; /* Color del texto dentro del botón */
   border: none; /* Quita el borde del botón */
   cursor: pointer; /* Muestra el cursor como indicador de interactividad */
@@ -146,3 +146,22 @@
   /* Otros estilos opcionales */
 }
 
+/* Estilos de ejemplo */
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+/* Estilos para que las celdas ocupen el ancho máximo posible */
+.w-max-content {
+  width: max-content;
+  white-space: nowrap;
+}
+
+.px-4 {
+  padding-left: 1rem; /* Puedes ajustar el valor según el margen deseado */
+  padding-right: 1rem; /* Puedes ajustar el valor según el margen deseado */
+}
+
+.F {
+  text-align: center;
+}

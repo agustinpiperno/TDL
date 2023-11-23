@@ -1,4 +1,5 @@
 import React from "react";
+import { RxCross1 } from "react-icons/rx";
 
 interface ModalProps {
     modalOpen: boolean;
@@ -9,14 +10,10 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ modalOpen, setModalOpen, children }) => {
     return (
         <div className={`modal ${modalOpen ? "modal-open" : ""}`}>
-            <div className='modal-box relative'>
-                <label
-                    onClick={() => setModalOpen(false)}
-                    className="btn btn-sm btn-circle absolute right-2 top-2">
-                    x
-                </label>
+            {/* <div className='modal-box relative'> */}
+                <RxCross1 onClick={() => setModalOpen(false)} cursor="pointer" className='text-blue-500 absolute' size={15} />
                 {children}
-            </div>
+            {/* </div> */}
         </div>
     );
 };

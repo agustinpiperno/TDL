@@ -13,16 +13,16 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
                     {/* head */}
                     <thead>
                         <tr>
-                            <th>id</th>
-                            <th>Apellido</th>
-                            <th>Nombre</th>
-                            <th>Tipo Documento</th>
-                            <th>Documento</th>
-                            <th>Dirección</th>
-                            <th>Teléfono</th>
-                            <th>Ocupación</th>
-                            <th>Prepaga</th>
-                            <th>Acciones</th>
+                            {/* <th>id</th> */}
+                            <th className="w-max-content px-4 text-center">Apellido</th>
+                            <th className="w-max-content px-4 text-center">Nombre</th>
+                            <th className="w-max-content px-4 text-center">Tipo Documento</th>
+                            <th className="w-max-content px-4 text-center">Documento</th>
+                            <th className="w-max-content px-4 text-center">Dirección</th>
+                            <th className="w-max-content px-4 text-center">Teléfono</th>
+                            <th className="w-max-content px-4 text-center">Ocupación</th>
+                            <th className="w-max-content px-4 text-center">Prepaga</th>
+                            <th className="w-max-content px-4 text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>

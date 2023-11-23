@@ -22,9 +22,13 @@ const AddPaciente = () => {
     const [telefono, setTelefono] = useState('');
     const [ocupacion, setOcupacion] = useState('');
     const [idPrepaga, setIdPrepaga] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
-
-
+    const ocultarCartelError = () => {
+        if(apellido !== '' && nombre !== '' && documentNumber !== '') {
+            setErrorMessage('');
+        }
+    }
 
     const handlerSubmitNewPaciente: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
@@ -32,13 +36,14 @@ const AddPaciente = () => {
         setNewPacienteValue("");
     }
 
-
     const handleNombreChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNombre(event.target.value);
+        ocultarCartelError();
     };
 
     const handleApellidoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setApellido(event.target.value);
+        ocultarCartelError();
     };
 
     const handleTipoDocumentoChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -51,6 +56,7 @@ const AddPaciente = () => {
         if (/^\d*$/.test(inputDocumentNumber) || inputDocumentNumber === '') {
             setDocumentNumber(inputDocumentNumber);
         }
+        ocultarCartelError();
     };
 
     const handleDireccionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,32 +75,20 @@ const AddPaciente = () => {
         setIdPrepaga(event.target.value);
     };
 
-    /*https://youtu.be/wi2xdrpmJNk */
-    // const handleSubmit = () => {
-    //     console.log(`Nombre: ${nombre}, Apellido: ${apellido}, Doc: ${selectedTipoDocumento}, NumeroDoc: ${documentNumber}`);
-    //     setNombre("");
-    //     setModalOpen(false);
-    // };
-
     const registrarPaciente = async (values: IPaciente) => {
-		// var respuesta = await insertarUsuario(values);
-		// if(respuesta === 'El email ingresado ya se encuentra en uso'){
-		// 	setErrorMessage(respuesta);
-		// }else{
-		// 	setErrorMessage('');
-		// }
         var respuesta = await insertarPaciente(values);
-        // console.log(respuesta);
-        // console.log(values);
-	};
+    };
 
-    const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
-    // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); // Evitar la recarga de la página por defecto en el envío del formulario
-        // console.log(`Nombre: ${nombre}, Apellido: ${apellido}, Tipo de documento: ${selectedTipoDocumento}, Número de documento: ${documentNumber}, Teléfono: ${telefono}, Ocupación: ${ocupacion}, Prepaga: ${idPrepaga}`);
+    const addPaciente = async () =>{
+        if(apellido === '' || nombre === '' || documentNumber === '') {
+            setErrorMessage('Por favor, complete el apellido, nombre y documento del paciente');
+            return;
+        } else {
+            setErrorMessage('');
+        }
 
         const pacienteAlta = {
-            paciente:{
+            paciente: {
                 idPaciente: 0, //Automaticamente lo setea la base de datos
                 apellido: apellido,
                 nombre: nombre,
@@ -108,7 +102,7 @@ const AddPaciente = () => {
         };
 
         await registrarPaciente(pacienteAlta.paciente);
-        
+
         setApellido("");
         setNombre("");
         setApellido("");
@@ -120,23 +114,48 @@ const AddPaciente = () => {
         setIdPrepaga("");
         setModalOpen(false);
         router.refresh();
+    }
+
+    //POR EL MOMENTO DEJO COMENTADO ESTO
+    const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
+        // if (apellido === '' || nombre === '' || documentNumber === '') {
+        //     setErrorMessage('Por favor, complete el apellido, nombre y documento del paciente');
+        //     return;
+        // } else {
+        //     setErrorMessage('');
+        // }
+
+
+        // event.preventDefault(); // Evitar la recarga de la página por defecto en el envío del formulario
+
+        // const pacienteAlta = {
+        //     paciente: {
+        //         idPaciente: 0, //Automaticamente lo setea la base de datos
+        //         apellido: apellido,
+        //         nombre: nombre,
+        //         tipoDocumento: selectedTipoDocumento,
+        //         documento: Number(documentNumber),
+        //         direccion: direccion,
+        //         telefono: telefono,
+        //         ocupacion: ocupacion,
+        //         idPrepaga: idPrepaga
+        //     }
+        // };
+
+        // await registrarPaciente(pacienteAlta.paciente);
+
+        // setApellido("");
+        // setNombre("");
+        // setApellido("");
+        // setSelectedTipoDocumento("DNI")
+        // setDocumentNumber("");
+        // setDireccion("");
+        // setTelefono("");
+        // setOcupacion("");
+        // setIdPrepaga("");
+        // setModalOpen(false);
+        // router.refresh();
     };
-
-    // const FormSchema = z.object({
-    //     email: z.string().min(1, "Se requiere un email").email("Email invalido"),
-    //     password: z
-    //         .string()
-    //         .min(1, "Se requiere una contraseña")
-    //         .min(8, "La contraseña debe tener al menos 8 caracteres"),
-    // });
-
-    // const form = useForm<z.infer<typeof FormSchema>>({
-    //     resolver: zodResolver(FormSchema),
-    // });
-
-    // const onSubmit = (values: z.infer<typeof FormSchema>) => {
-    //     console.log(values);
-    // };
 
     return (
         <div>
@@ -147,33 +166,6 @@ const AddPaciente = () => {
             </Button>
 
             <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
-
-                {/* <div>
-                    <input
-                        type="text"
-                        placeholder="Apellido"
-                        value={apellido}
-                        onChange={handleApellidoChange}
-                    />
-                    <input
-                        type="text"
-                        placeholder="Nombre"
-                        value={nombre}
-                        onChange={handleNombreChange}
-                    />
-                    <select value={selectedTipoDocumento} onChange={handleTipoDocumentoChange}>
-                        <option value="DNI">DNI</option>
-                        <option value="PASS">Pasaporte</option>
-                    </select>
-                    <input
-                        type="text"
-                        placeholder="Número de documento"
-                        value={documentNumber}
-                        onChange={handleDocumentNumberChange}
-                        pattern="[0-9]*"
-                    />
-                    <button onClick={handleSubmit}>Imprimir en consola</button>
-                </div> */}
                 <form onSubmit={handleSubmit}>
                     <div className="space-y-1">
                         <div>
@@ -254,17 +246,32 @@ const AddPaciente = () => {
                                 maxLength={5}
                             />
                         </div>
-                        <div>
-                            {/* <button type="submit">Imprimir en consola</button> */}
+                        {/* <div>
                             <Button className="w-full mt-6 " name="btnAddPacientes" type="submit">
                                 Agregar Paciente
                                 <AiOutlinePlus className="ml-2" size={18} />
                             </Button>
-                        </div>
+
+                            {errorMessage && (
+                                <div className="error-message">
+                                    {errorMessage}
+                                </div>
+                            )}
+                        </div> */}
                     </div>
                 </form>
+                <div>
+                    <Button className="w-full mt-6 " name="btnAddPacientes" type="submit" onClick={() => addPaciente()}>
+                        Agregar Paciente
+                        <AiOutlinePlus className="ml-2" size={18} />
+                    </Button>
 
-
+                    {errorMessage && (
+                        <div className="error-message">
+                            {errorMessage}
+                        </div>
+                    )}
+                </div>
             </Modal>
 
         </div >

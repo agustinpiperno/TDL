@@ -3,18 +3,8 @@ import AddPaciente from "@/components/AddPacientes";
 import ListPaciente from "@/components/ListPaciente";
 
 export default async function CRUDPacientes() {
-    // // var pacientes = await getAllPacientes();
-    // // console.log(pacientes)
-    
-    // return (
-	// 	<div className="w-full">
-    //         {/* <CRUDPacientesForm pacientes={pacientes} /> */}
-    //         <CRUDPacientesForm />
-	// 	</div>
-	// );
 
     var pacientes = await getAllPacientes();
-    // console.log(pacientes)
 
     return (
         <main className="max-w-4kx mx-auto mt-4">
