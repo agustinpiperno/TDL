@@ -166,7 +166,7 @@ const AddPaciente = () => {
             </Button>
 
             <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className="text-left">
                     <div className="space-y-1">
                         <div>
                             <label htmlFor="apellido">Apellido: </label>
