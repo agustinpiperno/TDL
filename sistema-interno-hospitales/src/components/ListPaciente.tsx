@@ -159,7 +159,7 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
                                         onChange={(e) => setDireccionFilter(e.target.value || null)}
                                         placeholder="Filtrar por dirección">
                                     </input>
-                                    <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Agregar sin dirección">
+                                    <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Incluir sin dirección">
                                         <input
                                             type="checkbox"
                                             id="checkboxDireccion"
@@ -177,7 +177,7 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
                                         onChange={(e) => setTelefonoFilter(e.target.value || null)}
                                         placeholder="Filtrar por teléfono">
                                     </input>
-                                    <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Agregar sin teléfono">
+                                    <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Incluir sin teléfono">
                                         <input
                                             type="checkbox"
                                             id="checkboxTelefono"
@@ -195,7 +195,7 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
                                         onChange={(e) => setOcupacionFilter(e.target.value || null)}
                                         placeholder="Filtrar por ocupación">
                                     </input>
-                                    <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Agregar sin ocupación">
+                                    <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Incluir sin ocupación">
                                         <input
                                             type="checkbox"
                                             id="checkboxOcupacion"
@@ -213,7 +213,7 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
                                         onChange={(e) => setPrepagaFilter(e.target.value || null)}
                                         placeholder="Filtrar por prepaga">
                                     </input>
-                                    <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Agregar sin prepaga">
+                                    <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Incluir sin prepaga">
                                         <input
                                             type="checkbox"
                                             id="checkboxPrepaga"
