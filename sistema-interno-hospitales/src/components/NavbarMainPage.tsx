@@ -1,4 +1,5 @@
 "use client"
+
 import { Stethoscope } from "lucide-react";
 import Link from "next/link";
 import {
@@ -9,12 +10,21 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useRouter } from 'next/navigation';
+import { Button } from "./ui/button";
 
 const NavbarMainPage = () => {
+    const router = useRouter();
+
+    const handleLogout = async () => {
+        await fetch('/api/logout');
+        router.push('/home'); 
+    };
+
     return (
 		<div className="bg-zinc-100 py-2 border-s-zinc-200 fixed w-full z-10 top-0">
 			<div className="container flex items-center justify-between h-10">
-                <Link href="/home">
+                <Link href="/mainPage">
                     <Stethoscope/>
                 </Link>
                 <DropdownMenu>
@@ -52,6 +62,9 @@ const NavbarMainPage = () => {
                 <Link href="/administrarCuenta">
                     Mi Cuenta
                 </Link>
+                <Button onClick={handleLogout}>
+                   Cerrar Sesión
+                </Button>
             </div>
         </div>
     );

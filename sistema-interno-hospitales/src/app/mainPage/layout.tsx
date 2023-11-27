@@ -2,7 +2,7 @@
 
 import NavbarMainPage from "@/components/NavbarMainPage"; // Adjust the path based on your project structure
 import "@/styles/globals.css"; // Import your global styles here
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios, {AxiosError} from "axios";
 import {useRouter} from "next/navigation"
 
@@ -16,17 +16,25 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode;
 }) {
+    
 const router = useRouter()
+const [isLoading, setIsLoading] = useState(true);
 
 useEffect(() => {
-    (async () => {
+    const fetchUser = (async () => {
         const {usuario, error} = await getUser()
         if(error){
             router.push("/home")
-            return
         }
+        setIsLoading(false);
     })
+    fetchUser()
 }, [router])
+
+if (isLoading) {
+    return null; // Para que no renderize la pagina hasta que termine getUser
+}
+
 	return (
 		 <div className="h-screen flex flex-col justify-center items-center bg-blue-950">
             <NavbarMainPage />
@@ -38,7 +46,6 @@ useEffect(() => {
 }
 
 async function getUser(): Promise<UserResponse>{
-    console.log("aaaaa")
     try{
         const {data} = await axios.get("/api/auth")
         return {

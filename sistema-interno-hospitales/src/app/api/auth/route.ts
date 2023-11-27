@@ -5,7 +5,7 @@ import {verify} from "jsonwebtoken"
 export const GET = async (req: NextRequest) => {
     const cookieStore = cookies()
     const token = cookieStore.get("OutSiteJWT")
-
+    console.log(token)
     if(!token){
         return NextResponse.json(
             {
@@ -23,9 +23,9 @@ export const GET = async (req: NextRequest) => {
     try{
         verify(value, secret)
 
-        const response = {
+        return NextResponse.json({
             usuario: "Autenticado"
-        }
+        })
     }
     catch(e){
         return NextResponse.json(
