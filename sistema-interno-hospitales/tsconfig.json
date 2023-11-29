@@ -1,4 +1,3 @@
-{
   "compilerOptions": {
     "target": "es2017",
     "lib": [
@@ -37,4 +36,5 @@
   "exclude": [
     "node_modules"
   ]
+
 }
