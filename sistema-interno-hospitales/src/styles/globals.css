@@ -74,3 +74,128 @@
     @apply bg-background text-foreground;
   }
 }
+
+.error-message {
+  background-color: #ffcccc;
+  color: #ff0000;
+  padding: 10px;
+  border: 1px solid #ff0000;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+/* Estilos básicos para un modal */
+.modal {
+  display: none; /* Por defecto, el modal está oculto */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 100px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+}
+
+/* Aplicando la clase modal-open para mostrar el modal */
+.modal-open {
+  display: block; /* Mostrar el modal cuando tiene la clase modal-open */
+}
+
+.modal-box {
+  position: relative;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  max-width: 100%; /* Ancho máximo del modal */
+  margin: 0 auto; /* Centrar horizontalmente */
+}
+
+/* Estilos para el botón dentro del modal */
+.btn-circle {
+  /* Estilos generales para hacer un botón circular */
+  width: 15px; /* Ancho fijo del botón */
+  height: 15px; /* Altura fija del botón */
+  border-radius: 50%; /* Para hacer el botón circular */
+  padding: 0; /* Elimina cualquier relleno interno */
+  background-color: red; /* Color de fondo del botón, puedes cambiarlo */
+  color: #fff; /* Color del texto dentro del botón */
+  border: none; /* Quita el borde del botón */
+  cursor: pointer; /* Muestra el cursor como indicador de interactividad */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Ajustes específicos para un botón pequeño */
+.btn-sm {
+  /* Estilos para un botón pequeño */
+  font-size: 10px; /* Tamaño de la fuente */
+  /* Otros ajustes de tamaño si es necesario */
+}
+
+/* Estilos específicos para posicionar el botón en la esquina superior derecha */
+.absolute {
+  /* Estilos para posicionar de manera absoluta */
+  position: absolute;
+  /* Ajustes de posición */
+  top: 10px;
+  right: 10px;
+  /* Otros estilos opcionales */
+}
+
+/* Estilos de ejemplo */
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+/* Estilos para que las celdas ocupen el ancho máximo posible */
+.w-max-content {
+  width: max-content;
+  white-space: nowrap;
+}
+
+.px-4 {
+  padding-left: 1rem; /* Puedes ajustar el valor según el margen deseado */
+  padding-right: 1rem; /* Puedes ajustar el valor según el margen deseado */
+}
+
+.F {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-label {
+  cursor: help;
+}
+
+.tooltip-label:hover::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  bottom: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 999;
+  font-size: 11px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

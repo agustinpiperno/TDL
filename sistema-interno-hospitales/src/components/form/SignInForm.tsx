@@ -3,6 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { verificarUsuario } from "@/app/(auth)/login/login";
+import { useState } from 'react';
+import {useRouter} from 'next/navigation'
+
 import * as z from "zod";
 import {
 	Form,
@@ -12,6 +16,9 @@ import {
 	FormLabel,
 	FormMessage,
 } from "../ui/form";
+
+
+
 const FormSchema = z.object({
 	email: z.string().min(1, "Se requiere un email").email("Email invalido"),
 	password: z
@@ -21,6 +28,21 @@ const FormSchema = z.object({
 });
 
 const SignInForm = () => {
+
+	const {push} = useRouter()
+	const [errorMessage, setErrorMessage] = useState('');
+
+	const comprobarUsuario = async (values: z.infer<typeof FormSchema>) => {
+		var respuesta = await verificarUsuario(values.email, values.password);
+		if(respuesta === 'Credenciales incorrectas'){
+			setErrorMessage(respuesta);
+		}else{
+			setErrorMessage('');
+			push('/mainPage')
+		}
+		
+	};
+
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 	});
@@ -69,9 +91,14 @@ const SignInForm = () => {
 					/>
 				</div>
 
-				<Button className="w-full mt-6 " type="submit">
+				<Button className="w-full mt-6 " name="btnIniciarSesion" type="submit" onClick={form.handleSubmit(comprobarUsuario)}>
 					Inicia sesión
 				</Button>
+				{errorMessage && (
+				<div className="error-message">
+					{errorMessage}
+				</div>
+				)}
 			</form>
 			<div className="mx-auto my-4 flex w-full items-center justify-evenly before:mr-4 before:block before:h-px before:flex-grow before:bg-stone-400 after:ml-4 after:block after:h-px after:flex-grow after:bg-stone-400 ">
 				o
