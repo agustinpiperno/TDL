@@ -7,6 +7,7 @@ import { Button } from "./ui/button";
 import Modal from "./Modal";
 import { useRouter } from "next/navigation";
 import { editarPaciente, eliminarPaciente } from "@/app/pacientes/pacientes";
+import { VscNotebook } from "react-icons/vsc";
 
 interface PacienteProps {
     paciente: IPaciente
@@ -25,6 +26,7 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
     const [ocupacionToEdit, setOcupacionToEdit] = useState<string | null>(paciente.ocupacion);
     const [idPrepagaToEdit, setIdPrepagaToEdit] = useState<string | null>(paciente.idPrepaga);
     const [errorMessage, setErrorMessage] = useState('');
+	const {push} = useRouter();
 
     const ocultarCartelError = () => {
         if (apellidoToEdit !== '' && nombreToEdit !== '' && documentoToEdit !== '') {
@@ -129,6 +131,16 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
         await eliminarPaciente(idPaciente);
         setOpenModalDelete(false);
         router.refresh();
+    };
+
+    const openExamenesPaciente = (idPaciente: number) => {
+        const params = {
+            idPaciente: idPaciente.toString(),
+        };
+
+        const queryString = new URLSearchParams(params).toString();
+
+        push(`/examen?${queryString}`);
     };
 
     return (
@@ -262,6 +274,8 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
                         </table>
                     </div>
                 </Modal>
+
+                <VscNotebook onClick={() => openExamenesPaciente(paciente.idPaciente)} cursor="pointer" className='text-black-500' size={25}/>
             </td>
         </tr>
     )

@@ -199,3 +199,8 @@
   justify-content: center;
   align-items: center;
 }
+
+.margenExamen {
+  position: absolute;
+  top: 4rem; /* Esto establece la posición 1rem desde el borde superior del contenedor padre */
+}
