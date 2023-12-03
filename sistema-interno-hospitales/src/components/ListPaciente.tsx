@@ -15,12 +15,17 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
     const [documentoFilter, setDocumentoFilter] = useState<string>("");
     const [direccionFilter, setDireccionFilter] = useState<string | null>("");
     const [direccionNullFilter, setDireccionNullFilter] = useState<boolean>(false);
+    const [isInputDireccionEnabled, setIsInputDireccionEnabled] = useState<boolean>(true); // Establece el estado inicial como habilitado
     const [telefonoFilter, setTelefonoFilter] = useState<string | null>("");
     const [telefonoNullFilter, setTelefonoNullFilter] = useState<boolean>(false);
+    const [isInputTelefonoEnabled, setIsInputTelefonoEnabled] = useState<boolean>(true); // Establece el estado inicial como habilitado
     const [ocupacionFilter, setOcupacionFilter] = useState<string | null>("");
     const [ocupacionNullFilter, setOcupacionNullFilter] = useState<boolean>(false);
+    const [isInputOcupacionEnabled, setIsInputOcupacionEnabled] = useState<boolean>(true); // Establece el estado inicial como habilitado
     const [prepagaFilter, setPrepagaFilter] = useState<string | null>("");
     const [prepagaNullFilter, setPrepagaNullFilter] = useState<boolean>(false);
+    const [isInputPrepagaEnabled, setIsInputPrepagaEnabled] = useState<boolean>(true); // Establece el estado inicial como habilitado
+
 
     // Lista de todos pacientes que recibimos de la base de datos
     const pacientesFromDatabase: IPaciente[] = pacientes;
@@ -33,43 +38,35 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
         const documentoFiltro = paciente.documento.toString().includes(documentoFilter);
 
         // Filtro de dirección
-        var direccionFiltro = !direccionFilter ? true : paciente.direccion?.includes(direccionFilter as string); //Si direccionFilter es undefined ponemos True para que incluya a todos + null
+        var direccionFiltro = !direccionFilter ? true : paciente.direccion?.includes(direccionFilter as string);
         var direccionNullFiltro;
         if (direccionNullFilter) {
-            if (!direccionFilter) {
-                direccionFiltro = false; // Lo que hacemos es que si tenemos check checkboxDireccion = true y no estamos filtrando en el campo de dirección solo muestra los dirección = null, pero si tenemos el checkboxDireccion = true y estamos filtrando en el campo de dirección agrega los direccion = null junto con los filtrados
-            }
             direccionNullFiltro = paciente.direccion === '';
+            direccionFiltro = false;
         }
 
         //Filtro de teléfono
-        var telefonoFiltro = !telefonoFilter ? true : paciente.telefono?.includes(telefonoFilter as string); //Si telefonoFilter es undefined ponemos True para que incluya a todos + null
+        var telefonoFiltro = !telefonoFilter ? true : paciente.telefono?.includes(telefonoFilter as string);
         var telefonoNullFiltro;
         if (telefonoNullFilter) {
-            if (!telefonoFilter) {
-                telefonoFiltro = false; // Lo que hacemos es que si tenemos check checkboxTelefono = true y no estamos filtrando en el campo de teléfono solo muestra los teléfonos = null, pero si tenemos el checkboxTeléfono = true y estamos filtrando en el campo de teléfono agrega los teléfono = null junto con los filtrados
-            }
             telefonoNullFiltro = paciente.telefono === '';
+            telefonoFiltro = false;
         }
 
         //Filtro de Ocupación
-        var ocupacionFiltro = !ocupacionFilter ? true : paciente.ocupacion?.includes(ocupacionFilter as string); //Si ocupacionFilter es undefined ponemos True para que incluya a todos + null
+        var ocupacionFiltro = !ocupacionFilter ? true : paciente.ocupacion?.includes(ocupacionFilter as string);
         var ocupacionNullFiltro;
         if (ocupacionNullFilter) {
-            if (!ocupacionFilter) {
-                ocupacionFiltro = false; // Lo que hacemos es que si tenemos check checkboxOcupacion = true y no estamos filtrando en el campo de ocupación solo muestra los ocupación = null, pero si tenemos el checkboxOcupación = true y estamos filtrando en el campo de ocupación agrega los ocupación = null junto con los filtrados
-            }
             ocupacionNullFiltro = paciente.ocupacion === '';
+            ocupacionFiltro = false;
         }
 
         //Filtro de Prepaga
-        var prepagaFiltro = !prepagaFilter ? true : paciente.idPrepaga?.includes(prepagaFilter as string); //Si prepagaFilter es undefined ponemos True para que incluya a todos + null
+        var prepagaFiltro = !prepagaFilter ? true : paciente.idPrepaga?.includes(prepagaFilter as string);
         var prepagaNullFiltro;
         if (prepagaNullFilter) {
-            if (!prepagaFilter) {
-                prepagaFiltro = false; // Lo que hacemos es que si tenemos check checkboxPrepaga= true y no estamos filtrando en el campo de prepaga solo muestra los prepaga = null, pero si tenemos el checkboxPrepaga = true y estamos filtrando en el campo de prepaga agrega los prepaga = null junto con los filtrados
-            }
             prepagaNullFiltro = paciente.idPrepaga === '';
+            prepagaFiltro = false;
         }
 
         return apellidoFiltro && nombreFiltro && tipoDocumentoFiltro && documentoFiltro && (direccionFiltro || direccionNullFiltro) && (telefonoFiltro || telefonoNullFiltro) && (ocupacionFiltro || ocupacionNullFiltro) && (prepagaFiltro || prepagaNullFiltro);
@@ -88,6 +85,30 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
         setOcupacionNullFilter(false);
         setPrepagaFilter('');
         setPrepagaNullFilter(false);
+    }
+
+    const filtrarByNULLDireccion = (e: React.ChangeEvent<HTMLInputElement>) =>{
+        setDireccionFilter('');
+        setDireccionNullFilter(e.target.checked)
+        setIsInputDireccionEnabled(!e.target.checked);
+    }
+
+    const filtrarByNULLTelefono = (e: React.ChangeEvent<HTMLInputElement>) =>{
+        setTelefonoFilter('');
+        setTelefonoNullFilter(e.target.checked)
+        setIsInputTelefonoEnabled(!e.target.checked);
+    }
+
+    const filtrarByNULLOcupacion = (e: React.ChangeEvent<HTMLInputElement>) =>{
+        setOcupacionFilter('');
+        setOcupacionNullFilter(e.target.checked)
+        setIsInputOcupacionEnabled(!e.target.checked);
+    }
+
+    const filtrarByNULLPrepaga = (e: React.ChangeEvent<HTMLInputElement>) =>{
+        setPrepagaFilter('');
+        setPrepagaNullFilter(e.target.checked)
+        setIsInputPrepagaEnabled(!e.target.checked);
     }
 
     return (
@@ -157,14 +178,15 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
                                         type="text"
                                         value={direccionFilter || ''}
                                         onChange={(e) => setDireccionFilter(e.target.value || null)}
-                                        placeholder="Filtrar por dirección">
+                                        placeholder="Filtrar por dirección"
+                                        disabled={!isInputDireccionEnabled}>
                                     </input>
-                                    <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Incluir sin dirección">
+                                    <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Sin dirección">
                                         <input
                                             type="checkbox"
                                             id="checkboxDireccion"
                                             checked={direccionNullFilter}
-                                            onChange={(e) => setDireccionNullFilter(e.target.checked)}
+                                            onChange={(e) => filtrarByNULLDireccion(e)}
                                         />
                                     </label>
                                 </div>
@@ -175,14 +197,15 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
                                         type="text"
                                         value={telefonoFilter || ''}
                                         onChange={(e) => setTelefonoFilter(e.target.value || null)}
-                                        placeholder="Filtrar por teléfono">
+                                        placeholder="Filtrar por teléfono"
+                                        disabled={!isInputTelefonoEnabled}>
                                     </input>
-                                    <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Incluir sin teléfono">
+                                    <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Sin teléfono">
                                         <input
                                             type="checkbox"
                                             id="checkboxTelefono"
                                             checked={telefonoNullFilter}
-                                            onChange={(e) => setTelefonoNullFilter(e.target.checked)}
+                                            onChange={(e) => filtrarByNULLTelefono(e)}
                                         />
                                     </label>
                                 </div>
@@ -193,14 +216,15 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
                                         type="text"
                                         value={ocupacionFilter || ''}
                                         onChange={(e) => setOcupacionFilter(e.target.value || null)}
-                                        placeholder="Filtrar por ocupación">
+                                        placeholder="Filtrar por ocupación"
+                                        disabled={!isInputOcupacionEnabled}>
                                     </input>
-                                    <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Incluir sin ocupación">
+                                    <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Sin ocupación">
                                         <input
                                             type="checkbox"
                                             id="checkboxOcupacion"
                                             checked={ocupacionNullFilter}
-                                            onChange={(e) => setOcupacionNullFilter(e.target.checked)}
+                                            onChange={(e) => filtrarByNULLOcupacion(e)}
                                         />
                                     </label>
                                 </div>
@@ -211,14 +235,15 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
                                         type="text"
                                         value={prepagaFilter || ''}
                                         onChange={(e) => setPrepagaFilter(e.target.value || null)}
-                                        placeholder="Filtrar por prepaga">
+                                        placeholder="Filtrar por prepaga"
+                                        disabled={!isInputPrepagaEnabled}>
                                     </input>
-                                    <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Incluir sin prepaga">
+                                    <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Sin prepaga">
                                         <input
                                             type="checkbox"
                                             id="checkboxPrepaga"
                                             checked={prepagaNullFilter}
-                                            onChange={(e) => setPrepagaNullFilter(e.target.checked)}
+                                            onChange={(e) => filtrarByNULLPrepaga(e)}
                                         />
                                     </label>
                                 </div>

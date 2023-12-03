@@ -204,3 +204,11 @@
   position: absolute;
   top: 4rem; /* Esto establece la posición 1rem desde el borde superior del contenedor padre */
 }
+
+.cursiva {
+  font-style: italic;
+}
+
+.gris {
+  color: #888; /* Cambia el color a uno grisáceo según tu preferencia */
+}
