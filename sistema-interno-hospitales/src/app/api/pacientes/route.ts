@@ -10,6 +10,9 @@ export const GET = async (req: NextRequest) => {
             orderBy: {
                 idPaciente: 'asc',
             },
+            include: {
+                Examenes: true, // Trae todos los datos del Examen asociado al paciente
+            },
         });
         return NextResponse.json({
             pacientes

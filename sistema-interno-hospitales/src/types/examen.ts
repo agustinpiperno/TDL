@@ -7,5 +7,5 @@ export interface IExamen {
   tipoExamen: string;
   observaciones: string | null;
   fechaRealizacion: Date;
-  usuario: IUsuario; // Relación con el modelo IUsuario
+  usuario: IUsuario | null; // Relación con el modelo IUsuario
 }

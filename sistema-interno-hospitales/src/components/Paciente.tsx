@@ -26,8 +26,9 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
     const [telefonoToEdit, setTelefonoToEdit] = useState<string | null>(paciente.telefono);
     const [ocupacionToEdit, setOcupacionToEdit] = useState<string | null>(paciente.ocupacion);
     const [idPrepagaToEdit, setIdPrepagaToEdit] = useState<string | null>(paciente.idPrepaga);
+    const [visible, setVisible] = useState<boolean>(false); // Oculta columna de usuarios que hicieron examenes en pacientes (se usa para filtrar los pacientes de los médicos)
     const [errorMessage, setErrorMessage] = useState('');
-	const {push} = useRouter();
+    const { push } = useRouter();
 
     const ocultarCartelError = () => {
         if (apellidoToEdit !== '' && nombreToEdit !== '' && documentoToEdit !== '') {
@@ -74,12 +75,12 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
         setIdPrepagaToEdit(event.target.value);
     };
 
-    const formatearDatosPacientes = (datoPaciente: string | null, textoNULL : string) => {
+    const formatearDatosPacientes = (datoPaciente: string | null, textoNULL: string) => {
         return datoPaciente === null ? <span className="cursiva gris">{textoNULL}</span> : datoPaciente === '' ? <span className="cursiva gris">{textoNULL}</span> : datoPaciente;
     }
 
-    const editPaciente = async () =>{
-        if(apellidoToEdit === '' || nombreToEdit === '' || documentoToEdit === '') {
+    const editPaciente = async () => {
+        if (apellidoToEdit === '' || nombreToEdit === '' || documentoToEdit === '') {
             setErrorMessage('Por favor, complete el apellido, nombre y documento del paciente');
             return;
         } else {
@@ -96,7 +97,8 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
                 direccion: direccionToEdit,
                 telefono: telefonoToEdit,
                 ocupacion: ocupacionToEdit,
-                idPrepaga: idPrepagaToEdit
+                idPrepaga: idPrepagaToEdit,
+                Examenes: paciente.Examenes
             }
         };
 
@@ -280,7 +282,7 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
                     </div>
                 </Modal>
 
-                <VscNotebook onClick={() => openExamenesPaciente(paciente.idPaciente)} cursor="pointer" className='text-black-500' size={25}/>
+                <VscNotebook onClick={() => openExamenesPaciente(paciente.idPaciente)} cursor="pointer" className='text-black-500' size={25} />
             </td>
         </tr>
     )

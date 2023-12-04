@@ -19,7 +19,7 @@ export default async function examen(req: PacienteExamen) {
         <main className="max-w-4kx mx-auto mt-4">
             <div className="text-center my-5 flex flex-col gap-4">
                 <h1 className="text-2xl font-bold">Examenes</h1>
-                <AddExamen IdPaciente={Number(IdPaciente)} IdUsuario={usuario.idUsuario}/>
+                <AddExamen IdPaciente={Number(IdPaciente)} usuario={usuario}/>
             </div>
             <ListExamenes examenes={examenes} />
         </main>

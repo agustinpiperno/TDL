@@ -97,7 +97,8 @@ const AddPaciente = () => {
                 direccion: direccion,
                 telefono: telefono,
                 ocupacion: ocupacion,
-                idPrepaga: idPrepaga
+                idPrepaga: idPrepaga,
+                Examenes: null
             }
         };
 

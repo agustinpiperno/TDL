@@ -1,3 +1,5 @@
+import { IExamen } from "./examen";
+
 export interface IPaciente {
     idPaciente: number,
     apellido: string,
@@ -8,4 +10,5 @@ export interface IPaciente {
     telefono: string | null,
     ocupacion: string | null,
     idPrepaga: string | null,
+    Examenes: IExamen[] | null; // Relación inversa con Exámenes
 };

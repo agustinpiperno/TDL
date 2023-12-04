@@ -30,8 +30,8 @@ const Examen: React.FC<ExamenProps> = ({ examen }) => {
         router.refresh();
     };
 
-    function formatearMedico(usuarioMedico: IUsuario): string {
-        return 'Dr: ' + usuarioMedico.apellido + ', ' + usuarioMedico.nombre;
+    function formatearMedico(usuarioMedico: IUsuario | null): string {
+        return 'Dr: ' + usuarioMedico?.apellido + ', ' + usuarioMedico?.nombre;
     }
 
     function formatearFecha(fecha: string): string {

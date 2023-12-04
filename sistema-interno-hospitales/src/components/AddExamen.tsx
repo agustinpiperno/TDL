@@ -6,13 +6,14 @@ import Modal from "./Modal";
 import { useRouter } from "next/navigation";
 import { IExamen } from "@/types/examen";
 import { insertarExamen } from "@/app/examen/examen";
+import { IUsuario } from "@/types/usuario";
 
 interface IdsPacienteUsuario {
     IdPaciente: number,
-    IdUsuario: number
+    usuario: IUsuario
 }
 
-const AddExamen: React.FC<IdsPacienteUsuario> = ({ IdPaciente, IdUsuario }) => {
+const AddExamen: React.FC<IdsPacienteUsuario> = ({ IdPaciente, usuario }) => {
     const router = useRouter();
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [selectedTipoExamen, setSelectedTipoExamen] = useState('PERIO');
@@ -27,7 +28,7 @@ const AddExamen: React.FC<IdsPacienteUsuario> = ({ IdPaciente, IdUsuario }) => {
         setObservaciones(e.target.value);
     };
 
-    const registrarExamen = async (values: any) => {
+    const registrarExamen = async (values: IExamen) => {
         var respuesta = await insertarExamen(values);
     };
 
@@ -39,10 +40,11 @@ const AddExamen: React.FC<IdsPacienteUsuario> = ({ IdPaciente, IdUsuario }) => {
             examen: {
                 idExamen: 0, //Automaticamente lo setea la base de datos
                 idPaciente: IdPaciente,
-                idUsuario: IdUsuario,
+                idUsuario: usuario.idUsuario,
                 tipoExamen: selectedTipoExamen,
                 observaciones: observaciones,
                 fechaRealizacion: currentDate,
+                usuario: usuario
             }
         };
 

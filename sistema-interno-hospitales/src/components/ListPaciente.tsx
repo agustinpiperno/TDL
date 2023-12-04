@@ -3,12 +3,14 @@ import { IPaciente } from "@/types/pacientes";
 import React, { useState } from "react";
 import Paciente from "./Paciente";
 import { MdOutlineCleaningServices } from "react-icons/md";
+import { IUsuario } from "@/types/usuario";
 
 interface ListPacienteProps {
-    pacientes: IPaciente[]
+    pacientes: IPaciente[],
+    usuario: IUsuario
 }
 
-const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
+const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes, usuario }) => {
     const [apellidoFilter, setApellidoFilter] = useState<string>("");
     const [nombreFilter, setNombreFilter] = useState<string>("");
     const [tipoDocumentoFilter, setTipoDocumentoFilter] = useState<string>("");
@@ -25,6 +27,8 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
     const [prepagaFilter, setPrepagaFilter] = useState<string | null>("");
     const [prepagaNullFilter, setPrepagaNullFilter] = useState<boolean>(false);
     const [isInputPrepagaEnabled, setIsInputPrepagaEnabled] = useState<boolean>(true); // Establece el estado inicial como habilitado
+    const [misPacientesFilter, setMisPacientesFilter] = useState<boolean>(false);
+
 
 
     // Lista de todos pacientes que recibimos de la base de datos
@@ -69,7 +73,25 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
             prepagaFiltro = false;
         }
 
-        return apellidoFiltro && nombreFiltro && tipoDocumentoFiltro && documentoFiltro && (direccionFiltro || direccionNullFiltro) && (telefonoFiltro || telefonoNullFiltro) && (ocupacionFiltro || ocupacionNullFiltro) && (prepagaFiltro || prepagaNullFiltro);
+        //Filtro por los pacientes cuyos examenes esten asignados al usuario actual
+        var pacienteByUsuarioFiltro;
+        if (misPacientesFilter) {
+            {
+                paciente.Examenes && paciente.Examenes.length > 0 && paciente.Examenes.some(examen => {
+                    if (examen.idUsuario === usuario.idUsuario) {
+                        pacienteByUsuarioFiltro = true;
+                        return true; // Detiene el mapeo cuando encuentra un paciente del usuario
+                    }
+                    return false; // Continúa buscando
+                })
+            }
+        }else{
+            pacienteByUsuarioFiltro = false;
+        }
+
+        const pacienteByUsuarioFiltroCondition = !misPacientesFilter || (misPacientesFilter && pacienteByUsuarioFiltro);
+
+        return apellidoFiltro && nombreFiltro && tipoDocumentoFiltro && documentoFiltro && (direccionFiltro || direccionNullFiltro) && (telefonoFiltro || telefonoNullFiltro) && (ocupacionFiltro || ocupacionNullFiltro) && (prepagaFiltro || prepagaNullFiltro) && pacienteByUsuarioFiltroCondition;
     });
 
     const limpiarFiltros = () => {
@@ -87,25 +109,25 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
         setPrepagaNullFilter(false);
     }
 
-    const filtrarByNULLDireccion = (e: React.ChangeEvent<HTMLInputElement>) =>{
+    const filtrarByNULLDireccion = (e: React.ChangeEvent<HTMLInputElement>) => {
         setDireccionFilter('');
         setDireccionNullFilter(e.target.checked)
         setIsInputDireccionEnabled(!e.target.checked);
     }
 
-    const filtrarByNULLTelefono = (e: React.ChangeEvent<HTMLInputElement>) =>{
+    const filtrarByNULLTelefono = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTelefonoFilter('');
         setTelefonoNullFilter(e.target.checked)
         setIsInputTelefonoEnabled(!e.target.checked);
     }
 
-    const filtrarByNULLOcupacion = (e: React.ChangeEvent<HTMLInputElement>) =>{
+    const filtrarByNULLOcupacion = (e: React.ChangeEvent<HTMLInputElement>) => {
         setOcupacionFilter('');
         setOcupacionNullFilter(e.target.checked)
         setIsInputOcupacionEnabled(!e.target.checked);
     }
 
-    const filtrarByNULLPrepaga = (e: React.ChangeEvent<HTMLInputElement>) =>{
+    const filtrarByNULLPrepaga = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPrepagaFilter('');
         setPrepagaNullFilter(e.target.checked)
         setIsInputPrepagaEnabled(!e.target.checked);
@@ -249,9 +271,38 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes }) => {
                                 </div>
                             </td>
                             <td>
-                                <div className="center tooltip-label tooltip-container font-medium" data-tooltip="Limpiar filtros">
-                                    <MdOutlineCleaningServices onClick={() => limpiarFiltros()} cursor="pointer" className='text-gray-500' size={25}/>
+                                {/* <div className="center tooltip-label tooltip-container font-medium" data-tooltip="Limpiar filtros">
+                                    <MdOutlineCleaningServices onClick={() => limpiarFiltros()} cursor="pointer" className='text-gray-500' size={25} />
                                 </div>
+                                <div>
+                                    <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Mis pacientes">
+                                        <input
+                                            type="checkbox"
+                                            id="checkboxMisPacientes"
+                                            checked={misPacientesFilter}
+                                            onChange={(e) => e.target.checked}
+                                        />
+                                    </label>
+                                </div> */}
+
+
+
+                                <div className="center gap-5">
+                                    <div className="center tooltip-label tooltip-container font-medium" data-tooltip="Limpiar filtros">
+                                        <MdOutlineCleaningServices onClick={() => limpiarFiltros()} cursor="pointer" className='text-gray-500' size={25} />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Mis pacientes">
+                                            <input
+                                                type="checkbox"
+                                                id="checkboxMisPacientes"
+                                                checked={misPacientesFilter}
+                                                onChange={(e) => setMisPacientesFilter(e.target.checked)}
+                                            />
+                                        </label>
+                                    </div>
+                                </div>
+
                             </td>
                         </tr>
                         {filteredPacientes.map((paciente) => <Paciente key={paciente.idPaciente} paciente={paciente} />)}
