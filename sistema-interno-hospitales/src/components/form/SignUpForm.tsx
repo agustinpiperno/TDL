@@ -58,7 +58,7 @@ const SignUpForm = () => {
 		defaultValues: {
 			apellido: "",
 			nombre: "",
-			tipoDocumento: "",
+			tipoDocumento: "DNI",
 			documento: "",
 			email: "",
 			password: "",
@@ -115,7 +115,7 @@ const SignUpForm = () => {
 							<FormItem>
 								<FormLabel>Tipo de Documento</FormLabel>
 								<FormControl>
-									<ComboBox {...field} defaultValue="DNI">
+									<ComboBox {...field}>
 										<option value="DNI">DNI</option>
 										<option value="PASS">Pasaporte</option>
 									</ComboBox>

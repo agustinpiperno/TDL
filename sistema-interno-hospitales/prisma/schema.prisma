@@ -18,25 +18,38 @@ model Post {
 }
 
 model Usuarios {
-  idUsuario      Int       @id @default(autoincrement())
-  apellido       String    @db.VarChar(50)
-  nombre         String    @db.VarChar(50)
-  tipoDocumento  String    @db.VarChar(3)
-  documento      Int
-  direccion      String?   @db.VarChar(100)
-  telefono       String?   @db.VarChar(50)
-  username       String?   @db.VarChar(255)
-  contrasena     String?   @db.VarChar(255)
+  idUsuario     Int        @id @default(autoincrement())
+  apellido      String     @db.VarChar(50)
+  nombre        String     @db.VarChar(50)
+  tipoDocumento String     @db.VarChar(3)
+  documento     Int
+  direccion     String?    @db.VarChar(100)
+  telefono      String?    @db.VarChar(50)
+  username      String?    @db.VarChar(255)
+  contrasena    String?    @db.VarChar(255)
+  Examenes      Examenes[]
 }
 
 model Pacientes {
-  idPaciente      Int       @id @default(autoincrement())
-  apellido       String    @db.VarChar(50)
-  nombre         String    @db.VarChar(50)
-  tipoDocumento  String    @db.VarChar(3)
-  documento      Int
-  direccion      String?   @db.VarChar(100)
-  telefono       String?   @db.VarChar(50)
-  ocupacion       String?   @db.VarChar(50)
-  idPrepaga     String?   @db.VarChar(5)
+  idPaciente    Int        @id @default(autoincrement())
+  apellido      String     @db.VarChar(50)
+  nombre        String     @db.VarChar(50)
+  tipoDocumento String     @db.VarChar(3)
+  documento     Int
+  direccion     String?    @db.VarChar(100)
+  telefono      String?    @db.VarChar(50)
+  ocupacion     String?    @db.VarChar(50)
+  idPrepaga     String?    @db.VarChar(5)
+  Examenes      Examenes[]
+}
+
+model Examenes {
+  idExamen         Int       @id @default(autoincrement())
+  idPaciente       Int
+  paciente         Pacientes @relation(fields: [idPaciente], references: [idPaciente], onDelete: Cascade, onUpdate: Cascade)
+  idUsuario        Int
+  usuario          Usuarios  @relation(fields: [idUsuario], references: [idUsuario], onDelete: Cascade, onUpdate: Cascade)
+  tipoExamen       String    @db.VarChar(5)
+  observaciones    String?   @db.VarChar(200)
+  fechaRealizacion DateTime
 }

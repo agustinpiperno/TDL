@@ -7,6 +7,8 @@ import { Button } from "./ui/button";
 import Modal from "./Modal";
 import { useRouter } from "next/navigation";
 import { editarPaciente, eliminarPaciente } from "@/app/pacientes/pacientes";
+import { VscNotebook } from "react-icons/vsc";
+import { string } from "zod";
 
 interface PacienteProps {
     paciente: IPaciente
@@ -25,6 +27,7 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
     const [ocupacionToEdit, setOcupacionToEdit] = useState<string | null>(paciente.ocupacion);
     const [idPrepagaToEdit, setIdPrepagaToEdit] = useState<string | null>(paciente.idPrepaga);
     const [errorMessage, setErrorMessage] = useState('');
+	const {push} = useRouter();
 
     const ocultarCartelError = () => {
         if (apellidoToEdit !== '' && nombreToEdit !== '' && documentoToEdit !== '') {
@@ -70,6 +73,10 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
     const handleIdPrepagaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setIdPrepagaToEdit(event.target.value);
     };
+
+    const formatearDatosPacientes = (datoPaciente: string | null, textoNULL : string) => {
+        return datoPaciente === null ? <span className="cursiva gris">{textoNULL}</span> : datoPaciente === '' ? <span className="cursiva gris">{textoNULL}</span> : datoPaciente;
+    }
 
     const editPaciente = async () =>{
         if(apellidoToEdit === '' || nombreToEdit === '' || documentoToEdit === '') {
@@ -131,6 +138,16 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
         router.refresh();
     };
 
+    const openExamenesPaciente = (idPaciente: number) => {
+        const params = {
+            idPaciente: idPaciente.toString(),
+        };
+
+        const queryString = new URLSearchParams(params).toString();
+
+        push(`/examen?${queryString}`);
+    };
+
     return (
         <tr key={paciente.idPaciente}>
             {/* <td>{paciente.idPaciente}</td> */}
@@ -138,10 +155,10 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
             <td className="w-max-content px-4 text-center">{paciente.nombre}</td>
             <td className="w-max-content px-4 text-center">{paciente.tipoDocumento}</td>
             <td className="w-max-content px-4 text-center">{paciente.documento}</td>
-            <td className="w-max-content px-4 text-center">{paciente.direccion}</td>
-            <td className="w-max-content px-4 text-center">{paciente.telefono}</td>
-            <td className="w-max-content px-4 text-center">{paciente.ocupacion}</td>
-            <td className="w-max-content px-4 text-center">{paciente.idPrepaga}</td>
+            <td className="w-max-content px-4 text-center">{formatearDatosPacientes(paciente.direccion, 'Sin dirección')}</td>
+            <td className="w-max-content px-4 text-center">{formatearDatosPacientes(paciente.telefono, 'Sin teléfono')}</td>
+            <td className="w-max-content px-4 text-center">{formatearDatosPacientes(paciente.ocupacion, 'Sin ocupación')}</td>
+            <td className="w-max-content px-4 text-center">{formatearDatosPacientes(paciente.idPrepaga, 'Sin prepaga')}</td>
             <td className="flex gap-5">
                 <FiEdit onClick={() => setOpenModalEdit(true)} cursor="pointer" className='text-blue-500' size={25} />
                 <Modal modalOpen={openModalEdit} setModalOpen={setOpenModalEdit}>
@@ -262,6 +279,8 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
                         </table>
                     </div>
                 </Modal>
+
+                <VscNotebook onClick={() => openExamenesPaciente(paciente.idPaciente)} cursor="pointer" className='text-black-500' size={25}/>
             </td>
         </tr>
     )
