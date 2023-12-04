@@ -1,3 +1,4 @@
+
 import {NextRequest, NextResponse} from "next/server"
 import {conn}  from '../../../utils/database'
 
@@ -8,3 +9,4 @@ export const GET = async (req: NextRequest) => {
         {status: 200}
     )
 }
+

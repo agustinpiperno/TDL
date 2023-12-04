@@ -1,5 +1,4 @@
-import NavbarToSignIn from "@/components/NavbarToSignIn";
-import Slider from "@/components/Slider";
+import NavbarMainPage from "@/components/NavbarMainPage";
 import "@/styles/globals.css"; // Import your global styles here
 export default function RootLayout({
 	children,
@@ -8,9 +7,8 @@ export default function RootLayout({
 }) {
 	return (
 		<div className="h-screen flex flex-col justify-center items-center bg-blue-950">
-			<NavbarToSignIn />
-			<Slider />
-			{children}
+			<NavbarMainPage />
+			<div className="bg-white p-10 rounded-md shadow-2xl">{children}</div>
 		</div>
 	);
 }
