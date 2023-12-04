@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
 
 const Slider = () => {
@@ -33,30 +32,24 @@ const Slider = () => {
 	};
 
 	return (
-		<div className="max-w-[1400px] h-[780px] w-full py-10 top-10 px-1 absolute group">
-			<div
-				style={{ backgroundImage: `url(${slides[currentIndex].url}) ` }}
-				className="w-full h-full rounded-2xl bg-center bg-cover duration-500"
-			></div>
-			{/* Flecha Izquierda */}
-			<div className="hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-4xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
-				<BsChevronLeft onClick={prevSlide} size={30} />
-			</div>
-			{/* Flecha Derecha */}
-			<div className="hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] right-5 text-4xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
-				<BsChevronRight onClick={nextSlide} size={30} />
-			</div>
-			{/* Puntos */}
-			<div className="flex top-4 justify-center py-2 text-blue-900">
-				{slides.map((slide, slideIndex) => (
-					<div
-						key={slideIndex}
-						onClick={() => goToSlide(slideIndex)}
-						className="text-xl cursor-pointer"
-					>
-						<RxDotFilled />
-					</div>
-				))}
+		<div className="flex justify-center items-center h-screen">
+			<div className="max-w-[1400px] h-[780px] py-10  px-1 relative group w-[1400px]">
+				<div
+					style={{ backgroundImage: `url(${slides[currentIndex].url}) ` }}
+					className="w-full h-full rounded-2xl bg-center bg-cover duration-500"
+				></div>
+				{/* Puntos */}
+				<div className="flex top-4 justify-center py-2 text-blue-900">
+					{slides.map((slide, slideIndex) => (
+						<div
+							key={slideIndex}
+							onClick={() => goToSlide(slideIndex)}
+							className="text-xl cursor-pointer"
+						>
+							<RxDotFilled />
+						</div>
+					))}
+				</div>
 			</div>
 		</div>
 	);
