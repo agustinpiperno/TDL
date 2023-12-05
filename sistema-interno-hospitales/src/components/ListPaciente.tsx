@@ -45,7 +45,7 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes, usuario }) => {
         var direccionFiltro = !direccionFilter ? true : paciente.direccion?.includes(direccionFilter as string);
         var direccionNullFiltro;
         if (direccionNullFilter) {
-            direccionNullFiltro = paciente.direccion === '';
+            direccionNullFiltro = paciente.direccion === null;
             direccionFiltro = false;
         }
 
@@ -53,7 +53,7 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes, usuario }) => {
         var telefonoFiltro = !telefonoFilter ? true : paciente.telefono?.includes(telefonoFilter as string);
         var telefonoNullFiltro;
         if (telefonoNullFilter) {
-            telefonoNullFiltro = paciente.telefono === '';
+            telefonoNullFiltro = paciente.telefono === null;
             telefonoFiltro = false;
         }
 
@@ -61,15 +61,15 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes, usuario }) => {
         var ocupacionFiltro = !ocupacionFilter ? true : paciente.ocupacion?.includes(ocupacionFilter as string);
         var ocupacionNullFiltro;
         if (ocupacionNullFilter) {
-            ocupacionNullFiltro = paciente.ocupacion === '';
+            ocupacionNullFiltro = paciente.ocupacion === null;
             ocupacionFiltro = false;
         }
 
         //Filtro de Prepaga
-        var prepagaFiltro = !prepagaFilter ? true : paciente.idPrepaga?.includes(prepagaFilter as string);
+        var prepagaFiltro = !prepagaFilter ? true : paciente.idPrepaga?.includes(prepagaFilter as string) || paciente.tipoPrepaga?.descripcion.includes(prepagaFilter as string);
         var prepagaNullFiltro;
         if (prepagaNullFilter) {
-            prepagaNullFiltro = paciente.idPrepaga === '';
+            prepagaNullFiltro = paciente.idPrepaga === null;
             prepagaFiltro = false;
         }
 

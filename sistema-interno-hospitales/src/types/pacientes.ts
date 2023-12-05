@@ -1,4 +1,5 @@
 import { IExamen } from "./examen";
+import { IPrepaga } from "./prepaga";
 
 export interface IPaciente {
     idPaciente: number,
@@ -11,4 +12,5 @@ export interface IPaciente {
     ocupacion: string | null,
     idPrepaga: string | null,
     Examenes: IExamen[] | null; // Relación inversa con Exámenes
+    tipoPrepaga: IPrepaga | null;
 };

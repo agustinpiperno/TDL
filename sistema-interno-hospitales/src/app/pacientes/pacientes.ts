@@ -27,10 +27,10 @@ export const insertarPaciente = async (infoPaciente: IPaciente) : Promise<IPacie
             nombre: infoPaciente.nombre,
             tipoDocumento: infoPaciente.tipoDocumento,
             documento: Number(infoPaciente.documento),
-            direccion: infoPaciente.direccion,
-            telefono: infoPaciente.telefono,
-            ocupacion: infoPaciente.ocupacion,
-            idPrepaga: infoPaciente.idPrepaga
+            direccion: infoPaciente?.direccion,
+            telefono: infoPaciente?.telefono,
+            ocupacion: infoPaciente?.ocupacion,
+            idPrepaga: infoPaciente?.idPrepaga
         }
     };
 

@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEventHandler, useState } from "react";
+import React, { FormEventHandler, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { AiOutlinePlus } from "react-icons/ai";
 import Modal from "./Modal";
@@ -9,6 +9,8 @@ import { z } from "zod";
 import { IPaciente } from "@/types/pacientes";
 import { insertarPaciente } from "@/app/pacientes/pacientes";
 import { useRouter } from "next/navigation";
+import { getAllPrepagas } from "@/app/tiposPrepagas/tiposPrepagas";
+import { IPrepaga } from "@/types/prepaga";
 
 const AddPaciente = () => {
     const router = useRouter();
@@ -23,9 +25,11 @@ const AddPaciente = () => {
     const [ocupacion, setOcupacion] = useState('');
     const [idPrepaga, setIdPrepaga] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [prepagas, setPrepagas] = useState<IPrepaga[] | null>([]);
+
 
     const ocultarCartelError = () => {
-        if(apellido !== '' && nombre !== '' && documentNumber !== '') {
+        if (apellido !== '' && nombre !== '' && documentNumber !== '') {
             setErrorMessage('');
         }
     }
@@ -71,7 +75,7 @@ const AddPaciente = () => {
         setOcupacion(event.target.value);
     };
 
-    const handleIdPrepagaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleIdPrepagaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setIdPrepaga(event.target.value);
     };
 
@@ -79,8 +83,8 @@ const AddPaciente = () => {
         var respuesta = await insertarPaciente(values);
     };
 
-    const addPaciente = async () =>{
-        if(apellido === '' || nombre === '' || documentNumber === '') {
+    const addPaciente = async () => {
+        if (apellido === '' || nombre === '' || documentNumber === '') {
             setErrorMessage('Por favor, complete el apellido, nombre y documento del paciente');
             return;
         } else {
@@ -94,11 +98,12 @@ const AddPaciente = () => {
                 nombre: nombre,
                 tipoDocumento: selectedTipoDocumento,
                 documento: Number(documentNumber),
-                direccion: direccion,
-                telefono: telefono,
-                ocupacion: ocupacion,
-                idPrepaga: idPrepaga,
-                Examenes: null
+                direccion: direccion === '' ? null : direccion,
+                telefono: telefono === '' ? null : telefono,
+                ocupacion: ocupacion === '' ? null : ocupacion,
+                idPrepaga: idPrepaga === '' ? null : idPrepaga,
+                Examenes: null,
+                tipoPrepaga: null
             }
         };
 
@@ -113,6 +118,7 @@ const AddPaciente = () => {
         setTelefono("");
         setOcupacion("");
         setIdPrepaga("");
+        setPrepagas(null);
         setModalOpen(false);
         router.refresh();
     }
@@ -157,6 +163,19 @@ const AddPaciente = () => {
         // setModalOpen(false);
         // router.refresh();
     };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await getAllPrepagas();
+                setPrepagas(data);
+            } catch (error) {
+                console.error('Error al obtener las prepagas:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <div>
@@ -238,27 +257,16 @@ const AddPaciente = () => {
                             />
                         </div>
                         <div>
-                            <label htmlFor="idPrepaga">Prepaga: </label>
-                            <input
-                                type="text"
-                                placeholder="Prepaga"
-                                value={idPrepaga}
-                                onChange={handleIdPrepagaChange}
-                                maxLength={5}
-                            />
+                            <label htmlFor="idPrepaga">Prepaga:</label>
+                            <select id="idPrepaga" value={idPrepaga} onChange={handleIdPrepagaChange}>
+                                <option value="">Sin Prepaga</option>
+                                {prepagas?.map((prepaga: IPrepaga, index: number) => (
+                                    <option key={index} value={prepaga.idPrepaga}>
+                                        {prepaga.descripcion}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
-                        {/* <div>
-                            <Button className="w-full mt-6 " name="btnAddPacientes" type="submit">
-                                Agregar Paciente
-                                <AiOutlinePlus className="ml-2" size={18} />
-                            </Button>
-
-                            {errorMessage && (
-                                <div className="error-message">
-                                    {errorMessage}
-                                </div>
-                            )}
-                        </div> */}
                     </div>
                 </form>
                 <div>

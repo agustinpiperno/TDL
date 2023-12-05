@@ -11,7 +11,8 @@ export const GET = async (req: NextRequest) => {
                 idPaciente: 'asc',
             },
             include: {
-                Examenes: true, // Trae todos los datos del Examen asociado al paciente
+                Examenes: true,// Trae todos los datos del Examen asociado al paciente
+                tipoPrepaga: true, 
             },
         });
         return NextResponse.json({

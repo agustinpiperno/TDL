@@ -31,15 +31,16 @@ model Usuarios {
 }
 
 model Pacientes {
-  idPaciente    Int        @id @default(autoincrement())
-  apellido      String     @db.VarChar(50)
-  nombre        String     @db.VarChar(50)
-  tipoDocumento String     @db.VarChar(3)
+  idPaciente    Int            @id @default(autoincrement())
+  apellido      String         @db.VarChar(50)
+  nombre        String         @db.VarChar(50)
+  tipoDocumento String         @db.VarChar(3)
   documento     Int
-  direccion     String?    @db.VarChar(100)
-  telefono      String?    @db.VarChar(50)
-  ocupacion     String?    @db.VarChar(50)
-  idPrepaga     String?    @db.VarChar(5)
+  direccion     String?        @db.VarChar(100)
+  telefono      String?        @db.VarChar(50)
+  ocupacion     String?        @db.VarChar(50)
+  idPrepaga     String?        @db.VarChar(5)
+  tipoPrepaga   TiposPrepagas? @relation(fields: [idPrepaga], references: [idPrepaga], onDelete: SetNull, onUpdate: SetNull)
   Examenes      Examenes[]
 }
 
@@ -52,4 +53,10 @@ model Examenes {
   tipoExamen       String    @db.VarChar(5)
   observaciones    String?   @db.VarChar(200)
   fechaRealizacion DateTime
+}
+
+model TiposPrepagas {
+  idPrepaga   String      @id @db.VarChar(5)
+  descripcion String      @db.VarChar(50)
+  pacientes   Pacientes[]
 }
