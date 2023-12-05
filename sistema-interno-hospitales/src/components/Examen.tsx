@@ -8,7 +8,9 @@ import { editarExamen, eliminarExamen } from "@/app/examen/examen";
 import { IUsuario } from "@/types/usuario";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler, useEffect, useState } from "react";
+import { ITipoExamen } from "@/types/tiposExamenes";
+import { getAllTiposExamenes } from "@/app/tiposExamenes/tiposExamenes";
 
 
 interface ExamenProps {
@@ -22,6 +24,7 @@ const Examen: React.FC<ExamenProps> = ({ examen }) => {
 
     const [tipoExamenToEdit, setTipoExamenToEdit] = useState<string>(examen.tipoExamen);
     const [observacionesToEdit, setObservacionesToEdit] = useState<string | null>(examen.observaciones)
+    const [tipoExamen, setTipoExamen] = useState<ITipoExamen[] | null>([]);
     const router = useRouter();
 
     const handleDeleteExamen = async (idExamen: number) => {
@@ -47,7 +50,7 @@ const Examen: React.FC<ExamenProps> = ({ examen }) => {
         setObservacionesToEdit(event.target.value);
     };
 
-    const editExamen = async () =>{
+    const editExamen = async () => {
         const currentDate: Date = new Date();
 
         const examenEditar = {
@@ -58,7 +61,8 @@ const Examen: React.FC<ExamenProps> = ({ examen }) => {
                 tipoExamen: tipoExamenToEdit,
                 observaciones: observacionesToEdit,
                 fechaRealizacion: currentDate,
-                usuario: examen.usuario
+                usuario: examen.usuario,
+                tipoExamenObject: examen.tipoExamenObject
             }
         };
 
@@ -73,11 +77,24 @@ const Examen: React.FC<ExamenProps> = ({ examen }) => {
 
     };
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await getAllTiposExamenes();
+                setTipoExamen(data);
+            } catch (error) {
+                console.error('Error al obtener los tipo de examen:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     return (
         <div className="p-4 border border-slate-300 my-3 flexk justify-between gap-5 items-start">
             <div>
                 <div className="flex gap-5">
-                    <h2 className="font-bold text-2x1">{examen.tipoExamen}</h2>
+                    <h2 className="font-bold text-2x1">{examen.tipoExamenObject?.descripcion}</h2>
                     <div className="justify-end w-full flex gap-5">
                         <FiEdit onClick={() => setOpenModalEdit(true)} cursor="pointer" className='text-blue-500' size={25} />
                         <Modal modalOpen={openModalEdit} setModalOpen={setOpenModalEdit}>
@@ -85,11 +102,12 @@ const Examen: React.FC<ExamenProps> = ({ examen }) => {
                                 <div className="space-y-1">
                                     <div>
                                         <label htmlFor="tipoExamen">Tipo de Examen: </label>
-                                        <select
-                                            value={tipoExamenToEdit}
-                                            onChange={handleTipoExamenChange}>
-                                            <option value="PERIO">Periodico</option>
-                                            <option value="VISTA">Vista</option>
+                                        <select id="tipoExamen" value={tipoExamenToEdit} onChange={handleTipoExamenChange}>
+                                            {tipoExamen?.map((tipoExamen: ITipoExamen, index: number) => (
+                                                <option key={index} value={tipoExamen.tipoExamen}>
+                                                    {tipoExamen.descripcion}
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
 

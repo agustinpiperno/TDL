@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEventHandler, useState } from "react";
+import React, { FormEventHandler, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { AiOutlinePlus } from "react-icons/ai";
 import Modal from "./Modal";
@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { IExamen } from "@/types/examen";
 import { insertarExamen } from "@/app/examen/examen";
 import { IUsuario } from "@/types/usuario";
+import { getAllTiposExamenes } from "@/app/tiposExamenes/tiposExamenes";
+import { ITipoExamen } from "@/types/tiposExamenes";
 
 interface IdsPacienteUsuario {
     IdPaciente: number,
@@ -18,6 +20,7 @@ const AddExamen: React.FC<IdsPacienteUsuario> = ({ IdPaciente, usuario }) => {
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [selectedTipoExamen, setSelectedTipoExamen] = useState('PERIO');
     const [observaciones, setObservaciones] = useState('');
+    const [tipoExamen, setTipoExamen] = useState<ITipoExamen[] | null>([]);
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleTipoExamenChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -44,7 +47,8 @@ const AddExamen: React.FC<IdsPacienteUsuario> = ({ IdPaciente, usuario }) => {
                 tipoExamen: selectedTipoExamen,
                 observaciones: observaciones,
                 fechaRealizacion: currentDate,
-                usuario: usuario
+                usuario: usuario,
+                tipoExamenObject: null
             }
         };
 
@@ -60,6 +64,19 @@ const AddExamen: React.FC<IdsPacienteUsuario> = ({ IdPaciente, usuario }) => {
 
     };
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await getAllTiposExamenes();
+                setTipoExamen(data);
+            } catch (error) {
+                console.error('Error al obtener los tipo de examen:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     return (
         <div>
             <Button className="w-full mt-6 " name="btnAddExamen" type="submit"
@@ -73,11 +90,12 @@ const AddExamen: React.FC<IdsPacienteUsuario> = ({ IdPaciente, usuario }) => {
                     <div className="space-y-1">
                         <div>
                             <label htmlFor="tipoExamen">Tipo de Examen: </label>
-                            <select
-                                value={selectedTipoExamen}
-                                onChange={handleTipoExamenChange}>
-                                <option value="PERIO">Periodico</option>
-                                <option value="VISTA">Vista</option>
+                            <select id="tipoExamen" value={selectedTipoExamen} onChange={handleTipoExamenChange}>
+                                {tipoExamen?.map((tipoExamen: ITipoExamen, index: number) => (
+                                    <option key={index} value={tipoExamen.tipoExamen}>
+                                        {tipoExamen.descripcion}
+                                    </option>
+                                ))}
                             </select>
                         </div>
 

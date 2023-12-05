@@ -11,6 +11,7 @@ export const GET = async (req: NextRequest) => {
             },
             include: {
                 usuario: true, // Trae todos los datos del usuario asociado al examen
+                tipoExamenObject: true,
             },
             orderBy: {
                 fechaRealizacion: 'desc',

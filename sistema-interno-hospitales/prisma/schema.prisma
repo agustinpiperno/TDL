@@ -45,13 +45,14 @@ model Pacientes {
 }
 
 model Examenes {
-  idExamen         Int       @id @default(autoincrement())
+  idExamen         Int           @id @default(autoincrement())
   idPaciente       Int
-  paciente         Pacientes @relation(fields: [idPaciente], references: [idPaciente], onDelete: Cascade, onUpdate: Cascade)
+  paciente         Pacientes     @relation(fields: [idPaciente], references: [idPaciente], onDelete: Cascade, onUpdate: Cascade)
   idUsuario        Int
-  usuario          Usuarios  @relation(fields: [idUsuario], references: [idUsuario], onDelete: Cascade, onUpdate: Cascade)
-  tipoExamen       String    @db.VarChar(5)
-  observaciones    String?   @db.VarChar(200)
+  usuario          Usuarios      @relation(fields: [idUsuario], references: [idUsuario], onDelete: Cascade, onUpdate: Cascade)
+  tipoExamen       String        @db.VarChar(5)
+  tipoExamenObject TiposExamenes @relation(fields: [tipoExamen], references: [tipoExamen])
+  observaciones    String?       @db.VarChar(200)
   fechaRealizacion DateTime
 }
 
@@ -59,4 +60,10 @@ model TiposPrepagas {
   idPrepaga   String      @id @db.VarChar(5)
   descripcion String      @db.VarChar(50)
   pacientes   Pacientes[]
+}
+
+model TiposExamenes {
+  tipoExamen  String     @id @db.VarChar(5)
+  descripcion String     @db.VarChar(50)
+  examenes    Examenes[]
 }
