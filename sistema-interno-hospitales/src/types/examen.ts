@@ -1,3 +1,4 @@
+import { IEstudio } from "./estudio";
 import { ITipoExamen } from "./tiposExamenes";
 import { IUsuario } from "./usuario";
 
@@ -10,4 +11,5 @@ export interface IExamen {
   fechaRealizacion: Date;
   usuario: IUsuario | null; // Relación con el modelo IUsuario
   tipoExamenObject: ITipoExamen | null;
+  estudio: IEstudio[] | null;
 }

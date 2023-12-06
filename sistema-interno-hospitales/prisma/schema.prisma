@@ -54,6 +54,7 @@ model Examenes {
   tipoExamenObject TiposExamenes @relation(fields: [tipoExamen], references: [tipoExamen])
   observaciones    String?       @db.VarChar(200)
   fechaRealizacion DateTime
+  estudio          Estudios[]
 }
 
 model TiposPrepagas {
@@ -66,4 +67,12 @@ model TiposExamenes {
   tipoExamen  String     @id @db.VarChar(5)
   descripcion String     @db.VarChar(50)
   examenes    Examenes[]
+}
+
+model Estudios {
+  idEstudio        Int      @id @default(autoincrement())
+  tipoEstudio      String   @db.VarChar(50)
+  resultado        String?  @db.VarChar(200)
+  Examenes         Examenes @relation(fields: [examenesIdExamen], references: [idExamen], onDelete: Cascade, onUpdate: Cascade)
+  examenesIdExamen Int
 }

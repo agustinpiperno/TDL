@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import { FormEventHandler, useEffect, useState } from "react";
 import { ITipoExamen } from "@/types/tiposExamenes";
 import { getAllTiposExamenes } from "@/app/tiposExamenes/tiposExamenes";
+import ListEstudio from "./ListEstudios";
+import AddEstudio from "./AddEstudios";
 
 
 interface ExamenProps {
@@ -18,7 +20,6 @@ interface ExamenProps {
 }
 
 const Examen: React.FC<ExamenProps> = ({ examen }) => {
-
     const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
     const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
 
@@ -62,7 +63,8 @@ const Examen: React.FC<ExamenProps> = ({ examen }) => {
                 observaciones: observacionesToEdit,
                 fechaRealizacion: currentDate,
                 usuario: examen.usuario,
-                tipoExamenObject: examen.tipoExamenObject
+                tipoExamenObject: examen.tipoExamenObject,
+                estudio: examen.estudio
             }
         };
 
@@ -153,9 +155,13 @@ const Examen: React.FC<ExamenProps> = ({ examen }) => {
                                 </table>
                             </div>
                         </Modal>
+                        <AddEstudio examen={examen}/>
                     </div>
                 </div>
                 <div>{examen.observaciones}</div>
+                <div>
+                    <ListEstudio estudios={examen.estudio} />
+                </div>
                 <div className="justify-end w-full flex gap-5">
                     <div className="mt-2 text-gray-500">{formatearMedico(examen.usuario)}</div>
                     <div className="mt-2 text-gray-500">{formatearFecha(examen.fechaRealizacion.toString())}</div>
