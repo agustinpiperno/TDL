@@ -30,7 +30,7 @@ const NavbarMainPage = () => {
                 <DropdownMenu>
                     <DropdownMenuTrigger className="focus:outline-none">Turnos</DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <Link href="/administrarTurnos">
+                        <Link href="/turnos">
                             <DropdownMenuItem>Administrar Turnos</DropdownMenuItem>
                         </Link>
                     </DropdownMenuContent>
