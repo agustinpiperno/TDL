@@ -13,6 +13,16 @@ import { ITipoExamen } from "@/types/tiposExamenes";
 import { getAllTiposExamenes } from "@/app/tiposExamenes/tiposExamenes";
 import ListEstudio from "./ListEstudios";
 import AddEstudio from "./AddEstudios";
+import { GoDownload } from "react-icons/go";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+// Extender la interfaz jsPDF para incluir autoTable
+declare module 'jspdf' {
+    interface jsPDF {
+        autoTable: (options: any) => jsPDF;
+    }
+}
+
 
 
 interface ExamenProps {
@@ -64,7 +74,8 @@ const Examen: React.FC<ExamenProps> = ({ examen }) => {
                 fechaRealizacion: currentDate,
                 usuario: examen.usuario,
                 tipoExamenObject: examen.tipoExamenObject,
-                estudio: examen.estudio
+                estudio: examen.estudio,
+                paciente: examen.paciente
             }
         };
 
@@ -91,6 +102,53 @@ const Examen: React.FC<ExamenProps> = ({ examen }) => {
 
         fetchData();
     }, []);
+
+    const downloadPDF = () => {
+        // Crear un nuevo documento PDF
+        const doc = new jsPDF();
+        let pageNumber = 1;
+
+        const formatoNombreMedico = `Dr. ${examen.usuario?.apellido}, ${examen.usuario?.nombre} - Página ${pageNumber}`;
+        const formatoNombrePaciente = `${examen.paciente?.apellido}, ${examen.paciente?.nombre}`;
+        const formatoTipoExamen = 'Examen ' + examen.tipoExamenObject?.descripcion;
+        const formatoFecha = formatearFecha(examen.fechaRealizacion.toString());
+        const formatoNombreArchivo = `Examen ${examen.tipoExamenObject?.descripcion} ${examen.paciente?.apellido} ${examen.paciente?.nombre} ${formatoFecha}.pdf`;
+        // Agregar el texto de la lista al PDF
+        doc.setFontSize(12);
+        doc.text(formatoTipoExamen, doc.internal.pageSize.width/2-doc.getTextWidth(formatoTipoExamen)/2, 30);
+
+        const columnas = ['Tipo de Estudio', 'Resultado'];
+        const filas = examen.estudio?.map(item => [item.tipoEstudio, item.resultado]);
+
+
+
+        // Agregar el encabezado común para cada página
+        const addHeader = () => {
+            doc.setFontSize(11);
+            doc.setTextColor(40);
+            doc.text(formatoNombrePaciente, doc.internal.pageSize.width-doc.getTextWidth(formatoNombrePaciente)-15, 15);
+        };
+        //Footer
+        doc.autoTable({
+            startY: 40,
+            head: [columnas],
+            body: filas,
+            didDrawPage: () => {
+                if (pageNumber === 1) {
+                    addHeader();
+                  }
+                // Agregar el footer en cada página
+                doc.setFontSize(10);
+                doc.text(formatoNombreMedico, 15, doc.internal.pageSize.height - 15);
+                doc.text(formatoFecha, doc.internal.pageSize.width-doc.getTextWidth(formatoFecha)-15, doc.internal.pageSize.height - 15);
+                pageNumber++;
+            },
+        });
+
+        // Guardar o mostrar el PDF
+        doc.save(formatoNombreArchivo);
+        //doc.output('dataurlnewwindow');
+    };
 
     return (
         <div className="p-4 border border-slate-300 my-3 flexk justify-between gap-5 items-start">
@@ -155,7 +213,9 @@ const Examen: React.FC<ExamenProps> = ({ examen }) => {
                                 </table>
                             </div>
                         </Modal>
-                        <AddEstudio examen={examen}/>
+                        <AddEstudio examen={examen} />
+                        <GoDownload onClick={() => downloadPDF()} cursor="pointer" className='text-black-100' size={25} />
+
                     </div>
                 </div>
                 <div>{examen.observaciones}</div>

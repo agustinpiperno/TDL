@@ -49,7 +49,8 @@ const AddExamen: React.FC<IdsPacienteUsuario> = ({ IdPaciente, usuario }) => {
                 fechaRealizacion: currentDate,
                 usuario: usuario,
                 tipoExamenObject: null,
-                estudio: null
+                estudio: null,
+                paciente: null
             }
         };
 
