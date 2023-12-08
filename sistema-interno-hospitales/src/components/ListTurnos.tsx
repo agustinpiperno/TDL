@@ -1,10 +1,12 @@
 "use client";
 
 import { ITurno } from "@/types/turnos";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Turno from "./Turno";
 import { MdOutlineCleaningServices } from "react-icons/md";
 import { IUsuario } from "@/types/usuario";
+import { DatePicker } from "./DatePicker";
+import { format } from "date-fns";
 
 interface ListTurnoProps {
     turnos: ITurno[];
@@ -12,6 +14,7 @@ interface ListTurnoProps {
 }
 
 const ListTurno: React.FC<ListTurnoProps> = ({ turnos, usuario }) => {
+    const [date, setDate] = React.useState<Date>()
     const [apellidoPacienteFilter, setApellidoPacienteFilter] = useState<string>("");
     const [nombrePacienteFilter, setNombrePacienteFilter] = useState<string>("");
     const [apellidoMedicoFilter, setApellidoMedicoFilter] = useState<string>("");
@@ -19,6 +22,11 @@ const ListTurno: React.FC<ListTurnoProps> = ({ turnos, usuario }) => {
     const [numeroSalaFilter, setNumeroSalaFilter] = useState<string>("");
     const [fechaFilter, setFechaFilter] = useState<string>("");
     const [misPacientesFilter, setMisPacientesFilter] = useState<boolean>(false);
+
+    useEffect(() => {
+        const newFechaFilter = date ? format(date, "yyyy-MM-dd") : '';
+        setFechaFilter(newFechaFilter);
+      }, [date]); // cuando date cambia
 
     // Lista de todos turnos que recibimos de la base de datos
     const turnosFromDatabase: ITurno[] = turnos;
@@ -58,6 +66,7 @@ const ListTurno: React.FC<ListTurnoProps> = ({ turnos, usuario }) => {
         setNombreMedicoFilter('');
         setNumeroSalaFilter('');
         setFechaFilter('');
+        setDate(undefined);
     }
 
     return (
@@ -130,10 +139,10 @@ const ListTurno: React.FC<ListTurnoProps> = ({ turnos, usuario }) => {
                             </td>
                             <td>
                                 <div className="border border-gray-300 rounded-md px-2 py-1 text-sm font-medium text-gray-600">
+                                    <DatePicker  date={date} setDate={setDate}/>
                                     <input
-                                        type="text"
+                                        type="hidden"
                                         value={fechaFilter}
-                                        onChange={(e) => setFechaFilter(e.target.value)}
                                         placeholder="Filtrar por fecha">
                                     </input>
                                 </div>

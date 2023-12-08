@@ -13,12 +13,21 @@ import { ISalas } from "@/types/salas";
 import { getAllSalas } from "@/app/tiposSalas/tiposSalas";
 import { getPaciente } from "@/app/pacientes/pacientes";
 import { getMedico } from "@/app/medico/medico";
+import { DatePicker } from "@/components/DatePicker";
+import * as React from "react"
+import { format } from "date-fns"
 
 interface TurnoProps {
     turno: ITurno
 }
 
 const Turno: React.FC<TurnoProps> = ({ turno }) => {
+    var [year, month, day] = turno.fechaTurno.toString().split('-')
+    var dayNumber = Number(day.substring(0,2))
+    var monthNumber = Number(month)
+    var yearNumber = Number(year)
+    const fechaUTC = new Date(Date.UTC(yearNumber, monthNumber-1, dayNumber+1));
+
     const router = useRouter();
     const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
     const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
@@ -26,13 +35,19 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
     const [apellidoPacienteToEdit, setApellidoPacienteToEdit] = useState<string>(turno.paciente.apellido);
     const [nombrePacienteToEdit, setNombrePacienteToEdit] = useState<string>(turno.paciente.nombre);
     const [documentoToEdit, setDocumentoToEdit] = useState<string>(turno.paciente.documento.toString());
-    const [fechaToEdit, setFechaToEdit] = useState<string>(turno.fechaTurno.toString());
+    const [fechaToEdit, setFechaToEdit] = useState<string>(fechaUTC.toString());
     // const [medicoToEdit, setMedicoToEdit] = useState<string>(turno.idMedico.toString());
     const [apellidoMedicoToEdit, setApellidoMedicoToEdit] = useState<string>(turno.medico.apellido);
     const [nombreMedicoToEdit, setNombreMedicoToEdit] = useState<string>(turno.medico.nombre);
     const [salaToEdit, setSalaToEdit] = useState<string>(turno.idSala.toString());
     const [salas, setSalas] = useState<ISalas[] | null>([]);
     const [errorMessage, setErrorMessage] = useState('');
+    const [date, setDate] = React.useState<Date | undefined>(new Date(fechaToEdit));
+
+    useEffect(() => {
+        const newFechaFilter = date ? format(date, "yyyy-MM-dd") : '';
+        setFechaToEdit(newFechaFilter);
+    }, [date]); // cuando date cambia
 
     const { push } = useRouter();
 
@@ -62,10 +77,10 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
         ocultarCartelError();
     };
 
-    const handleFechaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFechaToEdit(event.target.value);
-        ocultarCartelError();
-    };
+    // const handleFechaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setFechaToEdit(event.target.value);
+    //     ocultarCartelError();
+    // };
 
     const handleSalaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSalaToEdit(event.target.value);
@@ -93,7 +108,7 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
                 idPaciente: pacienteToEdit.idPaciente,
                 idMedico: medicoToEdit.idMedico,
                 idSala: Number(salaToEdit),
-                fechaTurno: new Date(fechaToEdit),
+                fechaTurno: fechaToEdit,
                 idUsuario: turno.idUsuario,
             }
 
@@ -183,11 +198,12 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
                             </div>
                             <div>
                                 <label htmlFor="fechaTurno">Fecha del Turno: </label>
+                                <DatePicker  date={date} setDate={setDate}/>
                                 <input
-                                    type="text"
+                                    type="hidden"
                                     placeholder="fechaTurno"
                                     value={fechaToEdit}
-                                    onChange={handleFechaChange}
+                                    // onChange={handleFechaChange}
                                     maxLength={50}
                                 />
                             </div>

@@ -62,9 +62,10 @@ export const editarTurno = async (infoTurno: any) : Promise<ITurno | void> => {
             },
             body: JSON.stringify(infoTurno)
         });
-
+        console.log(infoTurno)
         if (response.ok) {
             const data = await response.json();
+            console.log(data)
             return data.turnos
         }else {
             throw new Error('Error al querer editar al turno');

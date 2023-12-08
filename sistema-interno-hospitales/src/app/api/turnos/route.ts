@@ -35,7 +35,7 @@ export const GET = async (req: NextRequest) => {
 export const PUT = async (req: NextRequest) => {
     const requestData = await req.json();
     const turno = requestData;
-    
+    console.log(turno)
     try {
         const updatedTurno = await prisma.turnos.update({
             where: {
@@ -43,14 +43,13 @@ export const PUT = async (req: NextRequest) => {
             },
             data: {
                 idTurno: turno.idTurno,
-                fechaTurno: turno.fechaTurno,
+                fechaTurno: new Date(turno.fechaTurno),
                 idPaciente: turno.idPaciente,
                 idMedico: turno.idMedico,
                 idUsuario: turno.idUsuario,
                 idSala: turno.idSala,
             },
         });
-
         return NextResponse.json({
             mensaje: 'Turno seleccionado modificado',
             turnoInsertado: updatedTurno,
