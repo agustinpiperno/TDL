@@ -5,23 +5,51 @@ interface Params {
 }
 
 export const GET = async (req: NextRequest) => {
-    try {
-        const pacientes = await prisma.pacientes.findMany({
-            orderBy: {
-                idPaciente: 'asc',
-            },
-            include: {
-                Examenes: true,// Trae todos los datos del Examen asociado al paciente
-                tipoPrepaga: true, 
-            },
-        });
-        return NextResponse.json({
-            pacientes
-        })
-    } catch (error) {
-        return NextResponse.json({
-            error: 'Error al procesar la solicitud',
-        });
+        const nombrePaciente = req.nextUrl.searchParams.get("nombrePaciente")
+        const apellidoPaciente = req.nextUrl.searchParams.get("apellidoPaciente")
+
+        if (nombrePaciente && apellidoPaciente) {
+            try{
+                const pacientes = await prisma.pacientes.findFirst({
+                    where: {
+                        nombre: nombrePaciente,
+                        apellido: apellidoPaciente,
+                    },
+                });
+
+                if (pacientes) {
+                    return NextResponse.json({
+                        pacientes
+                    });
+                } else {
+                    return NextResponse.json({
+                        mensaje: 'No hay paciente registrados',
+                    });
+                }
+            } catch (error) {
+                return NextResponse.json({
+                    error: 'Error al procesar la solicitud',
+                });
+            }
+        } else{
+            try {
+            const pacientes = await prisma.pacientes.findMany({
+                orderBy: {
+                    idPaciente: 'asc',
+                },
+                include: {
+                    Examenes: true,// Trae todos los datos del Examen asociado al paciente
+                    tipoPrepaga: true, 
+                },
+            });
+            return NextResponse.json({
+                pacientes
+            })
+        } catch (error) {
+            return NextResponse.json({
+                error: 'Error al procesar la solicitud',
+            });
+        }
     }
 }
 

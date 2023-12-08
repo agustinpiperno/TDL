@@ -53,28 +53,16 @@ export const insertarTurno = async (infoturno: ITurno) : Promise<ITurno | void> 
 };
 
 
-export const editarTurno = async (infoturno: ITurno) : Promise<ITurno | void> => {
-
-    const turnoEditar = {
-        turno:{
-            idTurno: infoturno.idTurno,
-            idPaciente: infoturno.idPaciente,
-            idMedico: infoturno.idMedico,
-            idSala: infoturno.idSala,
-            fechaTurno: infoturno.fechaTurno,
-            idUsuario: infoturno.idUsuario,
-        }
-    };
-
+export const editarTurno = async (infoTurno: any) : Promise<ITurno | void> => {
     try {
         const response = await fetch(apiUrl, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(turnoEditar)
+            body: JSON.stringify(infoTurno)
         });
-    
+
         if (response.ok) {
             const data = await response.json();
             return data.turnos

@@ -19,6 +19,35 @@ export const getAllPacientes = async (): Promise<IPaciente[]> => {
     } 
 };
 
+export const getPaciente = async (nombrePaciente: string, apellidoPaciente: string): Promise<IPaciente | void> => {
+    const params = {
+        nombrePaciente: nombrePaciente,
+        apellidoPaciente: apellidoPaciente
+    };
+
+    const queryString = new URLSearchParams(params).toString();
+    const apiUrl = `http://localhost:3000/api/pacientes?${queryString}`;
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+                // Puedes añadir más encabezados si es necesario
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Mensaje GET ok con + ' + data.mensaje);
+            return data.pacientes
+        } else {
+            throw new Error('Error en la solicitud');
+        }
+    } catch (error) {
+        console.error('Error al obtener el paciente:', error);
+    }
+};
+
 export const insertarPaciente = async (infoPaciente: IPaciente) : Promise<IPaciente | void> => {
 
     const pacienteNuevo = {

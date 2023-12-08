@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import { IUsuario } from "@/types/usuario";
 
 export const getUserByUsername = async (username: string) => {
     const params = {

@@ -11,6 +11,8 @@ import { VscNotebook } from "react-icons/vsc";
 import { string } from "zod";
 import { ISalas } from "@/types/salas";
 import { getAllSalas } from "@/app/tiposSalas/tiposSalas";
+import { getPaciente } from "@/app/pacientes/pacientes";
+import { getMedico } from "@/app/medico/medico";
 
 interface TurnoProps {
     turno: ITurno
@@ -20,14 +22,14 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
     const router = useRouter();
     const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
     const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
-    const [pacienteToEdit, setPacienteToEdit] = useState<string>(turno.idPaciente.toString());
-    // const [apellidoToEdit, setApellidoToEdit] = useState<string>(turno.apellido);
-    // const [nombreToEdit, setNombreToEdit] = useState<string>(turno.nombre);
-    // const [documentoToEdit, setDocumentoToEdit] = useState<string>(turno.documento.toString());
+    // const [pacienteToEdit, setPacienteToEdit] = useState<string>(turno.idPaciente.toString());
+    const [apellidoPacienteToEdit, setApellidoPacienteToEdit] = useState<string>(turno.paciente.apellido);
+    const [nombrePacienteToEdit, setNombrePacienteToEdit] = useState<string>(turno.paciente.nombre);
+    const [documentoToEdit, setDocumentoToEdit] = useState<string>(turno.paciente.documento.toString());
     const [fechaToEdit, setFechaToEdit] = useState<string>(turno.fechaTurno.toString());
-    const [medicoToEdit, setMedicoToEdit] = useState<string>(turno.idMedico.toString());
-    // const [apellidoToEdit, setApellidoToEdit] = useState<string>(turno.apellido);
-    // const [nombreToEdit, setNombreToEdit] = useState<string>(turno.nombre);
+    // const [medicoToEdit, setMedicoToEdit] = useState<string>(turno.idMedico.toString());
+    const [apellidoMedicoToEdit, setApellidoMedicoToEdit] = useState<string>(turno.medico.apellido);
+    const [nombreMedicoToEdit, setNombreMedicoToEdit] = useState<string>(turno.medico.nombre);
     const [salaToEdit, setSalaToEdit] = useState<string>(turno.idSala.toString());
     const [salas, setSalas] = useState<ISalas[] | null>([]);
     const [errorMessage, setErrorMessage] = useState('');
@@ -35,13 +37,28 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
     const { push } = useRouter();
 
     const ocultarCartelError = () => {
-        if (pacienteToEdit !== null && fechaToEdit !== null && medicoToEdit !== null && salaToEdit !== null) {
+        if (apellidoPacienteToEdit !== null && nombrePacienteToEdit !== null && fechaToEdit !== null && apellidoMedicoToEdit !== null && nombreMedicoToEdit !== null && salaToEdit !== null) {
             setErrorMessage('');
         }
     }
 
-    const handlePacienteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPacienteToEdit(event.target.value);
+    const handleNombrePacienteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setNombrePacienteToEdit(event.target.value);
+        ocultarCartelError();
+    };
+
+    const handleApellidoPacienteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setApellidoPacienteToEdit(event.target.value);
+        ocultarCartelError();
+    };
+
+    const handleNombreMedicoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setNombreMedicoToEdit(event.target.value);
+        ocultarCartelError();
+    };
+
+    const handleApellidoMedicoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setApellidoMedicoToEdit(event.target.value);
         ocultarCartelError();
     };
 
@@ -50,78 +67,45 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
         ocultarCartelError();
     };
 
-    const handleMedicoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setMedicoToEdit(event.target.value);
-        ocultarCartelError();
-    };
-
     const handleSalaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSalaToEdit(event.target.value);
         ocultarCartelError();
     };
 
-    // const handleDocumentNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     const inputDocumentNumber = event.target.value;
-    //     // Validar si el valor ingresado es solo números (usando expresión regular)
-    //     if (/^\d*$/.test(inputDocumentNumber) || inputDocumentNumber === '') {
-    //         setDocumentoToEdit(inputDocumentNumber);
-    //     }
-    //     ocultarCartelError();
-    // };
-
-    const formatearDatosTurnos = (datoTurno: string | null, textoNULL: string) => {
-        return datoTurno === null ? <span className="cursiva gris">{textoNULL}</span> : datoTurno === '' ? <span className="cursiva gris">{textoNULL}</span> : datoTurno;
-    }
-
     const editTurno = async () => {
-        if (pacienteToEdit !== null && fechaToEdit !== null && medicoToEdit !== null && salaToEdit !== null) {
-            setErrorMessage('Por favor, complete el apellido, nombre y documento del turno');
+        if (apellidoPacienteToEdit === '' || nombrePacienteToEdit === '' || fechaToEdit === '' || apellidoMedicoToEdit === '' || nombreMedicoToEdit === '' || salaToEdit === '') {
+            setErrorMessage('Por favor, complete los datos obligatorios.');
             return;
         } else {
             setErrorMessage('');
         }
+        const pacienteToEdit = await getPaciente(nombrePacienteToEdit, apellidoPacienteToEdit)
+        const medicoToEdit = await getMedico(nombreMedicoToEdit, apellidoMedicoToEdit)
 
-        const turnoEditar = {
-            turno: {
+        if (pacienteToEdit === undefined || medicoToEdit === undefined) {
+            setErrorMessage('El paciente o el médico no existen.');
+            return;
+        }
+        else {
+            setErrorMessage('');
+            const turnoEditar = {
                 idTurno: turno.idTurno,
-                idPaciente: Number(pacienteToEdit),
-                idMedico: Number(medicoToEdit),
+                idPaciente: pacienteToEdit.idPaciente,
+                idMedico: medicoToEdit.idMedico,
                 idSala: Number(salaToEdit),
                 fechaTurno: new Date(fechaToEdit),
                 idUsuario: turno.idUsuario,
             }
-        };
 
-        await editarTurno(turnoEditar.turno);
+            await editarTurno(turnoEditar);
+        
+            setOpenModalEdit(false);
 
-        setOpenModalEdit(false);
-
-        router.refresh();
+            router.refresh();
+        }
     }
 
-    //POR EL MOMENTO LO DEJO COMENTADO
     const handleSubmitEdit: FormEventHandler<HTMLFormElement> = async (event) => {
-        // event.preventDefault(); // Evitar la recarga de la página por defecto en el envío del formulario
-
-        // const turnoEditar = {
-        //     turno: {
-        //         idTurno: turno.idTurno,
-        //         apellido: apellidoToEdit,
-        //         nombre: nombreToEdit,
-        //         tipoDocumento: tipoDocumentoToEdit,
-        //         documento: Number(documentoToEdit),
-        //         direccion: direccionToEdit,
-        //         telefono: telefonoToEdit,
-        //         ocupacion: ocupacionToEdit,
-        //         idPrepaga: idPrepagaToEdit
-        //     }
-        // };
-
-        // await editarTurno(turnoEditar.turno);
-
-        // setOpenModalEdit(false);
-
-        // router.refresh();
     };
 
     const handleDeleteTurno = async (idTurno: number) => {
@@ -130,26 +114,27 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
         router.refresh();
     };
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const data = await getAllPrepagas();
-    //             setPrepagas(data);
-    //         } catch (error) {
-    //             console.error('Error al obtener las prepagas:', error);
-    //         }
-    //     };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await getAllSalas();
+                setSalas(data);
+            } catch (error) {
+                console.error('Error al obtener las salas:', error);
+            }
+        };
 
-    //     fetchData();
-    // }, []);
+        fetchData();
+    }, []);
 
     return (
         <tr key={turno.idTurno}>
-            {/* <td>{turno.idTurno}</td> */}
-            <td className="w-max-content px-4 text-center">{turno.idPaciente}</td>
-            <td className="w-max-content px-4 text-center">{turno.fechaTurno.toString()}</td>
-            <td className="w-max-content px-4 text-center">{turno.idMedico}</td>
+            <td className="w-max-content px-4 text-center">{turno.paciente.apellido}</td>
+            <td className="w-max-content px-4 text-center">{turno.paciente.nombre}</td>
+            <td className="w-max-content px-4 text-center">{turno.medico.apellido}</td>
+            <td className="w-max-content px-4 text-center">{turno.medico.nombre}</td>
             <td className="w-max-content px-4 text-center">{turno.idSala}</td>
+            <td className="w-max-content px-4 text-center">{turno.fechaTurno.toString().slice(0,-14)}</td>
             <td className="flex gap-5">
                 <FiEdit onClick={() => setOpenModalEdit(true)} cursor="pointer" className='text-blue-500' size={25} />
                 <Modal modalOpen={openModalEdit} setModalOpen={setOpenModalEdit}>
@@ -157,12 +142,42 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
                         <h3 className='font-bold text-lg text-center'> Editar Turno </h3>
                         <div className="space-y-1">
                             <div>
-                                <label htmlFor="paciente">idPaciente: </label>
+                                <label htmlFor="apellidoPaciente">Apellido Paciente: </label>
                                 <input
                                     type="text"
-                                    placeholder="idPaciente"
-                                    value={pacienteToEdit}
-                                    onChange={handlePacienteChange}
+                                    placeholder="apellidoPaciente"
+                                    value={apellidoPacienteToEdit}
+                                    onChange={handleApellidoPacienteChange}
+                                    maxLength={50}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="nombrePaciente">Nombre Paciente: </label>
+                                <input
+                                    type="text"
+                                    placeholder="nombrePaciente"
+                                    value={nombrePacienteToEdit}
+                                    onChange={handleNombrePacienteChange}
+                                    maxLength={50}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="apellidoMedico">Apellido Médico: </label>
+                                <input
+                                    type="text"
+                                    placeholder="apellidoMedico"
+                                    value={apellidoMedicoToEdit}
+                                    onChange={handleApellidoMedicoChange}
+                                    maxLength={50}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="nombreMedico">Nombre Médico: </label>
+                                <input
+                                    type="text"
+                                    placeholder="nombreNombreMedico"
+                                    value={nombreMedicoToEdit}
+                                    onChange={handleNombreMedicoChange}
                                     maxLength={50}
                                 />
                             </div>
@@ -177,21 +192,12 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
                                 />
                             </div>
                             <div>
-                                <label htmlFor="medico">idMedico: </label>
-                                <input
-                                    type="text"
-                                    placeholder="idMedico"
-                                    value={medicoToEdit}
-                                    onChange={handleMedicoChange}
-                                    maxLength={50}
-                                />
-                            </div>
-                            <div>
                                 <label htmlFor="sala">Sala: </label>
                                 <select
                                     value={salaToEdit}
-                                    onChange={handleSalaChange}>
-                                    {salas.map((salas: ISalas, index: number) => (
+                                    onChange={handleSalaChange}
+                                >
+                                    {salas && salas.map((salas: ISalas, index: number) => (
                                         <option key={index} value={salas.idSala}>
                                             {salas.idSala}
                                         </option>
@@ -199,12 +205,12 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
                                 </select>
                             </div>
                         </div>
+                        <div>
+                            <Button className="w-full mt-6 " name="btnEditTurnos" type="button" onClick={() => editTurno()}>
+                                Editar Turno
+                            </Button>
+                        </div>
                     </form>
-                    <div>
-                        <Button className="w-full mt-6 " name="btnEditTurnos" type="submit" onClick={() => editTurno()}>
-                            Editar Turno
-                        </Button>
-                    </div>
                 </Modal>
 
                 <FiTrash2 onClick={() => setOpenModalDelete(true)} cursor="pointer" className='text-red-500' size={25} />
