@@ -160,7 +160,7 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
                                 <label htmlFor="apellidoPaciente">Apellido Paciente: </label>
                                 <input
                                     type="text"
-                                    placeholder="apellidoPaciente"
+                                    placeholder="apellido Paciente"
                                     value={apellidoPacienteToEdit}
                                     onChange={handleApellidoPacienteChange}
                                     maxLength={50}
@@ -170,7 +170,7 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
                                 <label htmlFor="nombrePaciente">Nombre Paciente: </label>
                                 <input
                                     type="text"
-                                    placeholder="nombrePaciente"
+                                    placeholder="nombre Paciente"
                                     value={nombrePacienteToEdit}
                                     onChange={handleNombrePacienteChange}
                                     maxLength={50}
@@ -180,7 +180,7 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
                                 <label htmlFor="apellidoMedico">Apellido Médico: </label>
                                 <input
                                     type="text"
-                                    placeholder="apellidoMedico"
+                                    placeholder="apellido Medico"
                                     value={apellidoMedicoToEdit}
                                     onChange={handleApellidoMedicoChange}
                                     maxLength={50}
@@ -190,7 +190,7 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
                                 <label htmlFor="nombreMedico">Nombre Médico: </label>
                                 <input
                                     type="text"
-                                    placeholder="nombreNombreMedico"
+                                    placeholder="Nombre Medico"
                                     value={nombreMedicoToEdit}
                                     onChange={handleNombreMedicoChange}
                                     maxLength={50}
@@ -201,7 +201,7 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
                                 <DatePicker  date={date} setDate={setDate}/>
                                 <input
                                     type="hidden"
-                                    placeholder="fechaTurno"
+                                    placeholder="fecha Turno"
                                     value={fechaToEdit}
                                     // onChange={handleFechaChange}
                                     maxLength={50}
