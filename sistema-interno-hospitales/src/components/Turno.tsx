@@ -212,7 +212,7 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
                                 <select
                                     value={salaToEdit}
                                     onChange={handleSalaChange}
-                                >
+                                >   
                                     {salas && salas.map((salas: ISalas, index: number) => (
                                         <option key={index} value={salas.idSala}>
                                             {salas.idSala}
@@ -226,6 +226,11 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
                                 Editar Turno
                             </Button>
                         </div>
+                        {errorMessage && (
+                            <div className="error-message">
+                                {errorMessage}
+                            </div>
+                        )}
                     </form>
                 </Modal>
 

@@ -24,7 +24,7 @@ const AddTurno = () => {
     const [nombrePaciente, setNombrePaciente] = useState<string>('');
     const [apellidoMedico, setApellidoMedico] = useState<string>('');
     const [nombreMedico, setNombreMedico] = useState<string>('');
-    const [numeroSala, setNumeroSala] = useState<string>('');
+    const [numeroSala, setNumeroSala] = useState<string>('-');
     const [salas, setSalas] = useState<ISalas[] | null>([]); 
     const [fechaTurno, setFechaTurno] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -189,6 +189,9 @@ const AddTurno = () => {
                                 value={numeroSala}
                                 onChange={handleNumeroSalaChange}
                             >
+                                <option value="-" disabled>
+                                        -
+                                </option>
                                 {salas && salas.map((salas: ISalas, index: number) => (
                                     <option key={index} value={salas.idSala}>
                                         {salas.idSala}
