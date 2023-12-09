@@ -13,7 +13,7 @@ export const getAllSalas = async (): Promise<ISalas[]> => {
 
     if(response.ok) {
         const data = await response.json();
-        return data.tiposPrepagas;
+        return data.tiposSalas;
     }else {
         throw new Error('Error al querer obtener las salas');
     } 

@@ -6,7 +6,6 @@ export const GET = async (req: NextRequest) => {
         const tiposSalas = await prisma.tiposSalas.findMany({
 
         });
-
         if (tiposSalas) {
             return NextResponse.json({
                 tiposSalas

@@ -32,6 +32,34 @@ export const GET = async (req: NextRequest) => {
     }
 }
 
+export const POST = async (req: NextRequest) => {
+    const requestData = await req.json();
+    const turno = requestData.turno;
+
+    try {
+        const insertarTurno = await prisma.turnos.create({
+            data: {
+                idTurno: turno.idTurno,
+                fechaTurno: new Date(turno.fechaTurno),
+                idPaciente: turno.idPaciente,
+                idMedico: turno.idMedico,
+                idUsuario: turno.idUsuario,
+                idSala: turno.idSala,
+            },
+        })
+        console.log(insertarTurno)
+        return NextResponse.json({
+            mensaje: 'Turno nuevo insertado',
+            turnoInsertado: insertarTurno,
+        });
+    } catch (error) {
+        console.log(error)
+        return NextResponse.json({
+            error: 'Error al procesar la solicitud',
+        });
+    }
+}
+
 export const PUT = async (req: NextRequest) => {
     const requestData = await req.json();
     const turno = requestData;

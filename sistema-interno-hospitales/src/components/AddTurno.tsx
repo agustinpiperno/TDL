@@ -14,6 +14,7 @@ import { ISalas } from "@/types/salas";
 import { DatePicker } from "./DatePicker";
 import { getPaciente } from "@/app/pacientes/pacientes";
 import { getMedico } from "@/app/medico/medico";
+import { format } from "date-fns";
 
 const AddTurno = () => {
     const router = useRouter();
@@ -29,6 +30,11 @@ const AddTurno = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [date, setDate] = React.useState<Date | undefined>();
 
+    useEffect(() => {
+        const newFecha = date ? format(date, "yyyy-MM-dd") : '';
+        setFechaTurno(newFecha);
+    }, [date]); // cuando date cambia
+
     const ocultarCartelError = () => {
         if (apellidoPaciente !== '' && nombrePaciente !== '' && nombreMedico !== '' && apellidoMedico !== '' && numeroSala !== '' && fechaTurno) {
             setErrorMessage('');
@@ -37,7 +43,6 @@ const AddTurno = () => {
 
     const handlerSubmitNewTurno: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
-        console.log(newTurnoValue);
         setNewTurnoValue("");
     }
 
@@ -66,10 +71,10 @@ const AddTurno = () => {
         ocultarCartelError();
     };
 
-    const handleFechaTurnoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFechaTurno(event.target.value);
-        ocultarCartelError();
-    };
+    // const handleFechaTurnoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setFechaTurno(event.target.value);
+    //     ocultarCartelError();
+    // };
 
     const registrarTurno = async (infoTurno : any) => {
         var respuesta = await insertarTurno(infoTurno);
