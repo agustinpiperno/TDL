@@ -3,31 +3,57 @@ import {IExamen} from "../../types/examen";
 
 const apiUrl = `http://localhost:3000/api/estudio`;
 
-export const insertarEstudio = async (infoEstudio: IEstudio) : Promise<IEstudio | void> => {
+// export const insertarEstudio = async (infoEstudio: IEstudio) : Promise<IEstudio | void> => {
+    
+//     const estudioNuevo = {
+//         estudio: {
+//             tipoEstudio: infoEstudio.tipoEstudio,
+//             resultado: infoEstudio.resultado,
+//             examenesIdExamen: infoEstudio.examenesIdExamen,
+//             Estudio: infoEstudio.Estudio
+//         }
+//     };
 
-    const estudioNuevo = {
-        estudio: {
-            tipoEstudio: infoEstudio.tipoEstudio,
-            resultado: infoEstudio.resultado,
-            examenesIdExamen: infoEstudio.examenesIdExamen
-        }
-    };
+//     try {
+//         const response = await fetch(apiUrl, {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify(estudioNuevo)
+//         });
+
+//         if(response.ok) {
+//             const data = await response.json();
+//             return data.pacientes
+//         }else {
+//             throw new Error('Error al querer ingresar al paciente');
+//         } 
+//     } catch (error) {
+//         console.error('Error:', error);
+//     }
+// };
+
+export const insertarEstudio = async (infoEstudio: IEstudio): Promise<IEstudio | void> => {
+    const formData = new FormData();
+    formData.append('tipoEstudio', infoEstudio.tipoEstudio);
+    formData.append('resultado', infoEstudio.resultado || ''); // Asegúrate de manejar un valor nulo si es necesario
+    formData.append('examenesIdExamen', String(infoEstudio.examenesIdExamen || '')); // Convierte a string si es necesario
+    formData.append('Estudio', infoEstudio.Estudio || ''); // Aquí se adjunta el archivo
+    formData.append('fechaRealizacion', infoEstudio.fechaRealizacion.toString());
 
     try {
         const response = await fetch(apiUrl, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(estudioNuevo)
+            body: formData,
         });
 
-        if(response.ok) {
+        if (response.ok) {
             const data = await response.json();
-            return data.pacientes
-        }else {
+            return data.pacientes;
+        } else {
             throw new Error('Error al querer ingresar al paciente');
-        } 
+        }
     } catch (error) {
         console.error('Error:', error);
     }
@@ -35,33 +61,58 @@ export const insertarEstudio = async (infoEstudio: IEstudio) : Promise<IEstudio 
 
 export const editarEstudio = async (infoEstudio: IEstudio) : Promise<IEstudio | void> => {
 
-    const estudioEditar = {
-        estudio:{
-            idEstudio: infoEstudio.idEstudio,
-            tipoEstudio: infoEstudio.tipoEstudio,
-            resultado: infoEstudio.resultado,
-            Examen: infoEstudio.Examen
-        }
-    };
+    const formData = new FormData();
+    formData.append('idEstudio', infoEstudio.idEstudio.toString());
+    formData.append('tipoEstudio', infoEstudio.tipoEstudio);
+    formData.append('resultado', infoEstudio.resultado || ''); // Asegúrate de manejar un valor nulo si es necesario
+    formData.append('examenesIdExamen', String(infoEstudio.examenesIdExamen || '')); // Convierte a string si es necesario
+    formData.append('Estudio', infoEstudio.Estudio || ''); // Aquí se adjunta el archivo
+    formData.append('estudioPath', infoEstudio.estudioPath || '');
+    formData.append('fechaRealizacion', infoEstudio.fechaRealizacion.toString());
 
     try {
         const response = await fetch(apiUrl, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(estudioEditar)
+            body: formData,
         });
-    
+
         if (response.ok) {
             const data = await response.json();
-            return data
-        }else {
-            throw new Error('Error al querer editar el estudio');
-        } 
+            return data;
+        } else {
+            throw new Error('Error al querer ingresar al paciente');
+        }
     } catch (error) {
         console.error('Error:', error);
-    }   
+    }
+
+    // const estudioEditar = {
+    //     estudio:{
+    //         idEstudio: infoEstudio.idEstudio,
+    //         tipoEstudio: infoEstudio.tipoEstudio,
+    //         resultado: infoEstudio.resultado,
+    //         Examen: infoEstudio.Examen
+    //     }
+    // };
+
+    // try {
+    //     const response = await fetch(apiUrl, {
+    //         method: 'PUT',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify(estudioEditar)
+    //     });
+    
+    //     if (response.ok) {
+    //         const data = await response.json();
+    //         return data
+    //     }else {
+    //         throw new Error('Error al querer editar el estudio');
+    //     } 
+    // } catch (error) {
+    //     console.error('Error:', error);
+    // }   
 };
 
 export const eliminarEstudio = async (idEstudio: number) : Promise<void> => {

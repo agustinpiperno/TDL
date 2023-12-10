@@ -78,6 +78,8 @@ model Estudios {
   resultado        String?  @db.VarChar(200)
   Examenes         Examenes @relation(fields: [examenesIdExamen], references: [idExamen], onDelete: Cascade, onUpdate: Cascade)
   examenesIdExamen Int
+  estudioPath      String?   @db.VarChar(200)
+  fechaRealizacion DateTime
 }
 
 model TiposSalas {

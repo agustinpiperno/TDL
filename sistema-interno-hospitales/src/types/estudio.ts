@@ -5,5 +5,8 @@ export interface IEstudio {
     tipoEstudio: string
     resultado: string | null,
     examenesIdExamen: number | undefined,
-    Examen: IExamen | null;
+    Examen: IExamen | null,
+    Estudio: File | null,
+    estudioPath: string | null
+    fechaRealizacion: Date;
 };

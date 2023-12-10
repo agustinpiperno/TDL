@@ -118,7 +118,6 @@ const AddPaciente = () => {
         setTelefono("");
         setOcupacion("");
         setIdPrepaga("");
-        setPrepagas(null);
         setModalOpen(false);
         router.refresh();
     }

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { IExamen } from "@/types/examen";
 import { IEstudio } from "@/types/estudio";
 import { insertarEstudio } from "@/app/estudio/estudio";
+import { FiTrash2 } from "react-icons/fi";
 
 interface ExamenProps {
     examen: IExamen
@@ -18,6 +19,9 @@ const AddEstudio: React.FC<ExamenProps> = ({ examen }) => {
     const [errorMessage, setErrorMessage] = useState('');
     const [tipoEstudioToAdd, setTipoEstudioToAdd] = useState<string>('');
     const [resultadoToAdd, setResultadoToAdd] = useState<string | null>('');
+    const [fileEstudio, setFileEstudio] = useState<File | null>();
+
+
 
     const handleTipoEstudioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTipoEstudioToAdd(event.target.value);
@@ -27,18 +31,38 @@ const AddEstudio: React.FC<ExamenProps> = ({ examen }) => {
         setResultadoToAdd(event.target.value);
     };
 
+    const handleImagenEstudioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (files && files.length > 0) {
+            const selectedFile = files[0];
+            const validImageTypes = ['image/jpeg', 'image/png', 'image/gif']; // Tipos de archivo de imagen permitidos
+    
+            if (validImageTypes.includes(selectedFile.type)) {
+                setFileEstudio(selectedFile);
+            } else {
+                // El archivo seleccionado no es una imagen válida
+                alert('Por favor, selecciona un archivo de imagen válido (JPEG, PNG o GIF)');
+            }        
+        }
+    };
+
     const registrarEstudio = async (values: IEstudio) => {
         await insertarEstudio(values);
     };
 
     const addEstudio = async () => {
+        const currentDate: Date = new Date();
+
         const estudioAlta = {
             estudio: {
                 idEstudio: 0,
                 tipoEstudio: tipoEstudioToAdd,
                 resultado: resultadoToAdd,
                 examenesIdExamen: examen.idExamen,
-                Examen: null
+                Examen: null,
+                Estudio: fileEstudio || null,
+                estudioPath: null,
+                fechaRealizacion: currentDate
             }
         };
 
@@ -46,6 +70,7 @@ const AddEstudio: React.FC<ExamenProps> = ({ examen }) => {
 
         setTipoEstudioToAdd("")
         setResultadoToAdd("");
+        setFileEstudio(null);
         setModalOpen(false);
         router.refresh();
     }
@@ -86,6 +111,28 @@ const AddEstudio: React.FC<ExamenProps> = ({ examen }) => {
                             <p className="mt-2 text-gray-500">
                                 Caracteres: {resultadoToAdd?.length} / 50 <br /> Palabras: {resultadoToAdd?.length == 0 ? 0 : resultadoToAdd?.trim().split(/\s+/).length}
                             </p>
+                        </div>
+                        <div>
+                            <label htmlFor="imageEstudio" ></label>
+                            <input
+                                id="imageEstudioSubida"
+                                type="file"
+                                className="custom-file-input"
+                                accept="image/*"
+                                onChange={handleImagenEstudioChange}
+                            />
+                            <div className="flex items-center w-full gap-5">
+                                <p>Archivo seleccionado: {fileEstudio ? fileEstudio.name : 'Ningún archivo seleccionado'}</p>
+                                <div className="justify-end tooltip-label tooltip-container font-medium" data-tooltip="Descartar imagen">
+                                    {fileEstudio && <FiTrash2 onClick={() => setFileEstudio(null)} cursor="pointer" className='text-red-500' size={20} />}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex">
+                            {fileEstudio && <img
+                                className="w-64 h-64 object-contain mx-auto"
+                                src={URL.createObjectURL(fileEstudio)} alt=""
+                            />}
                         </div>
                     </div>
                 </form>

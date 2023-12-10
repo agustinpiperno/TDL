@@ -212,3 +212,14 @@
 .gris {
   color: #888; /* Cambia el color a uno grisáceo según tu preferencia */
 }
+
+.custom-file-input {
+	color: transparent;
+	background-color: transparent;
+	border: none;
+	outline: none;
+	font-size: 0.85em;
+	cursor: pointer;
+}
+
+  

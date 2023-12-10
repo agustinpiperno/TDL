@@ -16,6 +16,7 @@ import AddEstudio from "./AddEstudios";
 import { GoDownload } from "react-icons/go";
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import axios from "axios";
 // Extender la interfaz jsPDF para incluir autoTable
 declare module 'jspdf' {
     interface jsPDF {
@@ -103,51 +104,86 @@ const Examen: React.FC<ExamenProps> = ({ examen }) => {
         fetchData();
     }, []);
 
-    const downloadPDF = () => {
+    const formatoNombreMedico = (pageNumber: number): string => {
+        return `Dr. ${examen.usuario?.apellido}, ${examen.usuario?.nombre} - Página ${pageNumber}`;
+    };
+
+
+    const downloadPDF = async () => {
         // Crear un nuevo documento PDF
         const doc = new jsPDF();
         let pageNumber = 1;
 
-        const formatoNombreMedico = `Dr. ${examen.usuario?.apellido}, ${examen.usuario?.nombre} - Página ${pageNumber}`;
         const formatoNombrePaciente = `${examen.paciente?.apellido}, ${examen.paciente?.nombre}`;
         const formatoTipoExamen = 'Examen ' + examen.tipoExamenObject?.descripcion;
         const formatoFecha = formatearFecha(examen.fechaRealizacion.toString());
         const formatoNombreArchivo = `Examen ${examen.tipoExamenObject?.descripcion} ${examen.paciente?.apellido} ${examen.paciente?.nombre} ${formatoFecha}.pdf`;
+
         // Agregar el texto de la lista al PDF
         doc.setFontSize(12);
-        doc.text(formatoTipoExamen, doc.internal.pageSize.width/2-doc.getTextWidth(formatoTipoExamen)/2, 30);
+        doc.text(formatoTipoExamen, doc.internal.pageSize.width / 2 - doc.getTextWidth(formatoTipoExamen) / 2, 30);
+        doc.setFontSize(10);
+        doc.text(examen.observaciones || '', 10, 40);
+
 
         const columnas = ['Tipo de Estudio', 'Resultado'];
         const filas = examen.estudio?.map(item => [item.tipoEstudio, item.resultado]);
-
-
 
         // Agregar el encabezado común para cada página
         const addHeader = () => {
             doc.setFontSize(11);
             doc.setTextColor(40);
-            doc.text(formatoNombrePaciente, doc.internal.pageSize.width-doc.getTextWidth(formatoNombrePaciente)-15, 15);
+            doc.text(formatoNombrePaciente, doc.internal.pageSize.width - doc.getTextWidth(formatoNombrePaciente) - 15, 15);
         };
+
         //Footer
         doc.autoTable({
-            startY: 40,
+            startY: 50,
             head: [columnas],
             body: filas,
             didDrawPage: () => {
-                if (pageNumber === 1) {
-                    addHeader();
-                  }
+                // if (pageNumber === 1) {
+                addHeader();
+                // }
                 // Agregar el footer en cada página
                 doc.setFontSize(10);
-                doc.text(formatoNombreMedico, 15, doc.internal.pageSize.height - 15);
-                doc.text(formatoFecha, doc.internal.pageSize.width-doc.getTextWidth(formatoFecha)-15, doc.internal.pageSize.height - 15);
-                pageNumber++;
+                doc.text(formatoNombreMedico(pageNumber++), 15, doc.internal.pageSize.height - 15);
+                doc.text(formatoFecha, doc.internal.pageSize.width - doc.getTextWidth(formatoFecha) - 15, doc.internal.pageSize.height - 15);
             },
+        });
+
+        // doc.addPage();
+
+        examen.estudio?.forEach((estudio, index) => {
+            // if (index !== 0) {
+            //     doc.addPage(); // Agregar una nueva página para las imágenes subsiguientes
+            // }
+            doc.addPage()
+            addHeader();
+            doc.setFontSize(12);
+            doc.text(`Estudio: ${estudio.tipoEstudio}`, 10, 20);
+            doc.setFontSize(10);
+            doc.text(estudio.resultado || '', 10, 30);
+            doc.text(`Estudio realizado el día: ${formatearFecha(estudio.fechaRealizacion.toString())}`, 10, 40);
+
+            // Agregar la imagen al PDF
+            if (estudio.estudioPath) {
+                try {
+                    doc.addImage(estudio.estudioPath, 'PNG', doc.internal.pageSize.width / 2 - 50, 50, 100, 100); // Ajusta las coordenadas y dimensiones según sea necesario
+                } catch (error) {
+                    alert(`Ocurrio un problema con la imagen ${estudio.estudioPath}`);
+                }
+            }
+
+            doc.setFontSize(10);
+            doc.text(formatoNombreMedico(pageNumber++), 15, doc.internal.pageSize.height - 15);
+            doc.text(formatoFecha, doc.internal.pageSize.width - doc.getTextWidth(formatoFecha) - 15, doc.internal.pageSize.height - 15);
         });
 
         // Guardar o mostrar el PDF
         doc.save(formatoNombreArchivo);
         //doc.output('dataurlnewwindow');
+
     };
 
     return (
@@ -220,7 +256,11 @@ const Examen: React.FC<ExamenProps> = ({ examen }) => {
                 </div>
                 <div>{examen.observaciones}</div>
                 <div>
-                    <ListEstudio estudios={examen.estudio} />
+                <h2 className="text-2xl center">Estudios realizados</h2>
+                    {/* {Cuando a - b es negativo, significa que a debe estar antes que b en la secuencia ordenada. 
+                        Si es cero, significa que a y b son iguales en términos de ordenamiento. Y si es positivo, 
+                        indica que b debe estar antes que a en la secuencia ordenada.} */}
+                    <ListEstudio estudios={examen.estudio?.sort((a, b) => a.idEstudio - b.idEstudio) || null} />
                 </div>
                 <div className="justify-end w-full flex gap-5">
                     <div className="mt-2 text-gray-500">{formatearMedico(examen.usuario)}</div>
