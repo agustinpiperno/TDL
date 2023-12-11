@@ -6,7 +6,7 @@ import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { Button } from "./ui/button";
 import Modal from "./Modal";
 import { useRouter } from "next/navigation";
-import { editarTurno, eliminarTurno } from "@/app/turnos/turnos";
+import { editarTurno, eliminarTurno, getSalaEstaReservada } from "@/app/turnos/turnos";
 import { VscNotebook } from "react-icons/vsc";
 import { string } from "zod";
 import { ISalas } from "@/types/salas";
@@ -94,6 +94,7 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
         } else {
             setErrorMessage('');
         }
+
         const pacienteToEdit = await getPaciente(nombrePacienteToEdit, apellidoPacienteToEdit)
         const medicoToEdit = await getMedico(nombreMedicoToEdit, apellidoMedicoToEdit)
 
@@ -102,21 +103,28 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
             return;
         }
         else {
-            setErrorMessage('');
-            const turnoEditar = {
-                idTurno: turno.idTurno,
-                idPaciente: pacienteToEdit.idPaciente,
-                idMedico: medicoToEdit.idMedico,
-                idSala: Number(salaToEdit),
-                fechaTurno: fechaToEdit,
-                idUsuario: turno.idUsuario,
+            const existeSalaReservada = await getSalaEstaReservada(turno.idTurno.toString(), fechaToEdit, salaToEdit)
+            if (existeSalaReservada){
+                setErrorMessage('La sala ya está reservada para ese día.');
+                return;
             }
+            else {
+                setErrorMessage('');
+                const turnoEditar = {
+                    idTurno: turno.idTurno,
+                    idPaciente: pacienteToEdit.idPaciente,
+                    idMedico: medicoToEdit.idMedico,
+                    idSala: Number(salaToEdit),
+                    fechaTurno: fechaToEdit,
+                    idUsuario: turno.idUsuario,
+                }
 
-            await editarTurno(turnoEditar);
-        
-            setOpenModalEdit(false);
+                await editarTurno(turnoEditar);
+            
+                setOpenModalEdit(false);
 
-            router.refresh();
+                router.refresh();
+            }
         }
     }
 

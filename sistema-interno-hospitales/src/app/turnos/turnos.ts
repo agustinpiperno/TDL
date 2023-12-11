@@ -1,3 +1,4 @@
+import { ISalas } from "@/types/salas";
 import {ITurno} from "../../types/turnos";
 
 const apiUrl = `http://localhost:3000/api/turnos`;
@@ -87,3 +88,29 @@ export const eliminarTurno = async (idTurno: number) : Promise<void> => {
         console.error('Error:', error);
     }  
 };
+
+export const getSalaEstaReservada = async (idTurno: string, fechaTurno : string, sala: string): Promise <ISalas | void> => {
+    const params = {
+        idTurno: idTurno,
+        fechaTurno: fechaTurno,
+        sala: sala
+    };
+    const queryString = new URLSearchParams(params).toString();
+    const apiUrl = `http://localhost:3000/api/turnos?${queryString}`;
+
+    const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        cache: 'no-store',
+    });
+
+    if(response.ok) {
+        const data = await response.json();
+        return data.existe;
+    }else {
+        throw new Error('Error al querer obtener las salas');
+    } 
+    
+}

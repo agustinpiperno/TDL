@@ -7,7 +7,7 @@ import { Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ITurno } from "@/types/turnos";
-import { insertarTurno } from "@/app/turnos/turnos";
+import { getSalaEstaReservada, insertarTurno } from "@/app/turnos/turnos";
 import { useRouter } from "next/navigation";
 import { getAllSalas } from "@/app/tiposSalas/tiposSalas";
 import { ISalas } from "@/types/salas";
@@ -93,28 +93,35 @@ const AddTurno = () => {
             if (pacienteToAdd === undefined || medicoToAdd === undefined) {
                 setErrorMessage('El paciente o el médico no existen.');
                 return;
-            }
-            
-            const turnoAlta = {
-                idPaciente: pacienteToAdd.idPaciente,
-                idMedico: medicoToAdd.idMedico,
-                idSala: Number(numeroSala),
-                fechaTurno: fechaTurno,
-                idUsuario: medicoToAdd.idMedico, 
-            }
+            } else {
+                const existeSalaReservada = await getSalaEstaReservada('', fechaTurno, numeroSala)
+                if (existeSalaReservada){
+                    setErrorMessage('La sala ya está reservada para ese día.');
+                    return;
+                }
+                else{
+                    setErrorMessage('');
+                    const turnoAlta = {
+                        idPaciente: pacienteToAdd.idPaciente,
+                        idMedico: medicoToAdd.idMedico,
+                        idSala: Number(numeroSala),
+                        fechaTurno: fechaTurno,
+                        idUsuario: medicoToAdd.idMedico, 
+                    }
 
-            await registrarTurno(turnoAlta);
-            setApellidoPaciente("");
-            setNombrePaciente("");
-            setApellidoMedico("");
-            setNombreMedico("");
-            setNumeroSala("");
-            setFechaTurno("");
-            setModalOpen(false);
-            router.refresh();
+                    await registrarTurno(turnoAlta);
+                    setApellidoPaciente("");
+                    setNombrePaciente("");
+                    setApellidoMedico("");
+                    setNombreMedico("");
+                    setNumeroSala("");
+                    setFechaTurno("");
+                    setModalOpen(false);
+                    router.refresh();
+                }
+            }
         }
-   
-    }
+    };
 
     //POR EL MOMENTO DEJO COMENTADO ESTO
     const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {

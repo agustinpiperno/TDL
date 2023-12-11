@@ -2,33 +2,57 @@ import {NextRequest, NextResponse} from "next/server"
 import prisma from "../../../../prisma/client"
 
 export const GET = async (req: NextRequest) => {
-    try{
-        const turnos = await prisma.turnos.findMany({
-            orderBy: {
-                idTurno: 'asc',
-            },
-            include: {
-                paciente: true,
-                medico: true, 
-                usuario: true,
-                sala: true,
+    const idTurno = req.nextUrl.searchParams.get("idTurno")
+    const fechaTurno = req.nextUrl.searchParams.get("fechaTurno")
+    const sala = req.nextUrl.searchParams.get("sala")
+
+    if (fechaTurno && sala) {
+     const data = await prisma.turnos.findFirst({
+            where: {
+                fechaTurno: new Date(fechaTurno),
+                idSala: Number(sala),
             },
         });
-
-        if (turnos) {
+        if (data && data.idTurno !== Number(idTurno)) {
             return NextResponse.json({
-                turnos
+                existe : true,
+                mensaje: "El turno ya esta reservado"
             });
         } else {
             return NextResponse.json({
-                mensaje: 'No hay turnos registrados',
+                existe: false,
+                mensaje: "El turno esta disponible"
             });
         }
-        
-    }catch(error){
-        return NextResponse.json({
-            error: 'Error al procesar la solicitud',
-        });
+     } else {
+        try{
+            const turnos = await prisma.turnos.findMany({
+                orderBy: {
+                    idTurno: 'asc',
+                },
+                include: {
+                    paciente: true,
+                    medico: true, 
+                    usuario: true,
+                    sala: true,
+                },
+            });
+
+            if (turnos) {
+                return NextResponse.json({
+                    turnos
+                });
+            } else {
+                return NextResponse.json({
+                    mensaje: 'No hay turnos registrados',
+                });
+            }
+            
+        }catch(error){
+            return NextResponse.json({
+                error: 'Error al procesar la solicitud',
+            });
+        }
     }
 }
 
@@ -53,7 +77,6 @@ export const POST = async (req: NextRequest) => {
             turnoInsertado: insertarTurno,
         });
     } catch (error) {
-        console.log(error)
         return NextResponse.json({
             error: 'Error al procesar la solicitud',
         });
@@ -63,7 +86,6 @@ export const POST = async (req: NextRequest) => {
 export const PUT = async (req: NextRequest) => {
     const requestData = await req.json();
     const turno = requestData;
-    console.log(turno)
     try {
         const updatedTurno = await prisma.turnos.update({
             where: {
