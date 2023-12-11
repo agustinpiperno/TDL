@@ -63,7 +63,6 @@ export const editarTurno = async (infoTurno: any) : Promise<ITurno | void> => {
             },
             body: JSON.stringify(infoTurno)
         });
-        console.log(infoTurno)
         if (response.ok) {
             const data = await response.json();
             return data.turnos

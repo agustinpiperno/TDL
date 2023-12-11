@@ -46,16 +46,16 @@ const NavbarMainPage = () => {
                 <DropdownMenu>
                     <DropdownMenuTrigger className="focus:outline-none">Salas</DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <Link href="/administrarSalas">
+                        <Link href="/tiposSalas">
                             <DropdownMenuItem>Administrar Salas</DropdownMenuItem>
                         </Link>
                     </DropdownMenuContent>
                 </DropdownMenu>
                 <DropdownMenu>
-                    <DropdownMenuTrigger className="focus:outline-none">Doctores</DropdownMenuTrigger>
+                    <DropdownMenuTrigger className="focus:outline-none">Médicos</DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <Link href="/administrarSalas">
-                            <DropdownMenuItem>Administrar Doctores</DropdownMenuItem>
+                        <Link href="/medicos">
+                            <DropdownMenuItem>Administrar Médicos</DropdownMenuItem>
                         </Link>
                     </DropdownMenuContent>
                 </DropdownMenu>

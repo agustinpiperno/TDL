@@ -71,7 +71,7 @@ export const POST = async (req: NextRequest) => {
                 idSala: turno.idSala,
             },
         })
-        console.log(insertarTurno)
+
         return NextResponse.json({
             mensaje: 'Turno nuevo insertado',
             turnoInsertado: insertarTurno,

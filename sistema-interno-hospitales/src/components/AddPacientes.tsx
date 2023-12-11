@@ -36,7 +36,6 @@ const AddPaciente = () => {
 
     const handlerSubmitNewPaciente: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
-        console.log(newPacienteValue);
         setNewPacienteValue("");
     }
 
