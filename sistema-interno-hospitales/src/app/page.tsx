@@ -1,14 +1,16 @@
-"use client"
+"use client";
 
 import { useRouter } from "next/navigation";
 
-export default function index() {
+export default function Index() {
+	const router = useRouter();
 
-	const router = useRouter()
-	router.push("/home")
+	// Arreglo error que salia con el loading
+	if (typeof window !== "undefined") {
+		router.push("/home");
+	}
 
 	return (
-		<div className="h-screen flex flex-col justify-center items-center">
-		</div>
+		<div className="h-screen flex flex-col justify-center items-center"></div>
 	);
 }
