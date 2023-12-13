@@ -52,6 +52,14 @@ const NavbarMainPage = () => {
                     </DropdownMenuContent>
                 </DropdownMenu>
                 <DropdownMenu>
+                    <DropdownMenuTrigger className="focus:outline-none">Exámenes</DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <Link href="/tiposExamenes">
+                            <DropdownMenuItem>Administrar Exámenes</DropdownMenuItem>
+                        </Link>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+                <DropdownMenu>
                     <DropdownMenuTrigger className="focus:outline-none">Salas</DropdownMenuTrigger>
                     <DropdownMenuContent>
                         <Link href="/tiposSalas">
