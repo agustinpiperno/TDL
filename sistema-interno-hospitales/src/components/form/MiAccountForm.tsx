@@ -32,6 +32,11 @@ const MiAccountForm = () => {
 	const [errorMessage, setErrorMessage] = useState("");
 	const [direccion, setDireccion] = useState("");
 	const [telefono, setTelefono] = useState("");
+	const router = useRouter();
+
+	const handlePasswordChangeClick = () => {
+		router.push("/cambiarPassword");
+	};
 
 	const handleSave = async () => {
 		if (direccion || telefono) {
@@ -201,6 +206,7 @@ const MiAccountForm = () => {
 					className="w-full mt-6"
 					name="btnCambiarContrasenia"
 					type="button"
+					onClick={handlePasswordChangeClick}
 				>
 					Cambiar contraseña
 				</Button>
