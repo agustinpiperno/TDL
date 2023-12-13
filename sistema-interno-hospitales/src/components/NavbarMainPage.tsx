@@ -44,6 +44,14 @@ const NavbarMainPage = () => {
                     </DropdownMenuContent>
                 </DropdownMenu>
                 <DropdownMenu>
+                    <DropdownMenuTrigger className="focus:outline-none">Prepagas</DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <Link href="/tiposPrepagas">
+                            <DropdownMenuItem>Administrar Prepagas</DropdownMenuItem>
+                        </Link>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+                <DropdownMenu>
                     <DropdownMenuTrigger className="focus:outline-none">Salas</DropdownMenuTrigger>
                     <DropdownMenuContent>
                         <Link href="/tiposSalas">
