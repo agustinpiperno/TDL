@@ -8,9 +8,7 @@ const WelcomeBanner = () => {
     let nombreUsuario = "Usuario";
     if (token) {
         const decodedToken = jwt.verify(token.value, 'secret') as JwtPayload
-        const firstKey = Object.keys(decodedToken)[0]
-        nombreUsuario = decodedToken[firstKey]
-
+        nombreUsuario = decodedToken.usuario
     }
 
     return (
