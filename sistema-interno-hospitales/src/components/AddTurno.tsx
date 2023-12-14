@@ -22,8 +22,10 @@ const AddTurno = () => {
     const [newTurnoValue, setNewTurnoValue] = useState<string>('');
     const [apellidoPaciente, setApellidoPaciente] = useState<string>('');
     const [nombrePaciente, setNombrePaciente] = useState<string>('');
+    const [DNIPaciente, setDNIPaciente] = useState<string>('');
     const [apellidoMedico, setApellidoMedico] = useState<string>('');
     const [nombreMedico, setNombreMedico] = useState<string>('');
+    const [DNIMedico, setDNIMedico] = useState<string>('');
     const [numeroSala, setNumeroSala] = useState<string>('-');
     const [salas, setSalas] = useState<ISalas[] | null>([]); 
     const [fechaTurno, setFechaTurno] = useState<string>('');
@@ -56,6 +58,15 @@ const AddTurno = () => {
         ocultarCartelError();
     };
 
+    const handleDNIPacienteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const inputDocumentNumber = event.target.value;
+        // Validar si el valor ingresado es solo números (usando expresión regular)
+        if (/^\d*$/.test(inputDocumentNumber) || inputDocumentNumber === '') {
+            setDNIPaciente(inputDocumentNumber);
+        }
+        ocultarCartelError();
+    };
+
     const handleApellidoMedicoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setApellidoMedico(event.target.value);
         ocultarCartelError();
@@ -63,6 +74,15 @@ const AddTurno = () => {
 
     const handleNombreMedicoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNombreMedico(event.target.value);
+        ocultarCartelError();
+    };
+
+    const handleDNIMedicoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const inputDocumentNumber = event.target.value;
+        // Validar si el valor ingresado es solo números (usando expresión regular)
+        if (/^\d*$/.test(inputDocumentNumber) || inputDocumentNumber === '') {
+            setDNIMedico(inputDocumentNumber);
+        }
         ocultarCartelError();
     };
 
@@ -87,8 +107,8 @@ const AddTurno = () => {
         } else {
             setErrorMessage('');
 
-            const pacienteToAdd = await getPaciente(nombrePaciente, apellidoPaciente)
-            const medicoToAdd = await getMedico(nombreMedico, apellidoMedico)
+            const pacienteToAdd = await getPaciente(nombrePaciente, apellidoPaciente, DNIPaciente)
+            const medicoToAdd = await getMedico(nombreMedico, apellidoMedico, DNIMedico)
     
             if (pacienteToAdd === undefined || medicoToAdd === undefined) {
                 setErrorMessage('El paciente o el médico no existen.');
@@ -116,6 +136,8 @@ const AddTurno = () => {
                     setNombreMedico("");
                     setNumeroSala("");
                     setFechaTurno("");
+                    setDNIPaciente("");
+                    setDNIMedico("");
                     setModalOpen(false);
                     router.refresh();
                 }
@@ -171,6 +193,16 @@ const AddTurno = () => {
                             />
                         </div>
                         <div>
+                            <label htmlFor="DNIPaciente">Nro. Doc. Paciente: </label>
+                            <input
+                                type="text"
+                                placeholder="Nro. Doc. Paciente"
+                                value={DNIPaciente}
+                                onChange={handleDNIPacienteChange}
+                                maxLength={50}
+                            />
+                        </div>
+                        <div>
                             <label htmlFor="apellidoMedico">Apellido Médico: </label>
                             <input
                                 type="text"
@@ -187,6 +219,16 @@ const AddTurno = () => {
                                 placeholder="Nombre Médico"
                                 value={nombreMedico}
                                 onChange={handleNombreMedicoChange}
+                                maxLength={50}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="DNIMedico">Nro. Doc. Médico: </label>
+                            <input
+                                type="text"
+                                placeholder="Nro. Doc. Médico"
+                                value={DNIMedico}
+                                onChange={handleDNIMedicoChange}
                                 maxLength={50}
                             />
                         </div>

@@ -7,13 +7,15 @@ interface Params {
 export const GET = async (req: NextRequest) => {
         const nombrePaciente = req.nextUrl.searchParams.get("nombrePaciente")
         const apellidoPaciente = req.nextUrl.searchParams.get("apellidoPaciente")
+        const DNIPaciente = req.nextUrl.searchParams.get("DNIPaciente")
 
-        if (nombrePaciente && apellidoPaciente) {
+        if (nombrePaciente && apellidoPaciente && DNIPaciente) {
             try{
                 const pacientes = await prisma.pacientes.findFirst({
                     where: {
                         nombre: nombrePaciente,
                         apellido: apellidoPaciente,
+                        documento: Number(DNIPaciente)
                     },
                 });
 

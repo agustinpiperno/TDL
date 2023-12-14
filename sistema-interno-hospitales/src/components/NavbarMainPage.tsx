@@ -67,14 +67,6 @@ const NavbarMainPage = () => {
                         </Link>
                     </DropdownMenuContent>
                 </DropdownMenu>
-                <DropdownMenu>
-                    <DropdownMenuTrigger className="focus:outline-none">Médicos</DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        <Link href="/medicos">
-                            <DropdownMenuItem>Administrar Médicos</DropdownMenuItem>
-                        </Link>
-                    </DropdownMenuContent>
-                </DropdownMenu>
                 <Link href="/administrarCuenta">
                     Mi Cuenta
                 </Link>

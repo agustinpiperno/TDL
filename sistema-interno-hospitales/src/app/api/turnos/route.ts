@@ -13,6 +13,7 @@ export const GET = async (req: NextRequest) => {
                 idSala: Number(sala),
             },
         });
+
         if (data && data.idTurno !== Number(idTurno)) {
             return NextResponse.json({
                 existe : true,

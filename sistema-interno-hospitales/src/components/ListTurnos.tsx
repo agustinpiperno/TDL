@@ -17,8 +17,10 @@ const ListTurno: React.FC<ListTurnoProps> = ({ turnos, usuario }) => {
     const [date, setDate] = React.useState<Date>()
     const [apellidoPacienteFilter, setApellidoPacienteFilter] = useState<string>("");
     const [nombrePacienteFilter, setNombrePacienteFilter] = useState<string>("");
+    const [DNIPacienteFilter, setDNIPacienteFilter] = useState<string>("");
     const [apellidoMedicoFilter, setApellidoMedicoFilter] = useState<string>("");
     const [nombreMedicoFilter, setNombreMedicoFilter] = useState<string>("");
+    const [DNIMedicoFilter, setDNIMedicoFilter] = useState<string>("");
     const [numeroSalaFilter, setNumeroSalaFilter] = useState<string>("");
     const [fechaFilter, setFechaFilter] = useState<string>("");
     const [misPacientesFilter, setMisPacientesFilter] = useState<boolean>(false);
@@ -35,8 +37,10 @@ const ListTurno: React.FC<ListTurnoProps> = ({ turnos, usuario }) => {
     const filteredTurnos = turnosFromDatabase.filter(turno => {
         const apellidoPacienteFiltro = turno.paciente.apellido.includes(apellidoPacienteFilter);
         const nombrePacienteFiltro = turno.paciente.nombre.includes(nombrePacienteFilter);
+        const DNIPacienteFiltro = turno.paciente.documento.toString().includes(DNIPacienteFilter);
         const apellidoMedicoFiltro = turno.medico.apellido.includes(apellidoMedicoFilter);
         const nombreMedicoFiltro = turno.medico.nombre.includes(nombreMedicoFilter);
+        const DNIMedicoFiltro = turno.medico.documento.toString().includes(DNIMedicoFilter);
         const numeroSalaFiltro = turno.idSala.toString().includes(numeroSalaFilter);
         const fechaFiltro = turno.fechaTurno.toString().includes(fechaFilter);
 
@@ -56,14 +60,17 @@ const ListTurno: React.FC<ListTurnoProps> = ({ turnos, usuario }) => {
 
         const pacienteByUsuarioFiltroCondition = !misPacientesFilter || (misPacientesFilter && pacienteByUsuarioFiltro);
 
-        return pacienteByUsuarioFiltroCondition && apellidoPacienteFiltro && nombrePacienteFiltro && apellidoMedicoFiltro && nombreMedicoFiltro && numeroSalaFiltro && fechaFiltro;
+        return pacienteByUsuarioFiltroCondition && apellidoPacienteFiltro && nombrePacienteFiltro && apellidoMedicoFiltro && nombreMedicoFiltro 
+        && numeroSalaFiltro && fechaFiltro && DNIPacienteFiltro && DNIMedicoFiltro;
     });
 
     const limpiarFiltros = () => {
         setApellidoPacienteFilter('');
         setNombrePacienteFilter('');
+        setDNIPacienteFilter('');
         setApellidoMedicoFilter('');
         setNombreMedicoFilter('');
+        setDNIMedicoFilter('');
         setNumeroSalaFilter('');
         setFechaFilter('');
         setDate(undefined);
@@ -79,8 +86,10 @@ const ListTurno: React.FC<ListTurnoProps> = ({ turnos, usuario }) => {
                             {/* <th>id</th> */}
                             <th className="w-max-content px-4 text-center">Apellido Paciente:</th>
                             <th className="w-max-content px-4 text-center">Nombre Paciente:</th>
+                            <th className="w-max-content px-4 text-center">Nro. Doc. Paciente:</th>
                             <th className="w-max-content px-4 text-center">Apellido Médico:</th>
                             <th className="w-max-content px-4 text-center">Nombre Médico:</th>
+                            <th className="w-max-content px-4 text-center">Nro. Doc. Médico:</th>
                             <th className="w-max-content px-4 text-center">Sala:</th>
                             <th className="w-max-content px-4 text-center">Fecha de turno:</th>
                         </tr>
@@ -111,6 +120,16 @@ const ListTurno: React.FC<ListTurnoProps> = ({ turnos, usuario }) => {
                                 <div className="border border-gray-300 rounded-md px-2 py-1 text-sm font-medium text-gray-600">
                                     <input
                                         type="text"
+                                        value={DNIPacienteFilter}
+                                        onChange={(e) => setDNIPacienteFilter(e.target.value)}
+                                        placeholder="Filtrar por nro. doc.">
+                                    </input>
+                                </div>
+                            </td>
+                            <td>
+                                <div className="border border-gray-300 rounded-md px-2 py-1 text-sm font-medium text-gray-600">
+                                    <input
+                                        type="text"
                                         value={apellidoMedicoFilter}
                                         onChange={(e) => setApellidoMedicoFilter(e.target.value)}
                                         placeholder="Filtrar por apellido">
@@ -124,6 +143,16 @@ const ListTurno: React.FC<ListTurnoProps> = ({ turnos, usuario }) => {
                                         value={nombreMedicoFilter}
                                         onChange={(e) => setNombreMedicoFilter(e.target.value)}
                                         placeholder="Filtrar por nombre">
+                                    </input>
+                                </div>
+                            </td>
+                            <td>
+                                <div className="border border-gray-300 rounded-md px-2 py-1 text-sm font-medium text-gray-600">
+                                    <input
+                                        type="text"
+                                        value={DNIMedicoFilter}
+                                        onChange={(e) => setDNIMedicoFilter(e.target.value)}
+                                        placeholder="Filtrar por nro. doc.">
                                     </input>
                                 </div>
                             </td>

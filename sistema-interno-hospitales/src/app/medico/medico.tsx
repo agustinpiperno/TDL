@@ -1,9 +1,10 @@
 import { IMedico } from "@/types/medico";
 
-export const getMedico = async (nombreMedico: string, apellidoMedico: string): Promise<IMedico | void> => {
+export const getMedico = async (nombreMedico: string, apellidoMedico: string, DNIMedico: string): Promise<IMedico | void> => {
     const params = {
         nombreMedico: nombreMedico,
-        apellidoMedico: apellidoMedico
+        apellidoMedico: apellidoMedico,
+        DNIMedico: DNIMedico
     };
 
     const queryString = new URLSearchParams(params).toString();

@@ -19,10 +19,11 @@ export const getAllPacientes = async (): Promise<IPaciente[]> => {
     } 
 };
 
-export const getPaciente = async (nombrePaciente: string, apellidoPaciente: string): Promise<IPaciente | void> => {
+export const getPaciente = async (nombrePaciente: string, apellidoPaciente: string, DNIPaciente: string): Promise<IPaciente | void> => {
     const params = {
         nombrePaciente: nombrePaciente,
-        apellidoPaciente: apellidoPaciente
+        apellidoPaciente: apellidoPaciente,
+        DNIPaciente: DNIPaciente
     };
 
     const queryString = new URLSearchParams(params).toString();

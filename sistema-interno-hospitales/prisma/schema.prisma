@@ -63,7 +63,6 @@ model TiposPrepagas {
   idPrepaga   String      @id @db.VarChar(5)
   descripcion String      @db.VarChar(50)
   pacientes   Pacientes[]
-  Medicos Medicos[]
 }
 
 model TiposExamenes {
@@ -96,10 +95,9 @@ model Medicos {
   documento     Int
   direccion     String?        @db.VarChar(100)
   telefono      String?        @db.VarChar(50)
-  especialidad  String        @db.VarChar(50)
-  idPrepaga     String?        @db.VarChar(5)
-  tipoPrepaga   TiposPrepagas? @relation(fields: [idPrepaga], references: [idPrepaga], onDelete: SetNull, onUpdate: SetNull)
-  Turnos Turnos[]
+  username      String?    @db.VarChar(255)
+  contrasena    String?    @db.VarChar(255)
+  Turnos  Turnos[]
 }
 
 model Turnos {

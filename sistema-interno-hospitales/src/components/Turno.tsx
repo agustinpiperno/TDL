@@ -34,7 +34,8 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
     // const [pacienteToEdit, setPacienteToEdit] = useState<string>(turno.idPaciente.toString());
     const [apellidoPacienteToEdit, setApellidoPacienteToEdit] = useState<string>(turno.paciente.apellido);
     const [nombrePacienteToEdit, setNombrePacienteToEdit] = useState<string>(turno.paciente.nombre);
-    const [documentoToEdit, setDocumentoToEdit] = useState<string>(turno.paciente.documento.toString());
+    const [DNIPacienteToEdit, setDNIPacienteToEdit] = useState<string>(turno.paciente.documento.toString());
+    const [DNIMedicoToEdit, setDNIMedicoToEdit] = useState<string>(turno.medico.documento.toString());
     const [fechaToEdit, setFechaToEdit] = useState<string>(fechaUTC.toString());
     // const [medicoToEdit, setMedicoToEdit] = useState<string>(turno.idMedico.toString());
     const [apellidoMedicoToEdit, setApellidoMedicoToEdit] = useState<string>(turno.medico.apellido);
@@ -52,13 +53,23 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
     const { push } = useRouter();
 
     const ocultarCartelError = () => {
-        if (apellidoPacienteToEdit !== null && nombrePacienteToEdit !== null && fechaToEdit !== null && apellidoMedicoToEdit !== null && nombreMedicoToEdit !== null && salaToEdit !== null) {
+        if (apellidoPacienteToEdit !== null && nombrePacienteToEdit !== null && fechaToEdit !== null && apellidoMedicoToEdit !== null && nombreMedicoToEdit !== null && salaToEdit !== null && DNIPacienteToEdit !== null && DNIMedicoToEdit !== null && DNIPacienteToEdit !!== null) {
             setErrorMessage('');
         }
     }
 
     const handleNombrePacienteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNombrePacienteToEdit(event.target.value);
+        ocultarCartelError();
+    };
+
+    
+    const handleDNIPacienteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const inputDocumentNumber = event.target.value;
+        // Validar si el valor ingresado es solo números (usando expresión regular)
+        if (/^\d*$/.test(inputDocumentNumber) || inputDocumentNumber === '') {
+            setDNIPacienteToEdit(inputDocumentNumber);
+        }
         ocultarCartelError();
     };
 
@@ -69,6 +80,15 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
 
     const handleNombreMedicoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNombreMedicoToEdit(event.target.value);
+        ocultarCartelError();
+    };
+
+    const handleDNIMedicoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const inputDocumentNumber = event.target.value;
+        // Validar si el valor ingresado es solo números (usando expresión regular)
+        if (/^\d*$/.test(inputDocumentNumber) || inputDocumentNumber === '') {
+            setDNIMedicoToEdit(inputDocumentNumber);
+        }
         ocultarCartelError();
     };
 
@@ -88,15 +108,15 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
     };
 
     const editTurno = async () => {
-        if (apellidoPacienteToEdit === '' || nombrePacienteToEdit === '' || fechaToEdit === '' || apellidoMedicoToEdit === '' || nombreMedicoToEdit === '' || salaToEdit === '') {
+        if (apellidoPacienteToEdit === '' || nombrePacienteToEdit === '' || fechaToEdit === '' || apellidoMedicoToEdit === '' || nombreMedicoToEdit === '' || salaToEdit === '' || DNIPacienteToEdit === '' || DNIMedicoToEdit === '') {
             setErrorMessage('Por favor, complete los datos obligatorios.');
             return;
         } else {
             setErrorMessage('');
         }
 
-        const pacienteToEdit = await getPaciente(nombrePacienteToEdit, apellidoPacienteToEdit)
-        const medicoToEdit = await getMedico(nombreMedicoToEdit, apellidoMedicoToEdit)
+        const pacienteToEdit = await getPaciente(nombrePacienteToEdit, apellidoPacienteToEdit, DNIPacienteToEdit)
+        const medicoToEdit = await getMedico(nombreMedicoToEdit, apellidoMedicoToEdit, DNIMedicoToEdit)
 
         if (pacienteToEdit === undefined || medicoToEdit === undefined) {
             setErrorMessage('El paciente o el médico no existen.');
@@ -104,6 +124,7 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
         }
         else {
             const existeSalaReservada = await getSalaEstaReservada(turno.idTurno.toString(), fechaToEdit, salaToEdit)
+
             if (existeSalaReservada){
                 setErrorMessage('La sala ya está reservada para ese día.');
                 return;
@@ -154,8 +175,10 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
         <tr key={turno.idTurno}>
             <td className="w-max-content px-4 text-center">{turno.paciente.apellido}</td>
             <td className="w-max-content px-4 text-center">{turno.paciente.nombre}</td>
+            <td className="w-max-content px-4 text-center">{turno.paciente.documento}</td>
             <td className="w-max-content px-4 text-center">{turno.medico.apellido}</td>
             <td className="w-max-content px-4 text-center">{turno.medico.nombre}</td>
+            <td className="w-max-content px-4 text-center">{turno.medico.documento}</td>
             <td className="w-max-content px-4 text-center">{turno.idSala}</td>
             <td className="w-max-content px-4 text-center">{turno.fechaTurno.toString().slice(0,-14)}</td>
             <td className="flex gap-5">
@@ -185,6 +208,16 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
                                 />
                             </div>
                             <div>
+                                <label htmlFor="DNIPaciente">Nro. Doc. Paciente: </label>
+                                <input
+                                    type="text"
+                                    placeholder="Nro Doc Paciente"
+                                    value={DNIPacienteToEdit}
+                                    onChange={handleDNIPacienteChange}
+                                    maxLength={50}
+                                />
+                            </div>
+                            <div>
                                 <label htmlFor="apellidoMedico">Apellido Médico: </label>
                                 <input
                                     type="text"
@@ -201,6 +234,16 @@ const Turno: React.FC<TurnoProps> = ({ turno }) => {
                                     placeholder="Nombre Medico"
                                     value={nombreMedicoToEdit}
                                     onChange={handleNombreMedicoChange}
+                                    maxLength={50}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="DNIMedico">Nro. Doc. Médico: </label>
+                                <input
+                                    type="text"
+                                    placeholder="DNI Medico"
+                                    value={DNIMedicoToEdit}
+                                    onChange={handleDNIMedicoChange}
                                     maxLength={50}
                                 />
                             </div>
