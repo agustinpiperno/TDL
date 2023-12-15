@@ -15,11 +15,12 @@ const ListEstudio: React.FC<ListEstudioProps> = ({ estudios }) => {
                 estudios.map((estudio) => <Estudio key={estudio.idEstudio} estudio={estudio} />)
             ) : (
                 <span
-                    className="cursiva gris center"
-                    style={{ fontSize: '1.2em', marginTop: '10px' }}
+                    className="cursiva gris center marginTopSinDatos"
                 >
                     {'Sin estudios'}
-                </span>)}
+                </span>
+                )
+            }
         </>
     );
 };

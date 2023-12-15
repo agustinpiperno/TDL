@@ -266,3 +266,15 @@
 		opacity: 1;
 	}
 }
+
+.sizeEstudioTipo {
+	font-size: 21px;
+}
+
+.sizeSubTitleEstudiosRealizados {
+	font-size: 18px;
+}
+
+.marginTopSinDatos {
+	margin-top: 10px;
+}

@@ -190,7 +190,7 @@ const Examen: React.FC<ExamenProps> = ({ examen }) => {
         <div className="p-4 border border-slate-300 my-3 flexk justify-between gap-5 items-start">
             <div>
                 <div className="flex gap-5">
-                    <h2 className="font-bold text-2x1">{examen.tipoExamenObject?.descripcion}</h2>
+                    <h2 className="font-bold sizeEstudioTipo">{examen.tipoExamenObject?.descripcion}</h2>
                     <div className="justify-end w-full flex gap-5">
                         <FiEdit onClick={() => setOpenModalEdit(true)} cursor="pointer" className='text-blue-500' size={25} />
                         <Modal modalOpen={openModalEdit} setModalOpen={setOpenModalEdit}>
@@ -256,7 +256,7 @@ const Examen: React.FC<ExamenProps> = ({ examen }) => {
                 </div>
                 <div>{examen.observaciones}</div>
                 <div>
-                <h2 className="text-2xl center">Estudios realizados</h2>
+                <h3 className="center font-bold sizeSubTitleEstudiosRealizados">Estudios realizados</h3>
                     {/* {Cuando a - b es negativo, significa que a debe estar antes que b en la secuencia ordenada. 
                         Si es cero, significa que a y b son iguales en términos de ordenamiento. Y si es positivo, 
                         indica que b debe estar antes que a en la secuencia ordenada.} */}

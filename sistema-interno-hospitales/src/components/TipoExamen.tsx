@@ -71,8 +71,6 @@ const TipoExamen: React.FC<TipoExamenProps> = ({ tipoExamen }) => {
     };
 
     const handleDeleteTipoExamen = async (tipoExamenEliminar: string) => {
-        console.log(tipoExamen.examenes)
-
         if (tipoExamen.examenes && tipoExamen.examenes.length == 0) {
             await eliminarTipoExamen(tipoExamenEliminar);
             setOpenModalDelete(false);
@@ -148,7 +146,7 @@ const TipoExamen: React.FC<TipoExamenProps> = ({ tipoExamen }) => {
                             <div className="error-message">
                                 {errorMessage}
                             </div>
-                        )}
+                    )}
                 </Modal>
 
             </td>
