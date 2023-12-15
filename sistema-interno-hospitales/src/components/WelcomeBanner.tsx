@@ -7,8 +7,12 @@ const WelcomeBanner = () => {
 
     let nombreUsuario = "Usuario";
     if (token) {
-        const decodedToken = jwt.verify(token.value, 'secret') as JwtPayload
-        nombreUsuario = decodedToken.usuario
+        try{
+            const decodedToken = jwt.verify(token.value, 'secret') as JwtPayload
+            nombreUsuario = decodedToken.usuario
+        } catch (error) {
+            console.error('Error al obtener el usuario:', error);
+        }
     }
 
     return (
