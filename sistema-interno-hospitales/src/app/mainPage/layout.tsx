@@ -21,30 +21,28 @@ const router = useRouter()
 const [isLoading, setIsLoading] = useState(true);
 
 useEffect(() => {
-    const fetchUser = (async () => {
+    const fetchUser = async () => {
         const {usuario, error} = await getUser()
         if(error){
             router.push("/home")
+        } else {
+            setIsLoading(false);
         }
-        setIsLoading(false);
-    })
+    }
     fetchUser()
 }, [router])
 
-if (isLoading) {
-    return null; // Para que no renderize la pagina hasta que termine getUser
-}
-
-	return (
-		 <div className="h-screen flex flex-col justify-center items-center bg-blue-950">
+if (!isLoading) {
+    return (
+        <div className="h-screen flex flex-col justify-center items-center bg-blue-950">
             <NavbarMainPage />
             <div className="flex-1 flex justify-center items-center">
                 <div className="bg-white p-20 rounded-md shadow-2xl">{children}</div>
             </div>
         </div>
-	);
+    );
 }
-
+}
 async function getUser(): Promise<UserResponse>{
     try{
         const {data} = await axios.get("/api/auth")

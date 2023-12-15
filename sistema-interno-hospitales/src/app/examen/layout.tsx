@@ -21,20 +21,18 @@ const router = useRouter()
 const [isLoading, setIsLoading] = useState(true);
 
 useEffect(() => {
-    const fetchUser = (async () => {
+    const fetchUser = async () => {
         const {usuario, error} = await getUser()
         if(error){
             router.push("/home")
+        } else {
+            setIsLoading(false);
         }
-        setIsLoading(false);
-    })
+    }
     fetchUser()
 }, [router])
 
-if (isLoading) {
-    return null; // Para que no renderize la pagina hasta que termine getUser
-}
-
+if (!isLoading) {
 	return (
 		 <div className="h-screen flex flex-col justify-center items-center bg-blue-950">
             <NavbarMainPage />
@@ -44,6 +42,7 @@ if (isLoading) {
             </div>
         </div>
 	);
+}
 }
 
 async function getUser(): Promise<UserResponse>{
