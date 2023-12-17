@@ -121,45 +121,8 @@ const AddPaciente = () => {
         router.refresh();
     }
 
-    //POR EL MOMENTO DEJO COMENTADO ESTO
     const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
-        // if (apellido === '' || nombre === '' || documentNumber === '') {
-        //     setErrorMessage('Por favor, complete el apellido, nombre y documento del paciente');
-        //     return;
-        // } else {
-        //     setErrorMessage('');
-        // }
 
-
-        // event.preventDefault(); // Evitar la recarga de la página por defecto en el envío del formulario
-
-        // const pacienteAlta = {
-        //     paciente: {
-        //         idPaciente: 0, //Automaticamente lo setea la base de datos
-        //         apellido: apellido,
-        //         nombre: nombre,
-        //         tipoDocumento: selectedTipoDocumento,
-        //         documento: Number(documentNumber),
-        //         direccion: direccion,
-        //         telefono: telefono,
-        //         ocupacion: ocupacion,
-        //         idPrepaga: idPrepaga
-        //     }
-        // };
-
-        // await registrarPaciente(pacienteAlta.paciente);
-
-        // setApellido("");
-        // setNombre("");
-        // setApellido("");
-        // setSelectedTipoDocumento("DNI")
-        // setDocumentNumber("");
-        // setDireccion("");
-        // setTelefono("");
-        // setOcupacion("");
-        // setIdPrepaga("");
-        // setModalOpen(false);
-        // router.refresh();
     };
 
     useEffect(() => {

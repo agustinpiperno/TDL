@@ -136,7 +136,6 @@ const Estudio: React.FC<EstudioProps> = ({ estudio }) => {
                                                     accept="image/*"
                                                     onChange={handleImagenEstudioChange}
                                                 />
-                                                {/* <p>Archivo seleccionado: {fileEstudioToEdit ? fileEstudioToEdit.name : 'Ningún archivo seleccionado'}</p> */}
                                                 <div className="flex items-center w-full gap-5">
                                                     <p>Archivo seleccionado: {fileEstudioToEdit ? fileEstudioToEdit.name : 'Ningún archivo seleccionado'}</p>
                                                     <div className="justify-end tooltip-label tooltip-container font-medium" data-tooltip="Eliminar imagen">

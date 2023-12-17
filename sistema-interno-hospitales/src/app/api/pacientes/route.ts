@@ -5,45 +5,45 @@ interface Params {
 }
 
 export const GET = async (req: NextRequest) => {
-        const nombrePaciente = req.nextUrl.searchParams.get("nombrePaciente")
-        const apellidoPaciente = req.nextUrl.searchParams.get("apellidoPaciente")
-        const DNIPaciente = req.nextUrl.searchParams.get("DNIPaciente")
+    const nombrePaciente = req.nextUrl.searchParams.get("nombrePaciente")
+    const apellidoPaciente = req.nextUrl.searchParams.get("apellidoPaciente")
+    const DNIPaciente = req.nextUrl.searchParams.get("DNIPaciente")
 
-        if (nombrePaciente && apellidoPaciente && DNIPaciente) {
-            try{
-                const pacientes = await prisma.pacientes.findFirst({
-                    where: {
-                        nombre: nombrePaciente,
-                        apellido: apellidoPaciente,
-                        documento: Number(DNIPaciente)
-                    },
-                });
+    if (nombrePaciente && apellidoPaciente && DNIPaciente) {
+        try {
+            const pacientes = await prisma.pacientes.findFirst({
+                where: {
+                    nombre: nombrePaciente,
+                    apellido: apellidoPaciente,
+                    documento: Number(DNIPaciente)
+                },
+            });
 
-                if (pacientes) {
-                    return NextResponse.json({
-                        pacientes
-                    });
-                } else {
-                    return NextResponse.json({
-                        mensaje: 'No hay paciente registrados',
-                    });
-                }
-            } catch (error) {
+            if (pacientes) {
                 return NextResponse.json({
-                    error: 'Error al procesar la solicitud',
+                    pacientes
+                });
+            } else {
+                return NextResponse.json({
+                    mensaje: 'No hay paciente registrados',
                 });
             }
-        } else{
-            try {
+        } catch (error) {
+            return NextResponse.json({
+                error: 'Error al procesar la solicitud',
+            });
+        }
+    } else {
+        try {
             const pacientes = await prisma.pacientes.findMany({
                 orderBy: {
                     idPaciente: 'asc',
                 },
                 include: {
-                    Examenes: true,// Trae todos los datos del Examen asociado al paciente
-                    tipoPrepaga: true, 
+                    Examenes: true,
+                    tipoPrepaga:true,
                 },
-            });
+            })
             return NextResponse.json({
                 pacientes
             })
@@ -123,7 +123,7 @@ export const DELETE = async (req: NextRequest) => {
     try {
         const pacienteEliminado = await prisma.pacientes.delete({
             where: {
-                idPaciente: parseInt(idPaciente as string), // Asegúrate de convertir el ID a un número si es necesario
+                idPaciente: parseInt(idPaciente as string),
             },
         });
 

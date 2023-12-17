@@ -7,7 +7,7 @@ interface ListExamenProps {
     examenes: IExamen[]
 }
 
-const ListPaciente: React.FC<ListExamenProps> = ({ examenes }) => {
+const ListExamenes: React.FC<ListExamenProps> = ({ examenes }) => {
 
     return (
         <>
@@ -16,4 +16,4 @@ const ListPaciente: React.FC<ListExamenProps> = ({ examenes }) => {
     );
 };
 
-export default ListPaciente;
+export default ListExamenes;

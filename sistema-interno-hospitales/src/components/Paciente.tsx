@@ -8,7 +8,6 @@ import Modal from "./Modal";
 import { useRouter } from "next/navigation";
 import { editarPaciente, eliminarPaciente } from "@/app/pacientes/pacientes";
 import { VscNotebook } from "react-icons/vsc";
-import { string } from "zod";
 import { IPrepaga } from "@/types/prepaga";
 import { getAllPrepagas } from "@/app/tiposPrepagas/tiposPrepagas";
 
@@ -78,11 +77,15 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
     };
 
     const formatearDatosPacientes = (datoPaciente: string | null, textoNULL: string) => {
-        return datoPaciente === null ? <span className="cursiva gris">{textoNULL}</span> : datoPaciente === '' ? <span className="cursiva gris">{textoNULL}</span> : datoPaciente;
+        return datoPaciente === null || datoPaciente === '' ? <span className="cursiva gris">{textoNULL}</span> : datoPaciente;
     }
 
     const formatearDatosPacientesPrepaga = (prepaga: IPrepaga | null, textoNULL: string) => {
-        return prepaga === null ? <span className="cursiva gris">{textoNULL}</span> : prepaga.idPrepaga === '' ? <span className="cursiva gris">{textoNULL}</span> : prepaga.descripcion;
+        return prepaga === null || prepaga.idPrepaga === '' ? <span className="cursiva gris">{textoNULL}</span> : prepaga.descripcion;
+    }
+
+    const formatearDatosDocumentacion = (tipoDocumento: string) => {
+        return tipoDocumento === 'DNI' ? 'DNI' : 'Pasaporte';
     }
 
     const editPaciente = async () => {
@@ -116,29 +119,8 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
         router.refresh();
     }
 
-    //POR EL MOMENTO LO DEJO COMENTADO
     const handleSubmitEdit: FormEventHandler<HTMLFormElement> = async (event) => {
-        // event.preventDefault(); // Evitar la recarga de la página por defecto en el envío del formulario
 
-        // const pacienteEditar = {
-        //     paciente: {
-        //         idPaciente: paciente.idPaciente,
-        //         apellido: apellidoToEdit,
-        //         nombre: nombreToEdit,
-        //         tipoDocumento: tipoDocumentoToEdit,
-        //         documento: Number(documentoToEdit),
-        //         direccion: direccionToEdit,
-        //         telefono: telefonoToEdit,
-        //         ocupacion: ocupacionToEdit,
-        //         idPrepaga: idPrepagaToEdit
-        //     }
-        // };
-
-        // await editarPaciente(pacienteEditar.paciente);
-
-        // setOpenModalEdit(false);
-
-        // router.refresh();
     };
 
     const handleDeletePaciente = async (idPaciente: number) => {
@@ -172,10 +154,9 @@ const Paciente: React.FC<PacienteProps> = ({ paciente }) => {
 
     return (
         <tr key={paciente.idPaciente}>
-            {/* <td>{paciente.idPaciente}</td> */}
             <td className="w-max-content px-4 text-center">{paciente.apellido}</td>
             <td className="w-max-content px-4 text-center">{paciente.nombre}</td>
-            <td className="w-max-content px-4 text-center">{paciente.tipoDocumento}</td>
+            <td className="w-max-content px-4 text-center">{formatearDatosDocumentacion(paciente.tipoDocumento)}</td>
             <td className="w-max-content px-4 text-center">{paciente.documento}</td>
             <td className="w-max-content px-4 text-center">{formatearDatosPacientes(paciente.direccion, 'Sin dirección')}</td>
             <td className="w-max-content px-4 text-center">{formatearDatosPacientes(paciente.telefono, 'Sin teléfono')}</td>

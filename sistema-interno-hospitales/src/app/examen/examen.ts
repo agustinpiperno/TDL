@@ -19,8 +19,6 @@ export const getExamenesByPaciente = async (idPaciente: string): Promise<IExamen
 
     if(response.ok) {
         const data = await response.json();
-        // console.log('AQUI')
-        // console.log(data.examenes[0].estudio)
         return data.examenes
     }else {
         throw new Error('Error al querer obtener los examenes del paciente');

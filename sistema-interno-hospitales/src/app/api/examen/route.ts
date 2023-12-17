@@ -10,7 +10,7 @@ export const GET = async (req: NextRequest) => {
                 idPaciente: Number(IdPaciente),
             },
             include: {
-                usuario: true, // Trae todos los datos del usuario asociado al examen
+                usuario: true,
                 tipoExamenObject: true,
                 estudio: true,
                 paciente: true,

@@ -11,6 +11,6 @@ export interface IPaciente {
     telefono: string | null,
     ocupacion: string | null,
     idPrepaga: string | null,
-    Examenes: IExamen[] | null; // Relación inversa con Exámenes
+    Examenes: IExamen[] | null;
     tipoPrepaga: IPrepaga | null;
 };

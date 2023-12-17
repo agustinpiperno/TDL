@@ -2,32 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../prisma/client";
 import { writeFile } from 'fs/promises';
 import path from 'path';
-import formidable from 'formidable';
 
-
-// export const POST = async (req: NextRequest) => {
-//     const requestData = await req.json();
-//     const estudio = requestData.estudio;
-
-//     try {
-//         const insertEstudio = await prisma.estudios.create({
-//             data: {
-//                 tipoEstudio: estudio.tipoEstudio,
-//                 resultado: estudio.resultado,
-//                 examenesIdExamen: estudio.examenesIdExamen,
-//             },
-//         })
-
-//         return NextResponse.json({
-//             mensaje: 'Estudio nuevo insertado',
-//             estudioInsertado: insertEstudio,
-//         });
-//     } catch (error) {
-//         return NextResponse.json({
-//             error: 'Error al procesar la solicitud',
-//         });
-//     }
-// }
 
 export const POST = async (req: NextRequest) => {
     try {
@@ -75,32 +50,6 @@ export const POST = async (req: NextRequest) => {
     }
 };
 
-// export const PUT = async (req: NextRequest) => {
-//     const requestData = await req.json();
-//     const estudio = requestData.estudio;
-
-//     try {
-//         const updatedExamen = await prisma.estudios.update({
-//             where: {
-//                 idEstudio: estudio.idEstudio,
-//             },
-//             data: {
-//                 tipoEstudio: estudio.tipoEstudio,
-//                 resultado: estudio.resultado
-//             },
-//         });
-
-//         return NextResponse.json({
-//             mensaje: 'Examen seleccionado modificado',
-//             examenModificado: updatedExamen,
-//         });
-//     } catch (error) {
-//         return NextResponse.json({
-//             error: 'Error al procesar la solicitud',
-//         });
-//     }
-// }
-
 export const PUT = async (req: NextRequest) => {
     try {
         const formData = await req.formData();
@@ -118,7 +67,7 @@ export const PUT = async (req: NextRequest) => {
         const formattedDate = estudio.fechaRealizacion.toISOString().replace(/[-:]/g, '');
 
         var filePathOnBDD = estudio.estudioPath;
-        console.log(estudio.Estudio)
+
         if (estudio.Estudio) {
             const bytes = await estudio.Estudio.arrayBuffer()
             const buffer = Buffer.from(bytes);

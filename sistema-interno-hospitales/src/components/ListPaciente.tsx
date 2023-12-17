@@ -137,10 +137,8 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes, usuario }) => {
         <div>
             <div className="overflow-x-auto py-4">
                 <table className="table">
-                    {/* head */}
                     <thead>
                         <tr>
-                            {/* <th>id</th> */}
                             <th className="w-max-content px-4 text-center">Apellido</th>
                             <th className="w-max-content px-4 text-center">Nombre</th>
                             <th className="w-max-content px-4 text-center">Tipo Documento</th>
@@ -271,22 +269,6 @@ const ListPaciente: React.FC<ListPacienteProps> = ({ pacientes, usuario }) => {
                                 </div>
                             </td>
                             <td>
-                                {/* <div className="center tooltip-label tooltip-container font-medium" data-tooltip="Limpiar filtros">
-                                    <MdOutlineCleaningServices onClick={() => limpiarFiltros()} cursor="pointer" className='text-gray-500' size={25} />
-                                </div>
-                                <div>
-                                    <label htmlFor="checkbox" className="tooltip-label tooltip-container" data-tooltip="Mis pacientes">
-                                        <input
-                                            type="checkbox"
-                                            id="checkboxMisPacientes"
-                                            checked={misPacientesFilter}
-                                            onChange={(e) => e.target.checked}
-                                        />
-                                    </label>
-                                </div> */}
-
-
-
                                 <div className="center gap-5">
                                     <div className="center tooltip-label tooltip-container font-medium" data-tooltip="Limpiar filtros">
                                         <MdOutlineCleaningServices onClick={() => limpiarFiltros()} cursor="pointer" className='text-gray-500' size={25} />

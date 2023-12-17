@@ -142,9 +142,9 @@ const Examen: React.FC<ExamenProps> = ({ examen }) => {
             head: [columnas],
             body: filas,
             didDrawPage: () => {
-                // if (pageNumber === 1) {
+
                 addHeader();
-                // }
+
                 // Agregar el footer en cada página
                 doc.setFontSize(10);
                 doc.text(formatoNombreMedico(pageNumber++), 15, doc.internal.pageSize.height - 15);
@@ -152,12 +152,8 @@ const Examen: React.FC<ExamenProps> = ({ examen }) => {
             },
         });
 
-        // doc.addPage();
 
         examen.estudio?.forEach((estudio, index) => {
-            // if (index !== 0) {
-            //     doc.addPage(); // Agregar una nueva página para las imágenes subsiguientes
-            // }
             doc.addPage()
             addHeader();
             doc.setFontSize(12);
@@ -182,8 +178,6 @@ const Examen: React.FC<ExamenProps> = ({ examen }) => {
 
         // Guardar o mostrar el PDF
         doc.save(formatoNombreArchivo);
-        //doc.output('dataurlnewwindow');
-
     };
 
     return (
